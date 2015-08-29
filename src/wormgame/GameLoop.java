@@ -22,6 +22,8 @@ public class GameLoop extends AnimationTimer
     
     private Random r;
     
+    //test
+    
     @Override
     public void start()
     {
