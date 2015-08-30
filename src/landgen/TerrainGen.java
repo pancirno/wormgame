@@ -6,11 +6,14 @@
 package landgen;
 
 import java.awt.*;
+import java.awt.Image;
 import java.awt.image.*;
 import static java.awt.image.BufferedImage.TYPE_BYTE_INDEXED;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import javafx.embed.swing.*;
+import javafx.scene.image.*;
 import javax.imageio.ImageIO;
 
 /**
@@ -274,6 +277,11 @@ public class TerrainGen {
     public static double QuartEaseOut(double t, double b, double c, double d) 
     {
         return -c * ((t=t/d-1)*t*t*t - 1) + b;
+    }
+    
+    public WritableImage returnImage()
+    {
+        return SwingFXUtils.toFXImage(bi, null);
     }
     
     public void saveimage(String filename)

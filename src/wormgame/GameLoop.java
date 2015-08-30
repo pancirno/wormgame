@@ -9,7 +9,7 @@ import java.util.*;
 import javafx.animation.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
-import javafx.scene.paint.*;
+import gameclasses.*;
 
 /**
  *
@@ -19,10 +19,13 @@ public class GameLoop extends AnimationTimer
 {    
     private InputEngine inputreceiver;
     private GraphicsContext drawengine;
-    
     private Random r;
     
-    //test
+    int WindowWidth;
+    int WindowHeight;
+    CameraData Camera;
+    
+    Level currentStage;
     
     @Override
     public void start()
@@ -30,7 +33,13 @@ public class GameLoop extends AnimationTimer
         inputreceiver = new InputEngine();
         if(drawengine == null) return;
         
+        WindowWidth = 800;
+        WindowHeight = 600;
+        
         r = new Random();
+        Camera = new CameraData(0,0,WindowWidth, WindowHeight);
+        
+        currentStage = new Level();
         
         super.start();
     }
@@ -44,11 +53,29 @@ public class GameLoop extends AnimationTimer
     @Override
     public void handle(long now)
     {     
-        drawengine.clearRect(0, 0, 800, 600);
-        for(int x = 0; x < 5000; x++)
+        //draw background
+        //draw terrain
+        currentStage.render(drawengine, Camera);
+        //draw sprites
+        //draw foreground
+        //draw ui
+        
+        //call for actions
+        if(inputreceiver.keyStatus(KeyCode.UP) == true)
         {
-        drawengine.setFill( Color.rgb(r.nextInt(256), r.nextInt(256), r.nextInt(256)) );
-        drawengine.fillText( "benis", r.nextInt(800), r.nextInt(600) );
+            Camera.MoveCameraRel(0, 3);
+        }
+        if(inputreceiver.keyStatus(KeyCode.DOWN) == true)
+        {
+            Camera.MoveCameraRel(0, -3);
+        }
+        if(inputreceiver.keyStatus(KeyCode.LEFT) == true)
+        {
+            Camera.MoveCameraRel(3, 0);
+        }
+        if(inputreceiver.keyStatus(KeyCode.RIGHT) == true)
+        {
+            Camera.MoveCameraRel(-3, 0);
         }
     }
         

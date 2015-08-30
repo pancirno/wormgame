@@ -6,7 +6,7 @@
 package wormgame;
 
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.stage.*;
 
 /**
  *
@@ -20,6 +20,8 @@ public class Wormgame extends Application
     {
         primaryStage.setTitle("wormgame");
         primaryStage.setScene(MainWindow.Instance.getSceneContainer());
+        primaryStage.setResizable(false);
+        primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.show();
     }
     

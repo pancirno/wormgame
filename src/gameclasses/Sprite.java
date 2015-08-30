@@ -7,7 +7,6 @@ package gameclasses;
 
 import java.util.*;
 import javafx.scene.image.*;
-import javafx.scene.shape.*;
 
 /**
  *
@@ -17,12 +16,9 @@ public abstract class Sprite
 {
     protected List<Image> imageStates;
     protected ImageView spriteFrame;
-    protected SVGPath collisionMask;
             
     public Sprite(String SVG, List<Image> images)
     {
-        collisionMask = new SVGPath();
-        collisionMask.setContent(SVG);
         imageStates = images;
         spriteFrame = new ImageView(images.get(0));
     }
