@@ -281,7 +281,21 @@ public class TerrainGen {
     
     public WritableImage returnImage()
     {
-        return SwingFXUtils.toFXImage(bi, null);
+        BufferedImage ret = new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Color transp = new Color(0, 0, 0, 0);
+        
+        for(int x = 0; x < bi.getWidth();  x++)
+            for(int y = 0; y < bi.getHeight(); y++)
+            {
+                int c = bi.getRGB(x, y);
+                
+                if(c == Color.BLACK.getRGB())
+                    ret.setRGB(x, y, transp.getRGB());
+                else
+                    ret.setRGB(x, y, c);
+            }
+        
+        return SwingFXUtils.toFXImage(ret, null);
     }
     
     public void saveimage(String filename)

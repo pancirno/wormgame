@@ -7,6 +7,7 @@ package gameclasses;
 
 import javafx.scene.canvas.*;
 import javafx.scene.image.*;
+import javafx.scene.paint.*;
 import landgen.*;
 
 /**
@@ -15,17 +16,19 @@ import landgen.*;
  */
 public class Level
 {
-    Image PictureData;
-    TerrainGen LevelGenerator;
+    WritableImage FrontPictureData;
+    
     
     public Level()
     {
-        LevelGenerator = new TerrainGen(667);
-        PictureData = LevelGenerator.returnImage();
+        TerrainGen LevelGenerator = new TerrainGen(8795649);
+        FrontPictureData = LevelGenerator.returnImage();
+                
+        LevelGenerator = null;
     }
     
     public void render(GraphicsContext gc, CameraData cd)
     {
-        gc.drawImage(PictureData, cd.GetBoundary().getMinX(), cd.GetBoundary().getMinY());
+        gc.drawImage(FrontPictureData, cd.GetBoundary().getMinX(), cd.GetBoundary().getMinY());
     }
 }
