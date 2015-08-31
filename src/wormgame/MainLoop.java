@@ -15,17 +15,15 @@ import gameclasses.*;
  *
  * @author pancirno
  */
-public class GameLoop extends AnimationTimer
+public class MainLoop extends AnimationTimer
 {    
+    IScene g;
+    
     private InputEngine inputreceiver;
     private GraphicsContext drawengine;
-    private Random r;
     
     int WindowWidth;
     int WindowHeight;
-    CameraData Camera;
-    
-    Level currentStage;
     
     @Override
     public void start()
@@ -36,10 +34,7 @@ public class GameLoop extends AnimationTimer
         WindowWidth = 800;
         WindowHeight = 600;
         
-        r = new Random();
-        Camera = new CameraData(0,0,WindowWidth, WindowHeight);
-        
-        currentStage = new Level();
+        g = new Game();
         
         super.start();
     }
@@ -53,33 +48,9 @@ public class GameLoop extends AnimationTimer
     @Override
     public void handle(long now)
     {     
-        //draw background
-        //draw terrain
-        currentStage.render(drawengine, Camera);
-        //draw sprites
-        //draw foreground
-        //draw ui
-        
-        //call for actions
-        if(inputreceiver.keyStatus(KeyCode.UP) == true)
-        {
-            Camera.MoveCameraRel(0, 3);
-        }
-        if(inputreceiver.keyStatus(KeyCode.DOWN) == true)
-        {
-            Camera.MoveCameraRel(0, -3);
-        }
-        if(inputreceiver.keyStatus(KeyCode.LEFT) == true)
-        {
-            Camera.MoveCameraRel(3, 0);
-        }
-        if(inputreceiver.keyStatus(KeyCode.RIGHT) == true)
-        {
-            Camera.MoveCameraRel(-3, 0);
-        }
+        g.execute(inputreceiver, drawengine);
     }
         
-    
     //konfiguracja przesylu wejscia wyjscia
     public void OnPress(KeyCode kc)
     {

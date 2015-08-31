@@ -19,7 +19,7 @@ public class MainWindow
     public static MainWindow Instance = new MainWindow();
     
     private Scene SceneContainer;
-    private GameLoop Game;
+    private MainLoop Game;
     private Group RenderContainer;
     private Canvas DrawObject;
     
@@ -30,7 +30,7 @@ public class MainWindow
         DrawObject = new Canvas(800,600);
         RenderContainer.getChildren().add(DrawObject);
         
-        Game = new GameLoop();
+        Game = new MainLoop();
         Game.AttachRenderContext(DrawObject.getGraphicsContext2D());
         
         SceneContainer.setOnKeyPressed((KeyEvent event) ->

@@ -7,7 +7,6 @@ package gameclasses;
 
 import javafx.scene.canvas.*;
 import javafx.scene.image.*;
-import javafx.scene.paint.*;
 import landgen.*;
 
 /**
@@ -23,8 +22,6 @@ public class Level
     {
         TerrainGen LevelGenerator = new TerrainGen(8795649);
         FrontPictureData = LevelGenerator.returnImage();
-                
-        LevelGenerator = null;
     }
     
     public void render(GraphicsContext gc, CameraData cd)

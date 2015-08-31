@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses;
+package gameclasses.actors;
 
 import java.util.*;
 import javafx.scene.image.*;
