@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses;
-
-import javafx.scene.canvas.*;
-import wormgame.*;
+package gameclasses.actors;
 
 /**
  *
  * @author pancirno
  */
-public interface IScene
+public class Actor
 {
-    public void execute(InputEngine ie, GraphicsContext dc);
+    
 }

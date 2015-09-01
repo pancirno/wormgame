@@ -7,19 +7,25 @@ package gameclasses.actors;
 
 import java.util.*;
 import javafx.scene.image.*;
+import wormgame.*;
 
 /**
  *
  * @author pancirno
  */
-public abstract class Sprite
+public class Sprite
 {
     protected List<Image> imageStates;
     protected ImageView spriteFrame;
-            
+                
     public Sprite(String SVG, List<Image> images)
     {
         imageStates = images;
         spriteFrame = new ImageView(images.get(0));
+    }
+    
+    public void DrawSprite(MainLoop loop)
+    {
+        
     }
 }

@@ -17,24 +17,28 @@ import gameclasses.*;
  */
 public class MainLoop extends AnimationTimer
 {    
-    IScene g;
+    GameState g;
     
-    private InputEngine inputreceiver;
-    private GraphicsContext drawengine;
+    private final InputEngine inputreceiver = new InputEngine();;
+    private final GraphicsContext drawengine;
     
     int WindowWidth;
     int WindowHeight;
     
+    public MainLoop(GraphicsContext cg)
+    {
+        drawengine = cg;
+    }
+    
     @Override
     public void start()
     {
-        inputreceiver = new InputEngine();
         if(drawengine == null) return;
         
         WindowWidth = 800;
         WindowHeight = 600;
         
-        g = new Game();
+        g = new MainGame();
         
         super.start();
     }
@@ -48,7 +52,7 @@ public class MainLoop extends AnimationTimer
     @Override
     public void handle(long now)
     {     
-        g.execute(inputreceiver, drawengine);
+        g.execute(this);
     }
         
     //konfiguracja przesylu wejscia wyjscia
@@ -61,10 +65,24 @@ public class MainLoop extends AnimationTimer
     {
         inputreceiver.setReleased(kc);
     }
-    
-    //konfiguracja renderowania
-    public void AttachRenderContext(GraphicsContext cg)
+        
+    public InputEngine GetInputEngine()
     {
-        drawengine = cg;
+        return inputreceiver;
+    }
+    
+    public GraphicsContext GetGraphicsContext()
+    {
+        return drawengine;
+    }
+    
+    public int GetWindowWidth()
+    {
+        return WindowWidth;
+    }
+    
+    public int GetWindowHeight()
+    {
+        return WindowHeight;
     }
 }

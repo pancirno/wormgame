@@ -5,13 +5,15 @@
  */
 package gameclasses.actors;
 
-import wormgame.*;
-
 /**
  *
  * @author pancirno
  */
-public interface IRenderable
+public interface IDynamic
 {
-    public void render(MainLoop loop);
+    public void pre_step();
+    
+    public void step();
+    
+    public void after_step();
 }

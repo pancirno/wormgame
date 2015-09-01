@@ -30,8 +30,14 @@ public class MainWindow
         DrawObject = new Canvas(800,600);
         RenderContainer.getChildren().add(DrawObject);
         
-        Game = new MainLoop();
-        Game.AttachRenderContext(DrawObject.getGraphicsContext2D());
+        try
+        {
+            Game = new MainLoop(DrawObject.getGraphicsContext2D());
+        }
+        catch(Exception e)
+        {
+            System.err.printf(e.getMessage());
+        }
         
         SceneContainer.setOnKeyPressed((KeyEvent event) ->
         {
