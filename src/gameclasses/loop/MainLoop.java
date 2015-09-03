@@ -37,7 +37,7 @@ public class MainLoop extends AnimationTimer
         WindowWidth = 800;
         WindowHeight = 600;
         
-        g = new MainGame();
+        g = new GSGame();
         
         super.start();
     }

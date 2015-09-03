@@ -5,7 +5,10 @@
  */
 package gameclasses.loop;
 
-import gameclasses.maingame.Camera;
+import gameclasses.game.Camera;
+import gameclasses.game.IMovable;
+import gameclasses.earthworms.Level;
+import gameclasses.earthworms.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 
@@ -13,15 +16,25 @@ import javafx.scene.paint.*;
  *
  * @author pancirno
  */
-public class MainGame extends GameState
+public class GSGame extends GameState
 {
+    //game data
     Camera gameCamera;
     Level currentStage;
     
-    public MainGame()
+    //game objects
+    
+    //current moving object
+    Player p;
+    IMovable driver;
+    
+    public GSGame()
     {
         gameCamera = new Camera(0, 0, 800, 600);
         currentStage = new Level();
+        
+        p = new Player();
+        driver = p;
     }
     
     @Override
@@ -29,6 +42,7 @@ public class MainGame extends GameState
     {
         //collect inputs
         gameCamera.move(loop.GetInputEngine());
+        driver.move(loop.GetInputEngine());
         
         //run object logic
         
@@ -37,6 +51,7 @@ public class MainGame extends GameState
         //draw terrain
         currentStage.render(loop.GetGraphicsContext(), gameCamera);
         //draw sprites
+        p.render(loop, gameCamera);
         //draw foreground
         //draw ui
     }

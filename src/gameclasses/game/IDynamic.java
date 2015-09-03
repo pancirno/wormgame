@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.maingame;
+package gameclasses.game;
 
-import gameclasses.loop.GameState;
+import gameclasses.loop.*;
 
 /**
  *
@@ -13,5 +13,5 @@ import gameclasses.loop.GameState;
  */
 public interface IDynamic
 {
-    public void step(GameState gs);
+    public void step(GSGame gs);
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.maingame;
+package gameclasses.game;
 
 import gameclasses.loop.MainLoop;
 import java.util.*;

@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.maingame;
-
-import gameclasses.loop.MainLoop;
-import wormgame.*;
+package gameclasses.loop;
 
 /**
  *
  * @author pancirno
  */
-public interface IRenderable
+public class GSMenu
 {
-    public void render(MainLoop loop);
+    
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.maingame;
+package gameclasses.game;
 
 import javafx.geometry.*;
 import javafx.scene.input.*;
@@ -64,6 +64,21 @@ public class Camera implements IMovable
     public boolean IsVisible(Point2D pt)
     {
         return CameraBoundary.contains(pt);
+    }
+    
+    public Point2D GetCameraDelta(Point2D p)
+    {
+        return p.add(CameraX, CameraY);
+    }
+    
+    public int GetCameraDeltaX(int x)
+    {
+        return x + CameraX;
+    }
+    
+    public int GetCameraDeltaY(int y)
+    {
+        return y + CameraY;
     }
 
     @Override

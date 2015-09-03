@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.loop;
+package gameclasses.earthworms;
 
-import gameclasses.maingame.Camera;
+import gameclasses.game.Camera;
 import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import landgen.*;
