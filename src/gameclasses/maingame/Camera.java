@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.actors;
+package gameclasses.maingame;
 
 import javafx.geometry.*;
 import javafx.scene.input.*;
@@ -70,19 +70,19 @@ public class Camera implements IMovable
     public void move(InputEngine ie)
     {
         //call for actions
-        if(ie.keyStatus(KeyCode.UP) == true)
+        if(ie.keyStatus(KeyCode.W) == true)
         {
             MoveCameraRel(0, 3);
         }
-        if(ie.keyStatus(KeyCode.DOWN) == true)
+        if(ie.keyStatus(KeyCode.S) == true)
         {
             MoveCameraRel(0, -3);
         }
-        if(ie.keyStatus(KeyCode.LEFT) == true)
+        if(ie.keyStatus(KeyCode.A) == true)
         {
             MoveCameraRel(3, 0);
         }
-        if(ie.keyStatus(KeyCode.RIGHT) == true)
+        if(ie.keyStatus(KeyCode.D) == true)
         {
             MoveCameraRel(-3, 0);
         }

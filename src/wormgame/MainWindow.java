@@ -5,6 +5,7 @@
  */
 package wormgame;
 
+import gameclasses.loop.MainLoop;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;

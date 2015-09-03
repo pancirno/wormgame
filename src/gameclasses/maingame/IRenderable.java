@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.actors;
+package gameclasses.maingame;
 
+import gameclasses.loop.MainLoop;
 import wormgame.*;
 
 /**
  *
  * @author pancirno
  */
-public interface IMovable
+public interface IRenderable
 {
-    public void move(InputEngine ie);
+    public void render(MainLoop loop);
 }

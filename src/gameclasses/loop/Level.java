@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.main;
+package gameclasses.loop;
 
-import gameclasses.actors.Camera;
+import gameclasses.maingame.Camera;
 import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import landgen.*;

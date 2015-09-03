@@ -3,21 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package wormgame;
+package gameclasses.loop;
 
-import gameclasses.main.GameState;
-import gameclasses.main.MainGame;
-import java.util.*;
 import javafx.animation.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
+import wormgame.InputEngine;
 
 /**
  *
  * @author pancirno
  */
 public class MainLoop extends AnimationTimer
-{    
+{        
     GameState g;
     
     private final InputEngine inputreceiver = new InputEngine();;

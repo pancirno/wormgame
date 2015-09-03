@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.actors;
+package gameclasses.maingame;
+
+import wormgame.*;
 
 /**
  *
  * @author pancirno
  */
-public class Actor
+public interface IMovable
 {
-    
+    public void move(InputEngine ie);
 }
