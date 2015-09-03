@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses;
+package gameclasses.actors;
 
 import wormgame.*;
 
@@ -11,7 +11,7 @@ import wormgame.*;
  *
  * @author pancirno
  */
-public abstract class GameState
+public interface IMovable
 {
-    abstract public void execute(MainLoop loop);
+    public void move(InputEngine ie);
 }

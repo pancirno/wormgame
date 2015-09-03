@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses;
+package gameclasses.main;
 
+import gameclasses.actors.Camera;
 import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import landgen.*;
@@ -24,7 +25,7 @@ public class Level
         FrontPictureData = LevelGenerator.returnImage();
     }
     
-    public void render(GraphicsContext gc, CameraData cd)
+    public void render(GraphicsContext gc, Camera cd)
     {
         gc.drawImage(FrontPictureData, cd.GetBoundary().getMinX(), cd.GetBoundary().getMinY());
     }

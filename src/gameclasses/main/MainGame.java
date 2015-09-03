@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses;
+package gameclasses.main;
 
+import gameclasses.actors.Camera;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
@@ -17,46 +18,33 @@ import wormgame.*;
  */
 public class MainGame extends GameState
 {
-    CameraData Camera;
+    Camera gameCamera;
     Level currentStage;
     
     public MainGame()
     {
-        Camera = new CameraData(0, 0, 800, 600);
+        gameCamera = new Camera(0, 0, 800, 600);
         currentStage = new Level();
     }
     
     @Override
     public void execute(MainLoop loop)
     {
+        //collect inputs
+        gameCamera.move(loop.GetInputEngine());
+        
+        //run object logic
+        
         //draw background
-        drawBackground(loop.GetGraphicsContext(), Camera);
+        drawBackground(loop.GetGraphicsContext(), gameCamera);
         //draw terrain
-        currentStage.render(loop.GetGraphicsContext(), Camera);
+        currentStage.render(loop.GetGraphicsContext(), gameCamera);
         //draw sprites
         //draw foreground
         //draw ui
-        
-        //call for actions
-        if(loop.GetInputEngine().keyStatus(KeyCode.UP) == true)
-        {
-            Camera.MoveCameraRel(0, 3);
-        }
-        if(loop.GetInputEngine().keyStatus(KeyCode.DOWN) == true)
-        {
-            Camera.MoveCameraRel(0, -3);
-        }
-        if(loop.GetInputEngine().keyStatus(KeyCode.LEFT) == true)
-        {
-            Camera.MoveCameraRel(3, 0);
-        }
-        if(loop.GetInputEngine().keyStatus(KeyCode.RIGHT) == true)
-        {
-            Camera.MoveCameraRel(-3, 0);
-        }
     }
     
-    private void drawBackground(GraphicsContext gc, CameraData cam)
+    private void drawBackground(GraphicsContext gc, Camera cam)
     {
         LinearGradient lg;
         lg = new LinearGradient(0,0,0,2, true, CycleMethod.NO_CYCLE, new Stop(0, Color.BLACK), new Stop(1, Color.BLUE));

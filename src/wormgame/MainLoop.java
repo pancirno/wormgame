@@ -5,11 +5,12 @@
  */
 package wormgame;
 
+import gameclasses.main.GameState;
+import gameclasses.main.MainGame;
 import java.util.*;
 import javafx.animation.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
-import gameclasses.*;
 
 /**
  *
