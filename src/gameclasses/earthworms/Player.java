@@ -16,15 +16,16 @@ import wormgame.*;
  *
  * @author pancirno
  */
-public class Player extends Actor implements IMovable
+public class Player
 {
-    @Override
+    int x;
+    int y;
+    
     public void step(GSGame gs)
     {
     
     }
     
-    @Override
     public void render(MainLoop loop, Camera c)
     {
         //Rectangle2D col = new Rectangle2D(x,y,24,24);
@@ -37,7 +38,6 @@ public class Player extends Actor implements IMovable
         loop.GetGraphicsContext().fillOval(anchx, anchy, 24, 24);
     }
 
-    @Override
     public void move(InputEngine ie)
     {
         //call for actions

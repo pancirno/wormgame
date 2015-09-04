@@ -11,19 +11,17 @@ import gameclasses.loop.*;
  *
  * @author pancirno
  */
-public class Actor implements IDynamic, IRenderable
+public class Actor
 {
 
     protected int x;
     protected int y;
     
-    @Override
     public void render(MainLoop loop, Camera c)
     {
         
     }
 
-    @Override
     public void step(GSGame gs)
     {
 

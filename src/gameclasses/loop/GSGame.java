@@ -6,7 +6,6 @@
 package gameclasses.loop;
 
 import gameclasses.game.Camera;
-import gameclasses.game.IMovable;
 import gameclasses.earthworms.Level;
 import gameclasses.earthworms.*;
 import javafx.scene.canvas.*;
@@ -26,7 +25,6 @@ public class GSGame extends GameState
     
     //current moving object
     Player p;
-    IMovable driver;
     
     public GSGame()
     {
@@ -34,7 +32,6 @@ public class GSGame extends GameState
         currentStage = new Level();
         
         p = new Player();
-        driver = p;
     }
     
     @Override
@@ -42,7 +39,7 @@ public class GSGame extends GameState
     {
         //collect inputs
         gameCamera.move(loop.GetInputEngine());
-        driver.move(loop.GetInputEngine());
+        p.move(loop.GetInputEngine());
         
         //run object logic
         

@@ -13,7 +13,7 @@ import wormgame.*;
  *
  * @author pancirno
  */
-public class Camera implements IMovable
+public class Camera
 {
     private int CameraX;
     private int CameraY;
@@ -81,7 +81,6 @@ public class Camera implements IMovable
         return y + CameraY;
     }
 
-    @Override
     public void move(InputEngine ie)
     {
         //call for actions
