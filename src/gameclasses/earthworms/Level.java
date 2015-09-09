@@ -20,7 +20,7 @@ public class Level
 {
     class PictureNode
     {
-        public static final int nodeSize = 128;
+        public static final int nodeSize = 256;
         
         WritableImage tile;
         Rectangle2D boundary;
@@ -33,11 +33,17 @@ public class Level
     {
         TerrainGen LevelGenerator = new TerrainGen(8795649);
         MainPictureData = LevelGenerator.returnImage();
+        PictureTiles = divideImage();
     }
     
     public void render(GraphicsContext gc, Camera cd)
     {
-        gc.drawImage(MainPictureData, cd.GetBoundary().getMinX(), cd.GetBoundary().getMinY());
+        //gc.drawImage(MainPictureData, cd.GetBoundary().getMinX(), cd.GetBoundary().getMinY());
+        
+        for (PictureNode i : PictureTiles)
+        {
+            gc.drawImage(i.tile, i.boundary.getMinX() + cd.GetBoundary().getMinX(), i.boundary.getMinY() + cd.GetBoundary().getMinY());
+        }
     }
     
     private List<PictureNode> divideImage()
@@ -47,12 +53,25 @@ public class Level
         int width = (int)MainPictureData.getWidth();
         int height = (int)MainPictureData.getHeight();
         
-        for(int x = 0; x * PictureNode.nodeSize < width; x++)
-            for(int y = 0; y * PictureNode.nodeSize < height; y++)
+        int nx;
+        int ny;
+        int nwidth;
+        int nheight;
+        
+        for(nx = 0; nx < width; nx += PictureNode.nodeSize)
+            for(ny = 0; ny < height; ny+= PictureNode.nodeSize)
             {
+                nwidth = PictureNode.nodeSize;
+                nheight = PictureNode.nodeSize;
+                
+                if(nx + nwidth > width) nwidth = width % PictureNode.nodeSize;
+                if(ny + nheight > height) nheight = height % PictureNode.nodeSize;
+                
                 PictureNode pn = new PictureNode();
-                pn.boundary = new Rectangle2D(x * PictureNode.nodeSize, y * PictureNode.nodeSize, PictureNode.nodeSize, PictureNode.nodeSize);
-                pn.tile = new WritableImage(MainPictureData.getPixelReader(), x * PictureNode.nodeSize, y * PictureNode.nodeSize, PictureNode.nodeSize, PictureNode.nodeSize);
+                pn.boundary = new Rectangle2D(nx, ny, nwidth, nheight);
+                pn.tile = new WritableImage(MainPictureData.getPixelReader(), nx, ny, nwidth, nheight);
+                
+                l.add(pn);
             }
         
         return l;
