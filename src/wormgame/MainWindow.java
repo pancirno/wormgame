@@ -10,6 +10,7 @@ import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
+import javafx.stage.*;
 
 /**
  *
@@ -29,6 +30,7 @@ public class MainWindow
         RenderContainer = new Group();
         SceneContainer = new Scene(RenderContainer, 800, 600, Color.BLACK);
         DrawObject = new Canvas(800,600);
+        
         RenderContainer.getChildren().add(DrawObject);
         
         try
@@ -56,5 +58,11 @@ public class MainWindow
     public Scene getSceneContainer()
     {
         return SceneContainer;
+    }
+    
+    public void setCanvasScalable(Stage s)
+    {
+        DrawObject.widthProperty().bind(s.widthProperty());
+        DrawObject.heightProperty().bind(s.heightProperty());
     }
 }
