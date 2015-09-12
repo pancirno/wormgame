@@ -45,20 +45,10 @@ public class ExplosionFactory
         GiganticI = GenerateHoleSprite(384,384);
     }
     
-    static Image GenerateHoleSprite(int w, int h)
+    static Image GenerateHoleSprite(int w, int h) //TODO generate something decent
     {
-        Canvas c = new Canvas(w, h);
+        WritableImage wi = new WritableImage(w,h);
         
-        c.getGraphicsContext2D().setFill(Color.color(0, 0, 0, 0));
-        c.getGraphicsContext2D().fill();
-        
-        c.getGraphicsContext2D().setFill(Color.color(0.6, 0.4, 0.2, 1));
-        c.getGraphicsContext2D().fillOval(0, 0, w, h);
-        
-        c.getGraphicsContext2D().setFill(Color.color(0, 0, 0, 0));
-        c.getGraphicsContext2D().fillOval(4, 4, w-4, h-4);
-        
-        WritableImage wi = c.snapshot(null, null);
         return (Image)wi;
     }
     
