@@ -89,11 +89,11 @@ public class Level
     
     public void HandleExplosion(Explosion e)
     {
-        Rectangle2D erect = new Rectangle2D(e.x, e.y, e.explosionSprite.getWidth(), e.explosionSprite.getHeight()); //benis
+        Rectangle2D erect = new Rectangle2D(e.x, e.y, e.explosionSprite.getWidth()-1, e.explosionSprite.getHeight()-1); //benis
         
         for(PictureNode i : PictureTiles)
         {
-            if(i.boundary.contains(erect))
+            if(i.boundary.intersects(erect))
             {
                 PixelWriter levelpw = i.tile.getPixelWriter();
                 PixelReader levelpr = i.tile.getPixelReader();
@@ -103,16 +103,20 @@ public class Level
                     for(int y = 0; y < i.tile.getHeight(); y++)
                     {
                         Color tc = levelpr.getColor(x, y);
-                        if (tc.isOpaque() && erect.contains(new Point2D(x + i.boundary.getMinX(), y + i.boundary.getMinY())))
+                        
+                        int relx = (int) (x + i.boundary.getMinX());
+                        int rely = (int) (y + i.boundary.getMinY());
+                        
+                        if (tc.isOpaque() && erect.contains(new Point2D(relx, rely)))
                         {
                             try
                             {
-                                Color rep = explpr.getColor((int)(x + i.boundary.getMinX() - erect.getMinX()), (int)(y + i.boundary.getMinY() - erect.getMinY()));
+                                Color rep = explpr.getColor((int)(relx - erect.getMinX()), (int)(rely - erect.getMinY()));
                                 levelpw.setColor(x, y, rep);
                             }
                             catch(IndexOutOfBoundsException ex)
                             {
-                                
+                                System.out.println("pos: " + (int)(x + i.boundary.getMinX() - erect.getMinX()) + " " + (int)(y + i.boundary.getMinY() - erect.getMinY()));
                             }
                             
                         }

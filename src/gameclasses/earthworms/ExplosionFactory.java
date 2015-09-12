@@ -48,7 +48,6 @@ public class ExplosionFactory
     static Image GenerateHoleSprite(int w, int h)
     {
         Canvas c = new Canvas(w, h);
-        WritableImage wi = new WritableImage(w,h);
         
         c.getGraphicsContext2D().setFill(Color.color(0, 0, 0, 0));
         c.getGraphicsContext2D().fill();
@@ -59,6 +58,7 @@ public class ExplosionFactory
         c.getGraphicsContext2D().setFill(Color.color(0, 0, 0, 0));
         c.getGraphicsContext2D().fillOval(4, 4, w-4, h-4);
         
+        WritableImage wi = c.snapshot(null, null);
         return (Image)wi;
     }
     

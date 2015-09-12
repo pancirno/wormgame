@@ -8,6 +8,7 @@ package gameclasses.loop;
 import gameclasses.game.Camera;
 import gameclasses.earthworms.Level;
 import gameclasses.earthworms.*;
+import java.util.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 
@@ -22,6 +23,7 @@ public class GSGame extends GameState
     Level currentStage;
     
     //game objects
+    ArrayList<Explosion> explosions;
     
     //current moving object
     Player p;
@@ -30,6 +32,8 @@ public class GSGame extends GameState
     {
         gameCamera = new Camera(0, 0, 800, 600);
         currentStage = new Level();
+        
+        explosions = new ArrayList<>();
         
         p = new Player();
     }
@@ -41,7 +45,15 @@ public class GSGame extends GameState
         gameCamera.move(loop.GetInputEngine());
         p.move(loop.GetInputEngine());
         
+        //handle explosions
+        for(Explosion exp : explosions)
+        {
+            currentStage.HandleExplosion(exp);
+        }
+        explosions.clear();
+        
         //run object logic
+        p.step(this);
         
         //draw background
         drawBackground(loop.GetGraphicsContext(), gameCamera);
@@ -61,4 +73,8 @@ public class GSGame extends GameState
         gc.fillRect(0, 0, cam.GetBoundary().getWidth(), cam.GetBoundary().getHeight());
     }
     
+    public void spawnExplosion(Explosion e)
+    {
+        explosions.add(e);
+    }
 }
