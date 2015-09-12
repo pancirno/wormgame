@@ -87,4 +87,38 @@ public class Level
         return l;
     }
     
+    public void HandleExplosion(Explosion e)
+    {
+        Rectangle2D erect = new Rectangle2D(e.x, e.y, e.explosionSprite.getWidth(), e.explosionSprite.getHeight()); //benis
+        
+        for(PictureNode i : PictureTiles)
+        {
+            if(i.boundary.contains(erect))
+            {
+                PixelWriter levelpw = i.tile.getPixelWriter();
+                PixelReader levelpr = i.tile.getPixelReader();
+                PixelReader explpr = e.explosionSprite.getPixelReader();
+                
+                for(int x = 0; x < i.tile.getWidth(); x++)
+                    for(int y = 0; y < i.tile.getHeight(); y++)
+                    {
+                        Color tc = levelpr.getColor(x, y);
+                        if (tc.isOpaque() && erect.contains(new Point2D(x + i.boundary.getMinX(), y + i.boundary.getMinY())))
+                        {
+                            try
+                            {
+                                Color rep = explpr.getColor((int)(x + i.boundary.getMinX() - erect.getMinX()), (int)(y + i.boundary.getMinY() - erect.getMinY()));
+                                levelpw.setColor(x, y, rep);
+                            }
+                            catch(IndexOutOfBoundsException ex)
+                            {
+                                
+                            }
+                            
+                        }
+                    }
+            }
+        }
+    }
+    
 }

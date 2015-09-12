@@ -61,4 +61,11 @@ public class ExplosionFactory
         
         return (Image)wi;
     }
+    
+    static public Explosion MakeMediumExplosion(int x, int y)
+    {
+        Explosion e = new Explosion(MediumI, x, y, 50, 0, 0);
+        
+        return e;
+    }
 }

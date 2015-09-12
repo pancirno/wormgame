@@ -21,9 +21,15 @@ public class Player
     int x;
     int y;
     
+    Boolean shouldExplode = false;
+    
     public void step(GSGame gs)
     {
-    
+        if(shouldExplode)
+        {
+            shouldExplode = false;
+            gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion(x,y));
+        }
     }
     
     public void render(MainLoop loop, Camera c)
@@ -56,6 +62,10 @@ public class Player
         if(ie.keyStatus(KeyCode.RIGHT) == true)
         {
             x += 5;
+        }
+        if(ie.keyStatus(KeyCode.SPACE) == true)
+        {
+            shouldExplode = true;
         }
     }
 }
