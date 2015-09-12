@@ -28,7 +28,9 @@ public class Level
     }
     
     WritableImage MainPictureData;
+    
     List<PictureNode> PictureTiles;
+    PictureNode[][] PictureNodeMatrix; //TODO optimize code for 2d array in the future for faster tile lookup
     
     public Level()
     {
