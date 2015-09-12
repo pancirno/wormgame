@@ -73,12 +73,12 @@ public class Camera
     
     public int GetCameraDeltaX(int x)
     {
-        return x + CameraX;
+        return x - CameraX;
     }
     
     public int GetCameraDeltaY(int y)
     {
-        return y + CameraY;
+        return y - CameraY;
     }
 
     public void move(InputEngine ie)
@@ -86,19 +86,19 @@ public class Camera
         //call for actions
         if(ie.keyStatus(KeyCode.W) == true)
         {
-            MoveCameraRel(0, 3);
+            MoveCameraRel(0, -3);
         }
         if(ie.keyStatus(KeyCode.S) == true)
         {
-            MoveCameraRel(0, -3);
+            MoveCameraRel(0, 3);
         }
         if(ie.keyStatus(KeyCode.A) == true)
         {
-            MoveCameraRel(3, 0);
+            MoveCameraRel(-3, 0);
         }
         if(ie.keyStatus(KeyCode.D) == true)
         {
-            MoveCameraRel(-3, 0);
+            MoveCameraRel(3, 0);
         }
     }
 }

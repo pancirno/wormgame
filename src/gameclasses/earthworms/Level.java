@@ -10,6 +10,7 @@ import java.util.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.image.*;
+import javafx.scene.paint.*;
 import landgen.*;
 
 /**
@@ -39,11 +40,18 @@ public class Level
     public void render(GraphicsContext gc, Camera cd)
     {
         //gc.drawImage(MainPictureData, cd.GetBoundary().getMinX(), cd.GetBoundary().getMinY());
+        int rendered = 0;
         
         for (PictureNode i : PictureTiles)
         {
-            gc.drawImage(i.tile, i.boundary.getMinX() + cd.GetBoundary().getMinX(), i.boundary.getMinY() + cd.GetBoundary().getMinY());
+            if (cd.IsVisible(i.boundary))
+            {
+                gc.drawImage(i.tile, i.boundary.getMinX() - cd.GetBoundary().getMinX(), i.boundary.getMinY() - cd.GetBoundary().getMinY());
+                rendered++;
+            }
         }
+        gc.setStroke(Color.WHITE);
+        gc.strokeText("drawn level tiles: " + rendered + "/" + PictureTiles.size(), 4, 16);
     }
     
     private List<PictureNode> divideImage()
