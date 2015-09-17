@@ -27,6 +27,9 @@ public class Level
         Rectangle2D boundary;
     }
     
+    int levelWidth;
+    int levelHeight;
+    
     WritableImage MainPictureData;
     
     List<PictureNode> PictureTiles;
@@ -36,6 +39,10 @@ public class Level
     {
         TerrainGen LevelGenerator = new TerrainGen(8795649);
         MainPictureData = LevelGenerator.returnImage();
+        
+        levelWidth = (int)MainPictureData.getWidth();
+        levelHeight = (int)MainPictureData.getHeight();
+        
         divideImage();
     }
     
@@ -61,8 +68,8 @@ public class Level
     {
         List<PictureNode> returnl = new ArrayList<>();
         
-        int width = (int)MainPictureData.getWidth();
-        int height = (int)MainPictureData.getHeight();
+        int width = levelWidth;
+        int height = levelHeight;
         
         int nx;//counts position of picture
         int ny;
@@ -74,8 +81,7 @@ public class Level
         
         for(nx = 0; nx < width; nx += PictureNode.nodeSize)
         {
-            List<PictureNode> horizontalmatrix = new ArrayList<>();
-            for(ny = 0; ny < height; ny+= PictureNode.nodeSize)
+            for(ny = 0; ny < height; ny += PictureNode.nodeSize)
             {
                 nwidth = PictureNode.nodeSize;
                 nheight = PictureNode.nodeSize;
@@ -84,7 +90,7 @@ public class Level
                 if(ny + nheight > height) nheight = height % PictureNode.nodeSize;
                 
                 PictureNode pn = new PictureNode();
-                pn.boundary = new Rectangle2D(nx, ny, nwidth, nheight);
+                pn.boundary = new Rectangle2D(nx, ny, nwidth-1, nheight-1);
                 pn.tile = new WritableImage(MainPictureData.getPixelReader(), nx, ny, nwidth, nheight);
                 
                 returnl.add(pn);
@@ -101,7 +107,42 @@ public class Level
     
     public boolean Collide(int x, int y) //todo - compare to matrix instead of crawling through the list
     {
-        return true;
+//        for(PictureNode i : PictureTiles)
+//        {
+//            if(i.boundary.contains(x, y))
+//            {
+//                Color cc = i.tile.getPixelReader().getColor(x - (int)i.boundary.getMinX(), y - (int)i.boundary.getMinY());
+//                if(cc.isOpaque()) return true;
+//            }
+//        }
+//        return false;
+        
+        if(x < 0 || x > levelWidth) return false;
+        if(y < 0 || y > levelHeight) return false;
+        
+        int xi = Math.floorDiv(x, PictureNode.nodeSize);
+        int yi = Math.floorDiv(y, PictureNode.nodeSize);
+                   
+        //if(xi < 0 || xi > PictureNodeMatrix.length) return false;
+        //if(yi < 0 || yi > PictureNodeMatrix[0].length) return false;
+        
+        PictureNode pn = PictureNodeMatrix[xi][yi];
+        
+        if(pn.boundary.contains(x, y))
+            {
+                try
+                {
+                    Color cc = pn.tile.getPixelReader().getColor(x - (int)pn.boundary.getMinX(), y - (int)pn.boundary.getMinY());
+                    if(cc.isOpaque()) return true;
+                }
+                catch(Exception e)
+                {
+                    System.out.println(pn.boundary.toString());
+                    System.out.println((x - (int)pn.boundary.getMinX()) + " " + (y - (int)pn.boundary.getMinY()));
+                }
+                
+            }
+        return false;
     }
     
     public void HandleExplosion(Explosion e)
@@ -122,7 +163,7 @@ public class Level
                     int relx = (int) (x + i.boundary.getMinX());
                     int rely = (int) (y + i.boundary.getMinY());
                     
-                    if (tc.isOpaque() && erect.contains(new Point2D(relx, rely)))
+                    if (tc.isOpaque() && erect.contains(relx, rely))
                     {
                         try
                         {

@@ -19,8 +19,8 @@ import javafx.scene.paint.*;
 public class GSGame extends GameState
 {
     //game data
-    Camera gameCamera;
-    Level currentStage;
+    public Camera gameCamera;
+    public Level currentStage;
     
     //game objects
     ArrayList<Explosion> explosions;

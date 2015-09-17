@@ -25,6 +25,8 @@ public class Player
     boolean moveLeft = false;
     boolean moveRight = false;
     
+    boolean overlapsLevel = false;
+    
     public void step(GSGame gs)
     {
         if(shouldExplode)
@@ -42,6 +44,13 @@ public class Player
         {
             x+=5;
         }
+        
+        if(gs.currentStage.Collide(x, y))
+        {
+            overlapsLevel = true;
+        }
+        else overlapsLevel = false;
+        
     }
     
     public void render(MainLoop loop, Camera c)
@@ -52,8 +61,12 @@ public class Player
         int anchx = c.GetCameraDeltaX(x);
         int anchy = c.GetCameraDeltaY(y);
         
-        loop.GetGraphicsContext().setFill(Color.BLANCHEDALMOND);
-        loop.GetGraphicsContext().fillOval(anchx, anchy, 24, 24);
+        
+        
+        if(overlapsLevel)loop.GetGraphicsContext().setFill(Color.BLANCHEDALMOND);
+        else loop.GetGraphicsContext().setFill(Color.RED);
+            
+        loop.GetGraphicsContext().fillOval(anchx-12, anchy-12, 24, 24);
     }
 
     public void move(InputEngine ie)
