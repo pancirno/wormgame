@@ -113,6 +113,8 @@ public class Level
                             {
                                 Color rep = explpr.getColor((int)(relx - erect.getMinX()), (int)(rely - erect.getMinY()));
                                 levelpw.setColor(x, y, rep);
+                                //notes
+                                //explosion colors should be custom so we'll know which color to write and which to ignore (corners - skip pinks, center may be blue that would be replaced with actual terrain destruction and the rest brown)
                             }
                             catch(IndexOutOfBoundsException ex)
                             {
