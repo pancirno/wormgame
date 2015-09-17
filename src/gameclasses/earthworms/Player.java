@@ -7,7 +7,6 @@ package gameclasses.earthworms;
 
 import gameclasses.game.*;
 import gameclasses.loop.*;
-import javafx.geometry.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import wormgame.*;
@@ -21,7 +20,10 @@ public class Player
     int x;
     int y;
     
-    Boolean shouldExplode = false;
+    boolean shouldExplode = false;
+    
+    boolean moveLeft = false;
+    boolean moveRight = false;
     
     public void step(GSGame gs)
     {
@@ -29,6 +31,16 @@ public class Player
         {
             shouldExplode = false;
             gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion(x,y));
+        }
+        
+        if(moveLeft)
+        {
+            x-=5;
+        }
+        
+        if(moveRight)
+        {
+            x+=5;
         }
     }
     
@@ -46,6 +58,10 @@ public class Player
 
     public void move(InputEngine ie)
     {
+        //reset status
+        moveLeft = false;
+        moveRight = false;
+        
         //call for actions
         if(ie.keyStatus(KeyCode.UP) == true)
         {
@@ -57,13 +73,13 @@ public class Player
         }
         if(ie.keyStatus(KeyCode.LEFT) == true)
         {
-            x -= 5;
+            moveLeft = true;
         }
         if(ie.keyStatus(KeyCode.RIGHT) == true)
         {
-            x += 5;
+            moveRight = true;
         }
-        if(ie.keyStatus(KeyCode.SPACE) == true)
+        if(ie.keyStatus(KeyCode.Z) == true)
         {
             shouldExplode = true;
         }
