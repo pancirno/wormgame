@@ -5,9 +5,9 @@
  */
 package gameclasses.earthworms;
 
-import javafx.scene.canvas.*;
 import javafx.scene.image.*;
-import javafx.scene.paint.*;
+import javafx.scene.canvas.*;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -38,23 +38,36 @@ public class ExplosionFactory
     {
         BulletI = GenerateHoleSprite(9,9);
         SmallI = GenerateHoleSprite(25,25);
-        MediumI = GenerateHoleSprite(50,50);
+        MediumI = GenerateHoleSprite(49,49);
         LargeI = GenerateHoleSprite(75,75);
-        ExtraLargeI = GenerateHoleSprite(128,128);
-        HugeI = GenerateHoleSprite(256,256);
-        GiganticI = GenerateHoleSprite(384,384);
+        ExtraLargeI = GenerateHoleSprite(127,127);
+        HugeI = GenerateHoleSprite(255,255);
+        GiganticI = GenerateHoleSprite(385,385);
     }
     
+    //red color means level should ignore drawing red
+    //blue color means level should remove anything that blue touches
     static Image GenerateHoleSprite(int w, int h) //TODO generate something decent
     {
-        WritableImage wi = new WritableImage(w,h);
+        Canvas c = new Canvas(w,h);
+        GraphicsContext gc = c.getGraphicsContext2D();
         
+        //gc.setEffect();
+        
+        gc.setFill(Color.RED);
+        gc.fillRect(0, 0, w, h);
+        gc.setFill(Color.BROWN);
+        gc.fillOval(0, 0, w, h);
+        gc.setFill(Color.BLUE);
+        gc.fillOval(3, 3, w-6, h-6);
+        
+        WritableImage wi = c.snapshot(null, null);
         return (Image)wi;
     }
     
     static public Explosion MakeMediumExplosion(int x, int y)
     {
-        Explosion e = new Explosion(MediumI, x, y, 50, 0, 0);
+        Explosion e = new Explosion(ExtraLargeI, x, y, 50, 0, 0);
         
         return e;
     }
