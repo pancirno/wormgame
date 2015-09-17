@@ -112,13 +112,14 @@ public class Level
                             try
                             {
                                 Color rep = explpr.getColor((int)(relx - erect.getMinX()), (int)(rely - erect.getMinY()));
-                                levelpw.setColor(x, y, rep);
-                                //notes
-                                //explosion colors should be custom so we'll know which color to write and which to ignore (corners - skip pinks, center may be blue that would be replaced with actual terrain destruction and the rest brown)
+                                if (rep.getBlue() == 1.0)
+                                    levelpw.setColor(x, y, Color.color(0, 0, 0, 0));
+                                else if (rep.getRed() != 1.0)
+                                    levelpw.setColor(x, y, rep);
                             }
                             catch(IndexOutOfBoundsException ex)
                             {
-                                System.out.println("pos: " + (int)(x + i.boundary.getMinX() - erect.getMinX()) + " " + (int)(y + i.boundary.getMinY() - erect.getMinY()));
+                                System.err.println("pos: " + (int)(x + i.boundary.getMinX() - erect.getMinX()) + " " + (int)(y + i.boundary.getMinY() - erect.getMinY()));
                             }
                             
                         }
