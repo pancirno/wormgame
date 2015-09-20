@@ -33,36 +33,45 @@ public class Player
     double vx = 0;
     double vy = 0;
     
-    public void step(GSGame gs)
+    //jump types
+    enum Jump
     {
-        if(shouldExplode)
-        {
-            shouldExplode = false;
-            gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion(x,y));
-        }
-        
+        FORWARD,
+        BACKWARD
+    }
+    boolean wantToJump = false;
+    Jump directionToJump = Jump.FORWARD;
+    
+    public void step(GSGame gs)
+    {        
         if(!freeFall) //handle by player movement
         {
+            vx = 0;//clear any velocities
+            vy = 0;
+            
             if(moveLeft)
             {
-                doWalking(gs, false, 1);
+                doWalking(gs, 1);
             }
             if(moveRight)
             {
-                doWalking(gs, true, 1);
+                doWalking(gs, 1);
+            }
+            if(wantToJump)
+            {
+                doJumping();
             }
         
             doFalling(gs);
         }
         else //free fall
         {
+            doFreeFall(gs);
             
+            wantToJump = false;//lock jumping to not jump around
         }
-        
-        
-        
     }
-    
+
     public void render(MainLoop loop, Camera c)
     {
         //Rectangle2D col = new Rectangle2D(x,y,24,24);
@@ -101,18 +110,24 @@ public class Player
             faceDirection = true;
             moveRight = true;
         }
-        if(ie.keyStatus(KeyCode.Z) == true)
+        if(ie.keyStatus(KeyCode.ENTER) == true)
         {
-            shouldExplode = true;
+            directionToJump = Jump.FORWARD;
+            wantToJump = true;
+        }
+        if(ie.keyStatus(KeyCode.BACK_SPACE) == true)
+        {
+            directionToJump = Jump.BACKWARD;
+            wantToJump = true;
         }
     }
     
-    void doWalking(GSGame gs, boolean dir, int speed)
+    void doWalking(GSGame gs, int speed)
     {
         if(isFalling) return;
         
         int sign = 1;
-        if(dir == false) sign = -1;
+        if(faceDirection == false) sign = -1;
         
         while(speed > 0)
             {
@@ -155,7 +170,7 @@ public class Player
             }
             else
             {
-                y+=1;
+                freeFall = true;
                 return;
             }
         }
@@ -178,6 +193,44 @@ public class Player
             
             isFalling = true;
             y+=1;
+        }
+    }
+    
+    void doFreeFall(GSGame gs)
+    {
+        //verticals first
+        vy = vy + 0.12;
+        
+        if(gs.currentStage.Collide(x, y + (int)vy))
+        {
+            vy = 0;
+            freeFall = false;
+            isFalling = false;
+            return;
+        }
+        else y = y + (int)vy;
+        
+        //horizontal
+        x = x + (int)vx;
+    }
+    
+    void doJumping()
+    {
+        int sign = 1;
+        if(faceDirection == false) sign = -1;
+        
+        wantToJump = false;
+        freeFall = true;
+        
+        switch(directionToJump)
+        {
+            case FORWARD:
+                vx = 2 * sign;
+                vy = -3;
+                break;
+            case BACKWARD:
+                vx = sign * -1;
+                vy = -5;
         }
     }
 }
