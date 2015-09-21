@@ -199,7 +199,7 @@ public class Player
     void doFreeFall(GSGame gs)
     {
         //verticals first
-        vy = vy + 0.12;
+        vy = vy + StaticPhysics.GRAVITY;
         
         if(gs.currentStage.Collide(x, y + (int)vy))
         {
@@ -211,6 +211,11 @@ public class Player
         else y = y + (int)vy;
         
         //horizontal
+        if(gs.currentStage.Collide(x + (int)vx, y))
+        {
+            vx = vx * StaticPhysics.TORQUE;
+        }
+        else
         x = x + (int)vx;
     }
     
