@@ -17,10 +17,26 @@ import wormgame.*;
  */
 public class Player
 {
+    //action types
+    enum Jump
+    {
+        FORWARD,
+        BACKWARD
+    }
+    
+    enum PlayerState
+    {
+        IDLE,
+        JUMPING,
+        FALLING,
+        FREEFALL,
+        RAGDOLL
+    }
+    
     int x = 500;
     int y;
     
-    boolean shouldExplode = false;
+    PlayerState currentState = PlayerState.IDLE;
     
     //user movement
     boolean moveLeft = false;
@@ -29,25 +45,21 @@ public class Player
     boolean faceDirection = false;
     
     //physics
-    boolean freeFall = false;
     double vx = 0;
     double vy = 0;
     
-    //jump types
-    enum Jump
-    {
-        FORWARD,
-        BACKWARD
-    }
+    //jump
     boolean wantToJump = false;
     Jump directionToJump = Jump.FORWARD;
     
     public void step(GSGame gs)
-    {        
-        if(!freeFall) //handle by player movement
+    {       
+        if(currentState == PlayerState.IDLE) //handle by player movement
         {
             vx = 0;//clear any velocities
             vy = 0;
+            
+            doFalling(gs);
             
             if(moveLeft)
             {
@@ -61,10 +73,8 @@ public class Player
             {
                 doJumping();
             }
-        
-            doFalling(gs);
         }
-        else //free fall
+        else if(currentState == PlayerState.FREEFALL) //free fall
         {
             doFreeFall(gs);
             
@@ -124,7 +134,7 @@ public class Player
     
     void doWalking(GSGame gs, int speed)
     {
-        if(isFalling) return;
+        if(currentState == PlayerState.FALLING) return;
         
         int sign = 1;
         if(faceDirection == false) sign = -1;
@@ -161,39 +171,23 @@ public class Player
 
     void doFalling(GSGame gs)
     {
-        if(isFalling)
+        if(gs.currentStage.Collide(x, y+1))
         {
-            if(gs.currentStage.Collide(x, y+1))
+            currentState = PlayerState.IDLE;
+            return;
+        }
+        
+        for(int fall = 2; fall <= 8; fall++)
+        {
+            if(gs.currentStage.Collide(x, y+fall))
             {
-                isFalling = false;
-                return;
-            }
-            else
-            {
-                freeFall = true;
+                y = y+fall-1;
+                currentState = PlayerState.IDLE;
                 return;
             }
         }
         
-        if(gs.currentStage.Collide(x, y+1))
-        {
-            isFalling = false;
-        }
-        else
-        {
-            for(int fall = 2; fall <= 8; fall++)
-            {
-                if(gs.currentStage.Collide(x, y+fall))
-                {
-                    y = y+fall-1;
-                    isFalling = false;
-                    return;
-                }
-            }
-            
-            isFalling = true;
-            y+=1;
-        }
+        currentState = PlayerState.FREEFALL;
     }
     
     void doFreeFall(GSGame gs)
@@ -204,8 +198,8 @@ public class Player
         if(gs.currentStage.Collide(x, y + (int)vy))
         {
             vy = 0;
-            freeFall = false;
-            isFalling = false;
+            currentState = PlayerState.IDLE;
+            wantToJump = false;
             return;
         }
         else y = y + (int)vy;
@@ -225,7 +219,7 @@ public class Player
         if(faceDirection == false) sign = -1;
         
         wantToJump = false;
-        freeFall = true;
+        currentState = PlayerState.FREEFALL;
         
         switch(directionToJump)
         {
