@@ -213,7 +213,7 @@ public class Player
         //horizontal
         if(gs.currentStage.Collide(x + (int)vx, y))
         {
-            vx = vx * StaticPhysics.TORQUE;
+            vx = vx * StaticPhysics.TORQUE * -1;
         }
         else
         x = x + (int)vx;
