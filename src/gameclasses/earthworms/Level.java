@@ -104,6 +104,10 @@ public class Level
                 
     }
     
+    public boolean Collide(double x, double y)
+    {
+        return Collide((int)x, (int)y);
+    }
     
     public boolean Collide(int x, int y) //todo - compare to matrix instead of crawling through the list
     {

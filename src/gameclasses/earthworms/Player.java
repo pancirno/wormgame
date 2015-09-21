@@ -33,8 +33,8 @@ public class Player
         RAGDOLL
     }
     
-    int x = 500;
-    int y;
+    double x = 500;
+    double y;
     
     PlayerState currentState = PlayerState.IDLE;
     
@@ -87,8 +87,8 @@ public class Player
         //Rectangle2D col = new Rectangle2D(x,y,24,24);
         //if on camera costam;
         
-        int anchx = c.GetCameraDeltaX(x);
-        int anchy = c.GetCameraDeltaY(y);
+        int anchx = c.GetCameraDeltaX((int)x);
+        int anchy = c.GetCameraDeltaY((int)y);
                 
         loop.GetGraphicsContext().setFill(Color.RED);
             
@@ -195,22 +195,22 @@ public class Player
         //verticals first
         vy = vy + StaticPhysics.GRAVITY;
         
-        if(gs.currentStage.Collide(x, y + (int)vy))
+        if(gs.currentStage.Collide(x, y + vy))
         {
             vy = 0;
             currentState = PlayerState.IDLE;
             wantToJump = false;
             return;
         }
-        else y = y + (int)vy;
+        else y = y + vy;
         
         //horizontal
-        if(gs.currentStage.Collide(x + (int)vx, y))
+        if(gs.currentStage.Collide(x + vx, y))
         {
             vx = vx * StaticPhysics.TORQUE * -1;
         }
         else
-        x = x + (int)vx;
+        x = x + vx;
     }
     
     void doJumping()
@@ -224,11 +224,11 @@ public class Player
         switch(directionToJump)
         {
             case FORWARD:
-                vx = 2 * sign;
+                vx = 2 * (double)sign;
                 vy = -3;
                 break;
             case BACKWARD:
-                vx = sign * -1;
+                vx = -0.7 * (double)sign;
                 vy = -5;
         }
     }
