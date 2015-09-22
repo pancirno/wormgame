@@ -24,6 +24,7 @@ public class GSGame extends GameState
     
     //game objects
     ArrayList<Explosion> explosions;
+    ArrayList<Projectile> projectiles;
     
     //current moving object
     Player p;
@@ -34,6 +35,7 @@ public class GSGame extends GameState
         currentStage = new Level();
         
         explosions = new ArrayList<>();
+        projectiles = new ArrayList<>();
         
         p = new Player();
     }
@@ -55,12 +57,22 @@ public class GSGame extends GameState
         //run object logic
         p.step(this);
         
+        for(Projectile pro : projectiles)
+        {
+            pro.step(this);
+        }
+        
         //draw background
         drawBackground(loop.GetGraphicsContext(), gameCamera);
         //draw terrain
         currentStage.render(loop.GetGraphicsContext(), gameCamera);
         //draw sprites
         p.render(loop, gameCamera);
+        
+        for(Projectile pro : projectiles)
+        {
+            pro.render(loop, gameCamera);
+        }
         //draw foreground
         //draw ui
     }
@@ -76,5 +88,10 @@ public class GSGame extends GameState
     public void spawnExplosion(Explosion e)
     {
         explosions.add(e);
+    }
+    
+    public void spawnProjectile(Projectile e)
+    {
+        projectiles.add(e);
     }
 }

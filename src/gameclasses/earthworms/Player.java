@@ -5,6 +5,7 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.weapons.Rocket;
 import gameclasses.game.*;
 import gameclasses.loop.*;
 import javafx.scene.input.*;
@@ -15,7 +16,7 @@ import wormgame.*;
  *
  * @author pancirno
  */
-public class Player
+public class Player extends Actor
 {
     //action types
     enum Jump
@@ -33,9 +34,6 @@ public class Player
         RAGDOLL
     }
     
-    double x = 500;
-    double y;
-    
     PlayerState currentState = PlayerState.IDLE;
     
     //user movement
@@ -44,14 +42,18 @@ public class Player
     boolean isFalling = false;
     boolean faceDirection = false;
     
-    //physics
-    double vx = 0;
-    double vy = 0;
-    
     //jump
     boolean wantToJump = false;
     Jump directionToJump = Jump.FORWARD;
     
+    boolean shoot = false;
+    
+    public Player()
+    {
+        x = 500;
+    }
+    
+    @Override
     public void step(GSGame gs)
     {       
         if(currentState == PlayerState.IDLE) //handle by player movement
@@ -73,6 +75,14 @@ public class Player
             {
                 doJumping();
             }
+            
+            if(shoot)
+            {
+                gs.spawnProjectile(new Rocket(x, y, 5, -5));
+                
+                shoot = false;
+            }
+            
         }
         else if(currentState == PlayerState.FREEFALL) //free fall
         {
@@ -82,6 +92,7 @@ public class Player
         }
     }
 
+    @Override
     public void render(MainLoop loop, Camera c)
     {
         //Rectangle2D col = new Rectangle2D(x,y,24,24);
@@ -129,6 +140,10 @@ public class Player
         {
             directionToJump = Jump.BACKWARD;
             wantToJump = true;
+        }
+        if(ie.keyStatus(KeyCode.SPACE) == true)
+        {
+            shoot = true;
         }
     }
     

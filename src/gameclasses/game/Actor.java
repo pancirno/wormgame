@@ -13,10 +13,12 @@ import gameclasses.loop.*;
  */
 public class Actor
 {
-
-    protected int x;
-    protected int y;
+    protected double x = 0;
+    protected double y = 0;
     
+    protected double vx = 0;
+    protected double vy = 0;
+
     public void render(MainLoop loop, Camera c)
     {
         
