@@ -92,6 +92,7 @@ public class GSGame extends GameState
     
     public void spawnProjectile(Projectile e)
     {
-        projectiles.add(e);
+        if(projectiles.size() < 256)
+            projectiles.add(e);
     }
 }
