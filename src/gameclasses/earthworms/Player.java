@@ -46,6 +46,9 @@ public class Player extends Actor
     boolean wantToJump = false;
     Jump directionToJump = Jump.FORWARD;
     
+    //shooting
+    double aimangle = 0;
+    double aimpower = 0; //max 15
     boolean shoot = false;
     
     public Player()
@@ -78,8 +81,8 @@ public class Player extends Actor
             
             if(shoot)
             {
-                gs.spawnProjectile(new Rocket(x, y, 5, -5));
-                
+                gs.spawnProjectile(new Rocket(x, y, Math.cos(aimangle) * aimpower, Math.sin(aimangle) * aimpower));
+                aimpower = 0;
                 shoot = false;
             }
             
@@ -102,8 +105,21 @@ public class Player extends Actor
         int anchy = c.GetCameraDeltaY((int)y);
                 
         loop.GetGraphicsContext().setFill(Color.RED);
-            
         loop.GetGraphicsContext().fillOval(anchx-12, anchy-12, 24, 24);
+        
+        //celownik
+        int aimx = anchx + (int)(Math.cos(aimangle) * 25);
+        int aimy = anchy + (int)(Math.sin(aimangle) * 25);
+        
+        loop.GetGraphicsContext().setFill(Color.BLUE);
+        loop.GetGraphicsContext().fillOval(aimx-3, aimy-3, 6, 6);
+        
+        //strzal
+        if(aimpower > 0)
+        {
+            loop.GetGraphicsContext().setStroke(Color.WHITE);
+            loop.GetGraphicsContext().strokeLine(anchx, anchy, anchx + Math.cos(aimangle) * (100 * aimpower/15), anchy + Math.sin(aimangle) * (100 * aimpower/15));
+        }
     }
 
     public void move(InputEngine ie)
@@ -115,11 +131,11 @@ public class Player extends Actor
         //call for actions
         if(ie.keyStatus(KeyCode.UP) == true)
         {
-            y -= 5;
+            aimangle -= 0.1;
         }
         if(ie.keyStatus(KeyCode.DOWN) == true)
         {
-            y += 5;
+            aimangle += 0.1;
         }
         if(ie.keyStatus(KeyCode.LEFT) == true)
         {
@@ -141,7 +157,13 @@ public class Player extends Actor
             directionToJump = Jump.BACKWARD;
             wantToJump = true;
         }
+        
         if(ie.keyStatus(KeyCode.SPACE) == true)
+        {
+            aimpower += 0.20;
+            if(aimpower > 15) shoot = true;
+        }
+        if(ie.keyStatus(KeyCode.SPACE) == false && aimpower > 0)
         {
             shoot = true;
         }
