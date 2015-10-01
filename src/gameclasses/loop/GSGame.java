@@ -26,6 +26,9 @@ public class GSGame extends GameState
     ArrayList<Explosion> explosions;
     ArrayList<Projectile> projectiles;
     
+    //trashbins
+    ArrayList<Projectile> trashProj;
+    
     //current moving object
     Player p;
     
@@ -36,6 +39,8 @@ public class GSGame extends GameState
         
         explosions = new ArrayList<>();
         projectiles = new ArrayList<>();
+        
+        trashProj = new ArrayList<>();
         
         p = new Player();
     }
@@ -62,6 +67,13 @@ public class GSGame extends GameState
             pro.step(this);
         }
         
+        //clean up objects
+        for(Projectile tpro : trashProj)
+        {
+            projectiles.remove(tpro);
+        }
+        trashProj.clear();
+        
         //draw background
         drawBackground(loop.GetGraphicsContext(), gameCamera);
         //draw terrain
@@ -75,6 +87,7 @@ public class GSGame extends GameState
         }
         //draw foreground
         //draw ui
+        
     }
     
     private void drawBackground(GraphicsContext gc, Camera cam)
@@ -94,5 +107,11 @@ public class GSGame extends GameState
     {
         if(projectiles.size() < 256)
             projectiles.add(e);
+    }
+    
+    public void removeObject(Projectile e)
+    {
+        if(projectiles.contains(e))
+        trashProj.add(e);
     }
 }

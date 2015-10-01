@@ -33,6 +33,11 @@ public class Projectile extends Actor {
     public void step(GSGame gs)
     {
         doPhysics(gs);
+        if(gs.currentStage.Collide(x, y))
+        {
+            gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion((int)x, (int)y));
+            gs.removeObject(this);
+        }
     }
     
     @Override
@@ -45,8 +50,32 @@ public class Projectile extends Actor {
     {
         vy = vy + StaticPhysics.GRAVITY;
         //vx = vx; //add wind
+        snapToLevel(gs, vx, vy);
+    }
+    
+    void snapToLevel(GSGame gs, double tvx, double tvy)
+    {
+        double destx = x + tvx;
+        double desty = y + tvy;
         
-        x += vx;
-        y += vy;
+        double checkx, checky;
+        
+        int steps = Math.abs((int)tvx);
+        
+        for(int i = 1; i <= steps; i++)
+        {
+            checkx = x + (tvx * (i/steps));
+            checky = y + (tvy * (i/steps));
+            
+            if(gs.currentStage.Collide(checkx, checky))
+            {
+                x = checkx;
+                y = checky;
+                return;
+            }
+        }
+        
+        x = destx;
+        y = desty;
     }
 }

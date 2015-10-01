@@ -27,22 +27,18 @@ public class ExplosionFactory
     }
     
     static final Image BulletI;
-    static final Image SmallI;
     static final Image MediumI;
     static final Image LargeI;
     static final Image ExtraLargeI;
     static final Image HugeI;
-    static final Image GiganticI;
     
     static
     {
         BulletI = GenerateHoleSprite(9,9);
-        SmallI = GenerateHoleSprite(25,25);
         MediumI = GenerateHoleSprite(49,49);
-        LargeI = GenerateHoleSprite(75,75);
-        ExtraLargeI = GenerateHoleSprite(127,127);
+        LargeI = GenerateHoleSprite(99,99);
+        ExtraLargeI = GenerateHoleSprite(149,149);
         HugeI = GenerateHoleSprite(255,255);
-        GiganticI = GenerateHoleSprite(385,385);
     }
     
     //red color means level should ignore drawing red
@@ -67,7 +63,7 @@ public class ExplosionFactory
     
     static public Explosion MakeMediumExplosion(int x, int y)
     {
-        Explosion e = new Explosion(MediumI, x, y, 50, 0, 0);
+        Explosion e = new Explosion(LargeI, x, y, 50, 0, 0);
         
         return e;
     }
