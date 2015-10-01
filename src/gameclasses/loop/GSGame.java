@@ -92,9 +92,9 @@ public class GSGame extends GameState
     
     private void drawBackground(GraphicsContext gc, Camera cam)
     {
-        LinearGradient lg;
-        lg = new LinearGradient(0,0,0,2, true, CycleMethod.NO_CYCLE, new Stop(0, Color.BLACK), new Stop(1, Color.BLUE));
-        gc.setFill(lg);
+        //LinearGradient lg;
+        //lg = new LinearGradient(0,0,0,2, true, CycleMethod.NO_CYCLE, new Stop(0, Color.BLACK), new Stop(1, Color.BLUE));
+        gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, cam.GetBoundary().getWidth(), cam.GetBoundary().getHeight());
     }
     

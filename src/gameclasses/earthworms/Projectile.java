@@ -60,7 +60,7 @@ public class Projectile extends Actor {
         
         double checkx, checky;
         
-        int steps = Math.abs((int)tvx);
+        int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty))*1.33);
         
         for(int i = 1; i <= steps; i++)
         {
