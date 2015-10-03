@@ -64,8 +64,8 @@ public class Projectile extends Actor {
                 }
                 else
                 {
-                    checkx = x + (tvx * ((double)(i-1)/(double)steps));
-                    checky = y + (tvy * ((double)(i-1)/(double)steps));
+                    checkx = x + (tvx * ((double)(i)/(double)steps));
+                    checky = y + (tvy * ((double)(i)/(double)steps));
                 }
                 
                 x = checkx;

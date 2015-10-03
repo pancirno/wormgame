@@ -40,14 +40,23 @@ public class Grenade extends Projectile {
     {
         snapToLevel(gs, vx, vy, true);
         
-        if(gs.currentStage.Collide(x+1, y) || gs.currentStage.Collide(x-1, y))
+        if(gs.currentStage.Collide(x+(-1 * Math.signum(vx)), y))
         {
-            vx = vx * StaticPhysics.TORQUE * -0.5;
+            vx = vx * StaticPhysics.TORQUE * 0.95;
         }
-        
-        if(gs.currentStage.Collide(x, y+1) || gs.currentStage.Collide(x, y-1))
+        else if(gs.currentStage.Collide(x+(1 * Math.signum(vx)), y))
+        {
+            vx = vx * StaticPhysics.TORQUE * -0.95;
+        }
+            
+        //vertical bounce
+        if(gs.currentStage.Collide(x, y+1))
         {
             vy = vy * StaticPhysics.TORQUE * -0.5;
+        }
+        else if(gs.currentStage.Collide(x, y-1))
+        {
+            vy = Math.abs(vy + StaticPhysics.GRAVITY);
         }
         else
         {
