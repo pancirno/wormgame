@@ -62,10 +62,10 @@ public class Projectile extends Actor {
                 if(!snaptype)
                 {
                 }
-                else
+                else if (i > 1)
                 {
-                    checkx = x + (tvx * ((double)(i)/(double)steps));
-                    checky = y + (tvy * ((double)(i)/(double)steps));
+                    checkx = x + (tvx * ((double)(i-1)/(double)steps));
+                    checky = y + (tvy * ((double)(i-1)/(double)steps));
                 }
                 
                 x = checkx;

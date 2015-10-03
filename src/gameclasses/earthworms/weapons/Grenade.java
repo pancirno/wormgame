@@ -42,11 +42,11 @@ public class Grenade extends Projectile {
         
         if(gs.currentStage.Collide(x+(-1 * Math.signum(vx)), y))
         {
-            vx = vx * StaticPhysics.TORQUE * 0.95;
+            vx = vx * StaticPhysics.TORQUE * 0.90;
         }
         else if(gs.currentStage.Collide(x+(1 * Math.signum(vx)), y))
         {
-            vx = vx * StaticPhysics.TORQUE * -0.95;
+            vx = vx * StaticPhysics.TORQUE * -0.90;
         }
             
         //vertical bounce
