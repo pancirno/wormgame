@@ -64,13 +64,16 @@ public class Projectile extends Actor {
         
         for(int i = 1; i <= steps; i++)
         {
-            checkx = x + (tvx * (i/steps));
-            checky = y + (tvy * (i/steps));
+            checkx = x + (tvx * ((double)i/(double)steps));
+            checky = y + (tvy * ((double)i/(double)steps));
             
             if(gs.currentStage.Collide(checkx, checky))
             {
                 x = checkx;
                 y = checky;
+                
+                //System.out.println("snapped to the ground. step:" + i + "/" + steps);
+                
                 return;
             }
         }
