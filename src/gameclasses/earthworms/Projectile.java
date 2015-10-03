@@ -32,12 +32,7 @@ public class Projectile extends Actor {
     @Override
     public void step(GSGame gs)
     {
-        doPhysics(gs);
-        if(gs.currentStage.Collide(x, y))
-        {
-            gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion((int)x, (int)y));
-            gs.removeObject(this);
-        }
+        
     }
     
     @Override
@@ -46,21 +41,16 @@ public class Projectile extends Actor {
         
     }
     
-    void doPhysics(GSGame gs)
-    {
-        vy = vy + StaticPhysics.GRAVITY;
-        //vx = vx; //add wind
-        snapToLevel(gs, vx, vy);
-    }
-    
-    void snapToLevel(GSGame gs, double tvx, double tvy)
+    //snaptype : true - scan back to when it didn't collide
+    //false - force collision
+    protected void snapToLevel(GSGame gs, double tvx, double tvy, boolean snaptype)
     {
         double destx = x + tvx;
         double desty = y + tvy;
         
         double checkx, checky;
         
-        int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty))*1.33);
+        int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty)));
         
         for(int i = 1; i <= steps; i++)
         {
@@ -69,10 +59,17 @@ public class Projectile extends Actor {
             
             if(gs.currentStage.Collide(checkx, checky))
             {
+                if(!snaptype)
+                {
+                }
+                else
+                {
+                    checkx = x + (tvx * ((double)(i-1)/(double)steps));
+                    checky = y + (tvy * ((double)(i-1)/(double)steps));
+                }
+                
                 x = checkx;
                 y = checky;
-                
-                //System.out.println("snapped to the ground. step:" + i + "/" + steps);
                 
                 return;
             }

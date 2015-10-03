@@ -11,6 +11,6 @@ package gameclasses.earthworms;
  */
 public class StaticPhysics {
     
-    static final double GRAVITY = 0.12;
-    static final double TORQUE = 0.75;
+    static public final double GRAVITY = 0.12;
+    static public final double TORQUE = 0.75;
 }

@@ -5,7 +5,7 @@
  */
 package gameclasses.earthworms;
 
-import gameclasses.earthworms.weapons.Rocket;
+import gameclasses.earthworms.weapons.*;
 import gameclasses.game.*;
 import gameclasses.loop.*;
 import javafx.scene.input.*;
@@ -81,7 +81,7 @@ public class Player extends Actor
             
             if(shoot)
             {
-                gs.spawnProjectile(new Rocket(x, y, Math.cos(aimangle) * aimpower, Math.sin(aimangle) * aimpower));
+                gs.spawnProjectile(new Grenade(x, y, Math.cos(aimangle) * aimpower, Math.sin(aimangle) * aimpower, 180));
                 aimpower = 0;
                 shoot = false;
             }
