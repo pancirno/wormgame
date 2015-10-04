@@ -9,6 +9,7 @@ import gameclasses.game.Camera;
 import gameclasses.earthworms.Level;
 import gameclasses.earthworms.*;
 import java.util.*;
+import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 
@@ -56,6 +57,8 @@ public class GSGame extends GameState
         for(Explosion exp : explosions)
         {
             currentStage.HandleExplosion(exp);
+            
+            PushProjectiles(exp);
         }
         explosions.clear();
         
@@ -88,6 +91,24 @@ public class GSGame extends GameState
         //draw foreground
         //draw ui
         
+    }
+
+    private void PushProjectiles(Explosion exp)
+    {
+        Point2D exppoint = new Point2D(exp.x, exp.y);
+        //push all nearby projectiles
+        for(Projectile p : projectiles)
+        {
+            if(exppoint.distance(p.getX(), p.getY()) <= exp.radius)
+            {
+                double xDiff = p.getX() - exppoint.getX();
+                double yDiff = p.getY() - exppoint.getY();
+                
+                double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
+               
+                p.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
+            }
+        }
     }
     
     private void drawBackground(GraphicsContext gc, Camera cam)

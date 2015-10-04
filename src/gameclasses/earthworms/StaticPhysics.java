@@ -5,6 +5,8 @@
  */
 package gameclasses.earthworms;
 
+import javafx.geometry.*;
+
 /**
  *
  * @author lukasz
@@ -13,4 +15,5 @@ public class StaticPhysics {
     
     static public final double GRAVITY = 0.12;
     static public final double TORQUE = 0.75;
+    
 }

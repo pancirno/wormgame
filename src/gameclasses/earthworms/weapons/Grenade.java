@@ -31,7 +31,6 @@ public class Grenade extends Projectile {
         int anchy = c.GetCameraDeltaY((int)y);
                 
         loop.GetGraphicsContext().setFill(Color.GREEN);
-            
         loop.GetGraphicsContext().fillOval(anchx-6, anchy-6, 12, 12);
     }
     
@@ -40,28 +39,7 @@ public class Grenade extends Projectile {
     {
         snapToLevel(gs, vx, vy, true);
         
-        if(gs.currentStage.Collide(x+(-1 * Math.signum(vx)), y))
-        {
-            vx = vx * StaticPhysics.TORQUE * 0.90;
-        }
-        else if(gs.currentStage.Collide(x+(1 * Math.signum(vx)), y))
-        {
-            vx = vx * StaticPhysics.TORQUE * -0.90;
-        }
-            
-        //vertical bounce
-        if(gs.currentStage.Collide(x, y+1))
-        {
-            vy = vy * StaticPhysics.TORQUE * -0.5;
-        }
-        else if(gs.currentStage.Collide(x, y-1))
-        {
-            vy = Math.abs(vy + StaticPhysics.GRAVITY);
-        }
-        else
-        {
-            vy = vy + StaticPhysics.GRAVITY;
-        }
+        grenadeBounce(gs);
 
         fuse--;
         

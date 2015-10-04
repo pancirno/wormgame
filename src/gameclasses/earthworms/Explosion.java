@@ -18,16 +18,25 @@ public class Explosion
     public final int x;
     public final int y;
     
+    public final int drawx;
+    public final int drawy;
+    
     public final int damage;
     public final double power;
     public final double powerBias;
     
+    public final double radius;
+    
     public Explosion(Image es, int xi, int yi, int dmg, double pow, double bias)
     {
         explosionSprite = es;
+        radius = es.getWidth();
         
-        x = xi - (int)es.getWidth()/2;
-        y = yi - (int)es.getHeight()/2;
+        x = xi;
+        y = yi;
+        
+        drawx = xi - (int)es.getWidth()/2;
+        drawy = yi - (int)es.getHeight()/2;
         
         damage = dmg;
         power = pow;

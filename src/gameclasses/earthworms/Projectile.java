@@ -41,6 +41,12 @@ public class Projectile extends Actor {
         
     }
     
+    public void push(double ivx, double ivy)
+    {
+        vx += ivx;
+        vy += ivy;
+    }
+    
     //snaptype : true - scan back to when it didn't collide
     //false - force collision
     protected void snapToLevel(GSGame gs, double tvx, double tvy, boolean snaptype)
@@ -77,5 +83,31 @@ public class Projectile extends Actor {
         
         x = destx;
         y = desty;
+    }
+    
+    protected void grenadeBounce(GSGame gs)
+    {
+        if(gs.currentStage.Collide(x+(-1 * Math.signum(vx)), y))
+        {
+            vx = vx * StaticPhysics.TORQUE * 0.90;
+        }
+        else if(gs.currentStage.Collide(x+(1 * Math.signum(vx)), y))
+        {
+            vx = vx * StaticPhysics.TORQUE * -0.90;
+        }
+            
+        //vertical bounce
+        if(gs.currentStage.Collide(x, y+1))
+        {
+            vy = vy * StaticPhysics.TORQUE * -0.5;
+        }
+        else if(gs.currentStage.Collide(x, y-1))
+        {
+            vy = Math.abs(vy + StaticPhysics.GRAVITY);
+        }
+        else
+        {
+            vy = vy + StaticPhysics.GRAVITY;
+        }
     }
 }

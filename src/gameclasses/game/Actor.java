@@ -29,4 +29,13 @@ public class Actor
 
     }
     
+    public double getX()
+    {
+        return x;
+    }
+    
+    public double getY()
+    {
+        return y;
+    }
 }

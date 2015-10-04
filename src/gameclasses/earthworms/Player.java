@@ -81,7 +81,7 @@ public class Player extends Actor
             
             if(shoot)
             {
-                gs.spawnProjectile(new Grenade(x + Math.cos(aimangle) * 5, y + Math.sin(aimangle) * 5, Math.cos(aimangle) * aimpower, Math.sin(aimangle) * aimpower, 1800));
+                gs.spawnProjectile(new Grenade(x + Math.cos(aimangle) * 5, y + Math.sin(aimangle) * 5, Math.cos(aimangle) * aimpower, Math.sin(aimangle) * aimpower, 180));
                 aimpower = 0;
                 shoot = false;
             }

@@ -63,7 +63,7 @@ public class ExplosionFactory
     
     static public Explosion MakeMediumExplosion(int x, int y)
     {
-        Explosion e = new Explosion(LargeI, x, y, 50, 0, 0);
+        Explosion e = new Explosion(LargeI, x, y, 50, 10, 0);
         
         return e;
     }
