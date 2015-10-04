@@ -23,11 +23,11 @@ public class Explosion
     
     public final int damage;
     public final double power;
-    public final double powerBias;
+    public final int bias;
     
     public final double radius;
     
-    public Explosion(Image es, int xi, int yi, int dmg, double pow, double bias)
+    public Explosion(Image es, int xi, int yi, int dmg, double pow, int ibias)
     {
         explosionSprite = es;
         radius = es.getWidth();
@@ -40,6 +40,6 @@ public class Explosion
         
         damage = dmg;
         power = pow;
-        powerBias = bias;
+        bias = ibias;
     }
 }

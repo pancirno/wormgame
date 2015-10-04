@@ -102,7 +102,7 @@ public class GSGame extends GameState
             if(exppoint.distance(p.getX(), p.getY()) <= exp.radius)
             {
                 double xDiff = p.getX() - exppoint.getX();
-                double yDiff = p.getY() - exppoint.getY();
+                double yDiff = p.getY() - exppoint.getY() + exp.bias;
                 
                 double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
                
