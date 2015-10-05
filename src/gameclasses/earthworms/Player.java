@@ -104,7 +104,7 @@ public class Player extends Actor
                 switch(equippedGun)
                 {
                     case ROCKET:
-                        gs.spawnProjectile(new Rocket(horizaim, vertaim, horizthr, vertthr));
+                        gs.spawnProjectile(new MIRV(horizaim, vertaim, horizthr, vertthr));
                         break;
                     case GRENADE:
                         gs.spawnProjectile(new Grenade(horizaim, vertaim, horizthr, vertthr, 180));

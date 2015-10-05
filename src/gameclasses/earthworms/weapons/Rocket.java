@@ -22,6 +22,7 @@ public class Rocket extends Projectile
     public Rocket(double ix, double iy, double ivx, double ivy) 
     {
         super(ix, iy, ivx, ivy);
+        weight = 10;
     }
     
     @Override

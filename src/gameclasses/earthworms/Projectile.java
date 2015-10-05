@@ -16,6 +16,8 @@ import gameclasses.loop.MainLoop;
  */
 public class Projectile extends Actor {
         
+    protected double weight = 1;
+    
     public Projectile(double ix, double iy, double ivx, double ivy)
     {
         x = ix;
@@ -43,8 +45,9 @@ public class Projectile extends Actor {
     
     public void push(double ivx, double ivy)
     {
-        vx += ivx;
-        vy += ivy;
+        if (weight == 0) return;
+        vx += ivx/weight;
+        vy += ivy/weight;
     }
     
     //snaptype : true - scan back to when it didn't collide

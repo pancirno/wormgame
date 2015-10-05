@@ -20,6 +20,7 @@ public class Bomb extends Grenade
 
     public Bomb(double ix, double iy, double ivx, double ivy, int ifuse) {
         super(ix, iy, ivx, ivy, 300);
+        weight = 2;
     }
     
     @Override

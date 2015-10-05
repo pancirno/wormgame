@@ -37,7 +37,7 @@ public class Level
     
     public Level()
     {
-        TerrainGen LevelGenerator = new TerrainGen(8795649);
+        TerrainGen LevelGenerator = new TerrainGen(889);
         MainPictureData = LevelGenerator.returnImage();
         
         levelWidth = (int)MainPictureData.getWidth();

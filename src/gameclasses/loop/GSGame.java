@@ -30,6 +30,9 @@ public class GSGame extends GameState
     //trashbins
     ArrayList<Projectile> trashProj;
     
+    //spawners
+    ArrayList<Projectile> spawnProj;
+    
     //current moving object
     Player p;
     
@@ -42,6 +45,7 @@ public class GSGame extends GameState
         projectiles = new ArrayList<>();
         
         trashProj = new ArrayList<>();
+        spawnProj = new ArrayList<>();
         
         p = new Player();
     }
@@ -52,6 +56,10 @@ public class GSGame extends GameState
         //collect inputs
         gameCamera.move(loop.GetInputEngine());
         p.move(loop.GetInputEngine());
+        
+        //create new objects
+        projectiles.addAll(spawnProj);
+        spawnProj.clear();
         
         //handle explosions
         for(Explosion exp : explosions)
@@ -115,9 +123,9 @@ public class GSGame extends GameState
     
     private void drawBackground(GraphicsContext gc, Camera cam)
     {
-        //LinearGradient lg;
-        //lg = new LinearGradient(0,0,0,2, true, CycleMethod.NO_CYCLE, new Stop(0, Color.BLACK), new Stop(1, Color.BLUE));
-        gc.setFill(Color.BLACK);
+        LinearGradient lg;
+        lg = new LinearGradient(0,0,0,2, true, CycleMethod.NO_CYCLE, new Stop(0, Color.BLACK), new Stop(1, Color.BLUE));
+        gc.setFill(lg);
         gc.fillRect(0, 0, cam.GetBoundary().getWidth(), cam.GetBoundary().getHeight());
     }
     
@@ -129,12 +137,12 @@ public class GSGame extends GameState
     public void spawnProjectile(Projectile e)
     {
         if(projectiles.size() < 256)
-            projectiles.add(e);
+            spawnProj.add(e);
     }
     
     public void removeObject(Projectile e)
     {
         if(projectiles.contains(e))
-        trashProj.add(e);
+            trashProj.add(e);
     }
 }
