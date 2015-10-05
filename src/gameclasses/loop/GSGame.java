@@ -99,13 +99,15 @@ public class GSGame extends GameState
         //push all nearby projectiles
         for(Projectile p : projectiles)
         {
-            if(exppoint.distance(p.getX(), p.getY()) <= exp.radius)
+            double dist = exppoint.distance(p.getX(), p.getY());
+            if(dist <= exp.radius)
             {
                 double xDiff = p.getX() - exppoint.getX();
                 double yDiff = p.getY() - exppoint.getY() + exp.bias;
                 
                 double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
-               
+                double epower = exp.power * (1 - (dist/exp.radius));
+                
                 p.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
             }
         }

@@ -85,21 +85,21 @@ public class Projectile extends Actor {
         y = desty;
     }
     
-    protected void grenadeBounce(GSGame gs)
+    protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
     {
         if(gs.currentStage.Collide(x+(-1 * Math.signum(vx)), y))
         {
-            vx = vx * StaticPhysics.TORQUE * 0.90;
+            vx = vx * StaticPhysics.TORQUE * rollred; //0.9
         }
         else if(gs.currentStage.Collide(x+(1 * Math.signum(vx)), y))
         {
-            vx = vx * StaticPhysics.TORQUE * -0.90;
+            vx = vx * StaticPhysics.TORQUE * -1 * impactred;
         }
             
         //vertical bounce
         if(gs.currentStage.Collide(x, y+1))
         {
-            vy = vy * StaticPhysics.TORQUE * -0.5;
+            vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
         }
         else if(gs.currentStage.Collide(x, y-1))
         {
