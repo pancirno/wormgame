@@ -67,4 +67,11 @@ public class ExplosionFactory
         
         return e;
     }
+    
+    static public Explosion MakeBigExplosion(int x, int y)
+    {
+        Explosion e = new Explosion(ExtraLargeI, x, y, 75, 12, -25);
+        
+        return e;
+    }
 }

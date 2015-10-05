@@ -34,6 +34,20 @@ public class Player extends Actor
         RAGDOLL
     }
     
+    enum AvailableWeapons
+    {
+        ROCKET,
+        GRENADE,
+        BOMB,
+        MINIGUN,
+        SHOTGUN,
+        RIFLE,
+        BLOWTORCH,
+        ROPE,
+        BALLOON,
+        HIBARI
+    }
+    
     PlayerState currentState = PlayerState.IDLE;
     
     //user movement
@@ -47,6 +61,7 @@ public class Player extends Actor
     Jump directionToJump = Jump.FORWARD;
     
     //shooting
+    AvailableWeapons equippedGun = AvailableWeapons.ROCKET;
     double aimangle = 0;
     double aimpower = 0; //max 15
     boolean shoot = false;
@@ -81,7 +96,24 @@ public class Player extends Actor
             
             if(shoot)
             {
-                gs.spawnProjectile(new Grenade(x + Math.cos(aimangle) * 5, y + Math.sin(aimangle) * 5, Math.cos(aimangle) * aimpower, Math.sin(aimangle) * aimpower, 180));
+                double horizaim = x + Math.cos(aimangle) * 5;
+                double vertaim = y + Math.sin(aimangle) * 5;
+                double horizthr = Math.cos(aimangle) * aimpower;
+                double vertthr = Math.sin(aimangle) * aimpower;
+                
+                switch(equippedGun)
+                {
+                    case ROCKET:
+                        gs.spawnProjectile(new Rocket(horizaim, vertaim, horizthr, vertthr));
+                        break;
+                    case GRENADE:
+                        gs.spawnProjectile(new Grenade(horizaim, vertaim, horizthr, vertthr, 180));
+                        break;
+                    case BOMB:
+                        gs.spawnProjectile(new Bomb(horizaim, vertaim, 1.2 * Math.signum(horizthr), -1.5, -1));
+                        break;
+                }
+                
                 aimpower = 0;
                 shoot = false;
             }
@@ -157,7 +189,6 @@ public class Player extends Actor
             directionToJump = Jump.BACKWARD;
             wantToJump = true;
         }
-        
         if(ie.keyStatus(KeyCode.SPACE) == true)
         {
             aimpower += 0.20;
@@ -166,6 +197,19 @@ public class Player extends Actor
         if(ie.keyStatus(KeyCode.SPACE) == false && aimpower > 0)
         {
             shoot = true;
+        }
+        
+        if(ie.keyStatus(KeyCode.F1) == true)
+        {
+            equippedGun = AvailableWeapons.ROCKET;
+        }
+        if(ie.keyStatus(KeyCode.F2) == true)
+        {
+            equippedGun = AvailableWeapons.GRENADE;
+        }
+        if(ie.keyStatus(KeyCode.F3) == true)
+        {
+            equippedGun = AvailableWeapons.BOMB;
         }
     }
     
