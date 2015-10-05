@@ -17,6 +17,7 @@ import gameclasses.loop.MainLoop;
 public class Projectile extends Actor {
         
     protected double weight = 1;
+    protected int fuse = 10000;
     
     public Projectile(double ix, double iy, double ivx, double ivy)
     {

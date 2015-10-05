@@ -37,7 +37,7 @@ public class MIRV extends Rocket
     {
         super.step(gs);
         
-        if(vy > 3.5)
+        if(vy > 3.5 || fuse <= 0)
         {
             gs.spawnProjectile(new Rocket(x,y,vx*1.5,vy*1.1));
             gs.spawnProjectile(new Rocket(x,y,vx,vy*1.1));

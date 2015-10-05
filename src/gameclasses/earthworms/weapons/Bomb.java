@@ -36,12 +36,12 @@ public class Bomb extends Grenade
     @Override
     public void step(GSGame gs)
     {
+        fuse--;
+        
         snapToLevel(gs, vx, vy, true);
         
         grenadeBounce(gs, 0.7, 1.1, 0.25);
 
-        fuse--;
-        
         if(fuse <= 0)
         {
             gs.spawnExplosion(ExplosionFactory.MakeBigExplosion((int)x, (int)y));

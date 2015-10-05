@@ -39,10 +39,12 @@ public class Rocket extends Projectile
     @Override
     public void step(GSGame gs)
     {
+        fuse--;
+        
         vy = vy + StaticPhysics.GRAVITY;
         snapToLevel(gs, vx, vy, false);
         
-        if(gs.currentStage.Collide(x, y))
+        if(gs.currentStage.Collide(x, y) || fuse <= 0)
         {
             gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion((int)x, (int)y));
             gs.removeObject(this);

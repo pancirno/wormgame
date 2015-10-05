@@ -16,8 +16,6 @@ import javafx.scene.paint.Color;
  */
 public class Grenade extends Projectile {
     
-    int fuse = 180;
-    
     public Grenade(double ix, double iy, double ivx, double ivy, int ifuse) 
     {
         super(ix, iy, ivx, ivy);
@@ -37,11 +35,11 @@ public class Grenade extends Projectile {
     @Override
     public void step(GSGame gs)
     {
+        fuse--;
+        
         snapToLevel(gs, vx, vy, true);
         
         grenadeBounce(gs, 0.9, 0.9, 0.5);
-
-        fuse--;
         
         if(fuse <= 0)
         {
