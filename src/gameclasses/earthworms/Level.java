@@ -33,7 +33,9 @@ public class Level
     WritableImage MainPictureData;
     
     List<PictureNode> PictureTiles;
-    PictureNode[][] PictureNodeMatrix; //TODO optimize code for 2d array in the future for faster tile lookup
+    PictureNode[][] PictureNodeMatrix;
+    
+    public final Rectangle2D GameArea;
     
     public Level()
     {
@@ -42,6 +44,8 @@ public class Level
         
         levelWidth = (int)MainPictureData.getWidth();
         levelHeight = (int)MainPictureData.getHeight();
+        
+        GameArea = new Rectangle2D(-1000,-1000, levelWidth + 2000, levelHeight + 1500);
         
         divideImage();
     }
@@ -104,32 +108,24 @@ public class Level
                 
     }
     
+    public boolean IsOutsideOfLevel(double x, double y)
+    {
+        return !GameArea.contains(x, y);
+    }
+    
     public boolean Collide(double x, double y)
     {
         return Collide((int)x, (int)y);
     }
     
-    public boolean Collide(int x, int y) //todo - compare to matrix instead of crawling through the list
-    {
-//        for(PictureNode i : PictureTiles)
-//        {
-//            if(i.boundary.contains(x, y))
-//            {
-//                Color cc = i.tile.getPixelReader().getColor(x - (int)i.boundary.getMinX(), y - (int)i.boundary.getMinY());
-//                if(cc.isOpaque()) return true;
-//            }
-//        }
-//        return false;
-        
+    public boolean Collide(int x, int y)
+    {        
         if(x < 0 || x > levelWidth) return false;
         if(y < 0 || y > levelHeight) return false;
         
         int xi = Math.floorDiv(x, PictureNode.nodeSize);
         int yi = Math.floorDiv(y, PictureNode.nodeSize);
-                   
-        //if(xi < 0 || xi > PictureNodeMatrix.length) return false;
-        //if(yi < 0 || yi > PictureNodeMatrix[0].length) return false;
-        
+                           
         PictureNode pn = PictureNodeMatrix[xi][yi];
         
         if(pn.boundary.contains(x, y))

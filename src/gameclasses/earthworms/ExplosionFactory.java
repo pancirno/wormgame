@@ -61,16 +61,23 @@ public class ExplosionFactory
         return (Image)wi;
     }
     
+    static public Explosion MakeSmallExplosion(int x, int y)
+    {
+        Explosion e = new Explosion(MediumI, x, y, 20, 4, -10);
+        
+        return e;
+    }
+    
     static public Explosion MakeMediumExplosion(int x, int y)
     {
-        Explosion e = new Explosion(LargeI, x, y, 50, 10, -10);
+        Explosion e = new Explosion(LargeI, x, y, 50, 7, -10);
         
         return e;
     }
     
     static public Explosion MakeBigExplosion(int x, int y)
     {
-        Explosion e = new Explosion(ExtraLargeI, x, y, 75, 12, -25);
+        Explosion e = new Explosion(ExtraLargeI, x, y, 75, 10, -25);
         
         return e;
     }

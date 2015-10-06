@@ -27,11 +27,6 @@ public class Projectile extends Actor {
         vy = ivy;
     }
     
-    public Projectile(double ix, double it, int angle, int power)
-    {
-        
-    }
-    
     @Override
     public void step(GSGame gs)
     {
