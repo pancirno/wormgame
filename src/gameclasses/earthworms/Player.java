@@ -135,6 +135,9 @@ public class Player extends Actor
             case ROCKET:
                 gs.spawnProjectile(new Rocket(horizaim, vertaim, horizthr, vertthr));
                 break;
+            case MIRV:
+                gs.spawnProjectile(new MIRV(horizaim, vertaim, horizthr, vertthr));
+                break;
             case GRENADE:
                 gs.spawnProjectile(new Grenade(horizaim, vertaim, horizthr, vertthr, 180));
                 break;
@@ -170,7 +173,7 @@ public class Player extends Actor
                 
         //hp text
         loop.GetGraphicsContext().setStroke(playerTeam.teamcolor);
-        loop.GetGraphicsContext().strokeText(String.valueOf(healthPoints), anchx-6, anchy-25);
+        loop.GetGraphicsContext().strokeText(String.valueOf(healthPoints) + " " + equippedGun.name(), anchx-6, anchy-25);
         
         //sprite
         loop.GetGraphicsContext().setFill(playerTeam.teamcolor);
@@ -179,7 +182,7 @@ public class Player extends Actor
         //celownik
         int aimx = anchx + (int)(Math.cos(aimangle) * 25);
         int aimy = anchy + (int)(Math.sin(aimangle) * 25);
-        
+         
         loop.GetGraphicsContext().setFill(Color.BLUE);
         loop.GetGraphicsContext().fillOval(aimx-3, aimy-3, 6, 6);
         
@@ -247,19 +250,15 @@ public class Player extends Actor
             
             if(ie.keyStatus(KeyCode.F1) == true)
             {
-                equippedGun = WeaponInfo.AvailableWeapons.ROCKET;
+                equippedGun = WeaponInfo.pickWeapon(0);
             }
             if(ie.keyStatus(KeyCode.F2) == true)
             {
-                equippedGun = WeaponInfo.AvailableWeapons.GRENADE;
+                equippedGun = WeaponInfo.pickWeapon(1);
             }
             if(ie.keyStatus(KeyCode.F3) == true)
             {
-                equippedGun = WeaponInfo.AvailableWeapons.BOMB;
-            }
-            if(ie.keyStatus(KeyCode.F4) == true)
-            {
-                equippedGun = WeaponInfo.AvailableWeapons.SHOTGUN;
+                equippedGun = WeaponInfo.pickWeapon(2);
             }
         }
     }

@@ -54,7 +54,7 @@ public class GSGame extends GameState
         
         p = new Player(400, 0, t1);
         players.add(p);
-        players.add(new Player(600, 0, t2));
+        players.add(new Player(700, 0, t2));
     }
     
     @Override
