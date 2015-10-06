@@ -68,7 +68,7 @@ public class Player extends Actor
     {       
         if(retreatTime > 0)retreatTime--;
         
-        if(retreatTime == 0) retreatTime = -1; //TODO end turn [sprawdz refire i retreattime]
+        if(retreatTime == 0) SelectPlayer(); //TODO end turn [sprawdz refire i retreattime]
         
         if(currentState == PlayerState.ACTIVE) //handle by player movement
         {
@@ -137,11 +137,6 @@ public class Player extends Actor
                 refire--;
                 retreatTime = 120;
                 break;
-        }
-        
-        if(refire == 0)
-        {
-            refire = -1;
         }
         
         if(!getCanShootAgain())
