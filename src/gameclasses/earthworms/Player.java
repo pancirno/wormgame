@@ -18,6 +18,8 @@ import wormgame.*;
  */
 public class Player extends Actor
 {
+    final int MAX_SHOOT_POWER = 15;
+    
     //action types
     enum Jump
     {
@@ -27,44 +29,34 @@ public class Player extends Actor
     
     enum PlayerState
     {
-        IDLE,
+        ACTIVE,
         JUMPING,
         FALLING,
         FREEFALL,
+        //RETREAT,
         RAGDOLL
     }
     
-    enum AvailableWeapons
-    {
-        ROCKET,
-        GRENADE,
-        BOMB,
-        MINIGUN,
-        SHOTGUN,
-        RIFLE,
-        BLOWTORCH,
-        ROPE,
-        BALLOON,
-        HIBARI
-    }
-    
-    PlayerState currentState = PlayerState.IDLE;
+    PlayerState currentState = PlayerState.ACTIVE;
     
     //user movement
     boolean moveLeft = false;
     boolean moveRight = false;
     boolean isFalling = false;
     boolean faceDirection = false;
+    int retreatTime = -1;
     
     //jump
     boolean wantToJump = false;
     Jump directionToJump = Jump.FORWARD;
     
     //shooting
-    AvailableWeapons equippedGun = AvailableWeapons.ROCKET;
+    WeaponInfo.AvailableWeapons equippedGun = WeaponInfo.AvailableWeapons.ROCKET;
     double aimangle = 0;
     double aimpower = 0; //max 15
     boolean shoot = false;
+    int refire = -1;
+    
     
     public Player()
     {
@@ -74,7 +66,11 @@ public class Player extends Actor
     @Override
     public void step(GSGame gs)
     {       
-        if(currentState == PlayerState.IDLE) //handle by player movement
+        if(retreatTime > 0)retreatTime--;
+        
+        if(retreatTime == 0) retreatTime = -1; //TODO end turn [sprawdz refire i retreattime]
+        
+        if(currentState == PlayerState.ACTIVE) //handle by player movement
         {
             vx = 0;//clear any velocities
             vy = 0;
@@ -96,26 +92,7 @@ public class Player extends Actor
             
             if(shoot)
             {
-                double horizaim = x + Math.cos(aimangle) * 5;
-                double vertaim = y + Math.sin(aimangle) * 5;
-                double horizthr = Math.cos(aimangle) * aimpower;
-                double vertthr = Math.sin(aimangle) * aimpower;
-                
-                switch(equippedGun)
-                {
-                    case ROCKET:
-                        gs.spawnProjectile(new BulletProjectile(horizaim, vertaim, horizthr, vertthr));
-                        break;
-                    case GRENADE:
-                        gs.spawnProjectile(new Grenade(horizaim, vertaim, horizthr, vertthr, 180));
-                        break;
-                    case BOMB:
-                        gs.spawnProjectile(new Bomb(horizaim, vertaim, 1.2 * Math.signum(horizthr), -1.5, -1));
-                        break;
-                }
-                
-                aimpower = 0;
-                shoot = false;
+                doShooting(gs);
             }
             
         }
@@ -125,6 +102,55 @@ public class Player extends Actor
             
             wantToJump = false;//lock jumping to not jump around
         }
+    }
+    
+    public void SelectPlayer()
+    {
+        refire = -1;
+        retreatTime = -1;
+    }
+
+    private void doShooting(GSGame gs) 
+    {
+        double horizaim = x + Math.cos(aimangle) * 5;
+        double vertaim = y + Math.sin(aimangle) * 5;
+        double horizthr = Math.cos(aimangle) * aimpower;
+        double vertthr = Math.sin(aimangle) * aimpower;
+        double horizthrinst = Math.cos(aimangle) * MAX_SHOOT_POWER;
+        double vertthrinst = Math.sin(aimangle) * MAX_SHOOT_POWER;
+        
+        switch(equippedGun)
+        {
+            case ROCKET:
+                gs.spawnProjectile(new Rocket(horizaim, vertaim, horizthr, vertthr));
+                break;
+            case GRENADE:
+                gs.spawnProjectile(new Grenade(horizaim, vertaim, horizthr, vertthr, 180));
+                break;
+            case BOMB:
+                gs.spawnProjectile(new Bomb(horizaim, vertaim, 1.2 * Math.signum(horizthr), -1.5, -1));
+                break;
+            case SHOTGUN:
+                if(!getCanShootAgain())
+                    refire = 2;
+                gs.spawnProjectile(new BulletProjectile(horizaim, vertaim, horizthrinst, vertthrinst));
+                refire--;
+                retreatTime = 120;
+                break;
+        }
+        
+        if(refire == 0)
+        {
+            refire = -1;
+        }
+        
+        if(!getCanShootAgain())
+        {
+            retreatTime = 180;
+        }
+        
+        aimpower = 0;
+        shoot = false;
     }
 
     @Override
@@ -189,27 +215,41 @@ public class Player extends Actor
             directionToJump = Jump.BACKWARD;
             wantToJump = true;
         }
-        if(ie.keyStatus(KeyCode.SPACE) == true)
-        {
-            aimpower += 0.20;
-            if(aimpower > 15) shoot = true;
-        }
-        if(ie.keyStatus(KeyCode.SPACE) == false && aimpower > 0)
-        {
-            shoot = true;
-        }
         
-        if(ie.keyStatus(KeyCode.F1) == true)
+        //shoot sequence, increase power on press and shot on release
+        if(!getIsRetreading())
         {
-            equippedGun = AvailableWeapons.ROCKET;
-        }
-        if(ie.keyStatus(KeyCode.F2) == true)
-        {
-            equippedGun = AvailableWeapons.GRENADE;
-        }
-        if(ie.keyStatus(KeyCode.F3) == true)
-        {
-            equippedGun = AvailableWeapons.BOMB;
+            if(ie.keyStatus(KeyCode.SPACE) == true)
+            {
+                if(WeaponInfo.InstantShot.contains(equippedGun))
+                {
+                    shoot = true;
+                }
+
+                aimpower += 0.20;
+                if(aimpower > MAX_SHOOT_POWER) shoot = true;
+            }
+            if(ie.keyStatus(KeyCode.SPACE) == false && aimpower > 0)
+            {
+                shoot = true;
+            }
+            
+            if(ie.keyStatus(KeyCode.F1) == true)
+            {
+                equippedGun = WeaponInfo.AvailableWeapons.ROCKET;
+            }
+            if(ie.keyStatus(KeyCode.F2) == true)
+            {
+                equippedGun = WeaponInfo.AvailableWeapons.GRENADE;
+            }
+            if(ie.keyStatus(KeyCode.F3) == true)
+            {
+                equippedGun = WeaponInfo.AvailableWeapons.BOMB;
+            }
+            if(ie.keyStatus(KeyCode.F4) == true)
+            {
+                equippedGun = WeaponInfo.AvailableWeapons.SHOTGUN;
+            }
         }
     }
     
@@ -254,7 +294,7 @@ public class Player extends Actor
     {
         if(gs.currentStage.Collide(x, y+1))
         {
-            currentState = PlayerState.IDLE;
+            currentState = PlayerState.ACTIVE;
             return;
         }
         
@@ -263,7 +303,7 @@ public class Player extends Actor
             if(gs.currentStage.Collide(x, y+fall))
             {
                 y = y+fall-1;
-                currentState = PlayerState.IDLE;
+                currentState = PlayerState.ACTIVE;
                 return;
             }
         }
@@ -279,7 +319,7 @@ public class Player extends Actor
         if(gs.currentStage.Collide(x, y + vy))
         {
             vy = 0;
-            currentState = PlayerState.IDLE;
+            currentState = PlayerState.ACTIVE;
             wantToJump = false;
             return;
         }
@@ -312,5 +352,15 @@ public class Player extends Actor
                 vx = -0.7 * (double)sign;
                 vy = -5;
         }
+    }
+    
+    boolean getIsRetreading()
+    {
+        return retreatTime != -1;
+    }
+    
+    boolean getCanShootAgain()
+    {
+        return refire > 0;
     }
 }
