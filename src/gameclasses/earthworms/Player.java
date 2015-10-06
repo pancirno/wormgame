@@ -33,11 +33,16 @@ public class Player extends Actor
         JUMPING,
         FALLING,
         FREEFALL,
-        //RETREAT,
         RAGDOLL
     }
     
     PlayerState currentState = PlayerState.ACTIVE;
+    
+    //teaminfo
+    Team playerTeam;
+    
+    //vital
+    int healthPoints = 100;
     
     //user movement
     boolean moveLeft = false;
@@ -58,9 +63,11 @@ public class Player extends Actor
     int refire = -1;
     
     
-    public Player()
+    public Player(int ix, int iy, Team it)
     {
-        x = 500;
+        x = ix;
+        y = iy;
+        playerTeam = it;
     }
     
     @Override
@@ -101,6 +108,10 @@ public class Player extends Actor
             doFreeFall(gs);
             
             wantToJump = false;//lock jumping to not jump around
+        }
+        else if(currentState == PlayerState.RAGDOLL)
+        {
+            doBounce(gs);
         }
     }
     
@@ -157,7 +168,12 @@ public class Player extends Actor
         int anchx = c.GetCameraDeltaX((int)x);
         int anchy = c.GetCameraDeltaY((int)y);
                 
-        loop.GetGraphicsContext().setFill(Color.RED);
+        //hp text
+        loop.GetGraphicsContext().setStroke(playerTeam.teamcolor);
+        loop.GetGraphicsContext().strokeText(String.valueOf(healthPoints), anchx-6, anchy-25);
+        
+        //sprite
+        loop.GetGraphicsContext().setFill(playerTeam.teamcolor);
         loop.GetGraphicsContext().fillOval(anchx-12, anchy-12, 24, 24);
         
         //celownik
@@ -329,6 +345,19 @@ public class Player extends Actor
         x = x + vx;
     }
     
+    void doBounce(GSGame gs)
+    {
+        this.snapToLevel(gs, vx, vy, true);
+        this.grenadeBounce(gs, 0.7, 0.7, 0.3);
+        
+        if((Math.abs(vx) + Math.abs(vy)) < 0.2)
+        {
+            vx = 0;
+            vy = 0;
+            currentState = PlayerState.ACTIVE;
+        }
+    }
+    
     void doJumping()
     {
         int sign = 1;
@@ -347,6 +376,18 @@ public class Player extends Actor
                 vx = -0.7 * (double)sign;
                 vy = -5;
         }
+    }
+    
+    public void dealDamage(int dmg)
+    {
+        healthPoints -= dmg;
+    }
+    
+    public void push(double ivx, double ivy)
+    {
+        vx += ivx;
+        vy += ivy;
+        currentState = PlayerState.RAGDOLL;
     }
     
     boolean getIsRetreading()

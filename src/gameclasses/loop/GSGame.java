@@ -26,6 +26,7 @@ public class GSGame extends GameState
     //game objects
     ArrayList<Explosion> explosions;
     ArrayList<Projectile> projectiles;
+    ArrayList<Player> players;
     
     //trashbins
     ArrayList<Projectile> trashProj;
@@ -43,11 +44,17 @@ public class GSGame extends GameState
         
         explosions = new ArrayList<>();
         projectiles = new ArrayList<>();
+        players = new ArrayList<>();
         
         trashProj = new ArrayList<>();
         spawnProj = new ArrayList<>();
         
-        p = new Player();
+        Team t1 = new Team("wew", "lel","lel","lel","lel",Color.RED, 0);
+        Team t2 = new Team("dupa2", "lel","lel","lel","lel",Color.BLUE, 0);
+        
+        p = new Player(400, 0, t1);
+        players.add(p);
+        players.add(new Player(600, 0, t2));
     }
     
     @Override
@@ -65,13 +72,17 @@ public class GSGame extends GameState
         for(Explosion exp : explosions)
         {
             currentStage.HandleExplosion(exp);
-            
             PushProjectiles(exp);
+            HurtPlayers(exp);
         }
         explosions.clear();
         
         //run object logic
-        p.step(this);
+        //p.step(this);
+        for(Player p : players)
+        {
+            p.step(this);
+        }
         
         for(Projectile pro : projectiles)
         {
@@ -90,7 +101,10 @@ public class GSGame extends GameState
         //draw terrain
         currentStage.render(loop.GetGraphicsContext(), gameCamera);
         //draw sprites
-        p.render(loop, gameCamera);
+        for(Player p : players)
+        {
+            p.render(loop, gameCamera);
+        }
         
         for(Projectile pro : projectiles)
         {
@@ -121,6 +135,28 @@ public class GSGame extends GameState
         }
     }
     
+    
+    private void HurtPlayers(Explosion exp) 
+    {
+        Point2D exppoint = new Point2D(exp.x, exp.y);
+        //push all nearby projectiles
+        for(Player plr : players)
+        {
+            double dist = exppoint.distance(plr.getX(), plr.getY());
+            if(dist <= exp.radius)
+            {
+                double xDiff = p.getX() - exppoint.getX();
+                double yDiff = p.getY() - exppoint.getY() + exp.bias;
+                
+                double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
+                double epower = exp.power * (1 - (dist/exp.radius));
+                
+                plr.dealDamage((int) (exp.damage * (1 - (dist/exp.radius))));
+                plr.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
+            }
+        }
+    }
+    
     private void drawBackground(GraphicsContext gc, Camera cam)
     {
         LinearGradient lg;
@@ -145,4 +181,5 @@ public class GSGame extends GameState
         if(projectiles.contains(e))
             trashProj.add(e);
     }
+
 }

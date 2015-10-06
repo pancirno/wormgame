@@ -5,6 +5,7 @@
  */
 package gameclasses.game;
 
+import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.*;
 
 /**
@@ -37,5 +38,67 @@ public class Actor
     public double getY()
     {
         return y;
+    }
+    
+    protected void snapToLevel(GSGame gs, double tvx, double tvy, boolean snaptype)
+    {
+        double destx = x + tvx;
+        double desty = y + tvy;
+        
+        double checkx, checky;
+        
+        int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty)));
+        
+        for(int i = 1; i <= steps; i++)
+        {
+            checkx = x + (tvx * ((double)i/(double)steps));
+            checky = y + (tvy * ((double)i/(double)steps));
+            
+            if(gs.currentStage.Collide(checkx, checky))
+            {
+                if(!snaptype)
+                {
+                }
+                else if (i > 1)
+                {
+                    checkx = x + (tvx * ((double)(i-1)/(double)steps));
+                    checky = y + (tvy * ((double)(i-1)/(double)steps));
+                }
+                
+                x = checkx;
+                y = checky;
+                
+                return;
+            }
+        }
+        
+        x = destx;
+        y = desty;
+    }
+    
+    protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
+    {
+        if(gs.currentStage.Collide(x+(-1 * Math.signum(vx)), y))
+        {
+            vx = vx * StaticPhysics.TORQUE * rollred; //0.9
+        }
+        else if(gs.currentStage.Collide(x+(1 * Math.signum(vx)), y))
+        {
+            vx = vx * StaticPhysics.TORQUE * -1 * impactred;
+        }
+            
+        //vertical bounce
+        if(gs.currentStage.Collide(x, y+1))
+        {
+            vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
+        }
+        else if(gs.currentStage.Collide(x, y-1))
+        {
+            vy = Math.abs(vy + StaticPhysics.GRAVITY);
+        }
+        else
+        {
+            vy = vy + StaticPhysics.GRAVITY;
+        }
     }
 }
