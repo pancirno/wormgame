@@ -147,7 +147,7 @@ public class Player extends Actor
             case SHOTGUN:
                 if(!getCanShootAgain())
                     refire = 2;
-                gs.spawnProjectile(new BulletProjectile(horizaim, vertaim, horizthrinst, vertthrinst));
+                gs.spawnProjectile(new Shotgun(horizaim, vertaim, horizthrinst, vertthrinst));
                 refire--;
                 retreatTime = 120;
                 break;
@@ -203,11 +203,11 @@ public class Player extends Actor
         //call for actions
         if(ie.keyStatus(KeyCode.UP) == true)
         {
-            aimangle -= 0.1;
+            aimangle -= 0.05;
         }
         if(ie.keyStatus(KeyCode.DOWN) == true)
         {
-            aimangle += 0.1;
+            aimangle += 0.05;
         }
         if(ie.keyStatus(KeyCode.LEFT) == true)
         {
@@ -240,7 +240,7 @@ public class Player extends Actor
                     shoot = true;
                 }
 
-                aimpower += 0.20;
+                aimpower += 0.2;
                 if(aimpower > MAX_SHOOT_POWER) shoot = true;
             }
             if(ie.keyStatus(KeyCode.SPACE) == false && aimpower > 0)

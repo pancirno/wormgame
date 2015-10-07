@@ -32,11 +32,15 @@ public class BulletProjectile extends Projectile
 
             if(gs.currentStage.Collide(x, y))
             {
-                gs.spawnExplosion(ExplosionFactory.MakeSmallExplosion((int)x, (int)y));
+                hitScanExp(gs);
                 gs.removeObject(this);
                 return;
             }
         }
         
+    }
+    
+    protected void hitScanExp(GSGame gs)
+    {
     }
 }

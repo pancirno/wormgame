@@ -125,13 +125,13 @@ public class GSGame extends GameState
         for(Projectile pro : projectiles)
         {
             double dist = exppoint.distance(pro.getX(), pro.getY());
-            if(dist <= exp.radius)
+            if(dist <= exp.hurtRadius)
             {
                 double xDiff = pro.getX() - exppoint.getX();
                 double yDiff = pro.getY() - exppoint.getY() + exp.bias;
                 
                 double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
-                double epower = exp.power * (1 - (dist/exp.radius));
+                double epower = exp.power * (1 - (dist/exp.hurtRadius));
                 
                 pro.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
             }
@@ -146,15 +146,19 @@ public class GSGame extends GameState
         for(Player plr : players)
         {
             double dist = exppoint.distance(plr.getX(), plr.getY());
-            if(dist <= exp.radius)
+            if(dist <= exp.hurtRadius)
             {
                 double xDiff = plr.getX() - exppoint.getX();
                 double yDiff = plr.getY() - exppoint.getY() + exp.bias;
                 
                 double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
-                double epower = exp.power * (1 - (dist/exp.radius));
+                double epower = exp.power * (1 - (dist/exp.hurtRadius));
                 
-                plr.dealDamage((int) (exp.damage * (1 - (dist/exp.radius))));
+                double damage = (exp.damage * (1 - ((dist - 5)/exp.hurtRadius)));
+                if(damage > exp.damage) damage = exp.damage;
+                if(damage < 0) damage = 0;
+                
+                plr.dealDamage((int) damage);
                 plr.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
             }
         }

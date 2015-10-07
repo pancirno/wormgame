@@ -25,12 +25,12 @@ public class Explosion
     public final double power;
     public final int bias;
     
-    public final double radius;
+    public final double hurtRadius;
     
     public Explosion(Image es, int xi, int yi, int dmg, double pow, int ibias)
     {
         explosionSprite = es;
-        radius = es.getWidth();
+        hurtRadius = es.getWidth() * 0.65;
         
         x = xi;
         y = yi;

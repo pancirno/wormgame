@@ -34,7 +34,7 @@ public class ExplosionFactory
     
     static
     {
-        BulletI = GenerateHoleSprite(9,9);
+        BulletI = GenerateHoleSprite(15,15);
         MediumI = GenerateHoleSprite(49,49);
         LargeI = GenerateHoleSprite(99,99);
         ExtraLargeI = GenerateHoleSprite(149,149);
@@ -59,6 +59,13 @@ public class ExplosionFactory
         
         WritableImage wi = c.snapshot(null, null);
         return (Image)wi;
+    }
+    
+    static public Explosion MakeBulletExplosion(int x, int y)
+    {
+        Explosion e = new Explosion(BulletI, x, y, 5, 0.5, 0);
+        
+        return e;
     }
     
     static public Explosion MakeSmallExplosion(int x, int y)
