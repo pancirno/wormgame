@@ -35,7 +35,7 @@ public class GSGame extends GameState
     ArrayList<Projectile> spawnProj;
     
     //current moving object
-    Player p;
+    Player activePlayer;
     
     public GSGame()
     {
@@ -52,9 +52,12 @@ public class GSGame extends GameState
         Team t1 = new Team("wew", "lel","lel","lel","lel",Color.RED, 0);
         Team t2 = new Team("dupa2", "lel","lel","lel","lel",Color.BLUE, 0);
         
-        p = new Player(400, 0, t1);
-        players.add(p);
+        activePlayer = new Player(400, 0, t1);
+        players.add(activePlayer);
         players.add(new Player(700, 0, t2));
+        players.add(new Player(800, 0, t2));
+        players.add(new Player(900, 0, t2));
+        players.add(new Player(1000, 0, t2));
     }
     
     @Override
@@ -62,7 +65,7 @@ public class GSGame extends GameState
     {
         //collect inputs
         gameCamera.move(loop.GetInputEngine());
-        p.move(loop.GetInputEngine());
+        activePlayer.move(loop.GetInputEngine());
         
         //create new objects
         projectiles.addAll(spawnProj);
@@ -119,18 +122,18 @@ public class GSGame extends GameState
     {
         Point2D exppoint = new Point2D(exp.x, exp.y);
         //push all nearby projectiles
-        for(Projectile p : projectiles)
+        for(Projectile pro : projectiles)
         {
-            double dist = exppoint.distance(p.getX(), p.getY());
+            double dist = exppoint.distance(pro.getX(), pro.getY());
             if(dist <= exp.radius)
             {
-                double xDiff = p.getX() - exppoint.getX();
-                double yDiff = p.getY() - exppoint.getY() + exp.bias;
+                double xDiff = pro.getX() - exppoint.getX();
+                double yDiff = pro.getY() - exppoint.getY() + exp.bias;
                 
                 double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
                 double epower = exp.power * (1 - (dist/exp.radius));
                 
-                p.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
+                pro.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
             }
         }
     }
@@ -145,8 +148,8 @@ public class GSGame extends GameState
             double dist = exppoint.distance(plr.getX(), plr.getY());
             if(dist <= exp.radius)
             {
-                double xDiff = p.getX() - exppoint.getX();
-                double yDiff = p.getY() - exppoint.getY() + exp.bias;
+                double xDiff = plr.getX() - exppoint.getX();
+                double yDiff = plr.getY() - exppoint.getY() + exp.bias;
                 
                 double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
                 double epower = exp.power * (1 - (dist/exp.radius));
