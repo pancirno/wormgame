@@ -47,6 +47,7 @@ public class WeaponInfo {
         RowB.add(AvailableWeapons.BOMB);
         
         RowC.add(AvailableWeapons.SHOTGUN);
+        RowC.add(AvailableWeapons.MINIGUN);
     }
     
     static AvailableWeapons pickWeapon(int row)

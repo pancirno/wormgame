@@ -60,6 +60,7 @@ public class Player extends Actor
     double aimangle = 0;
     double aimpower = 0; //max 15
     boolean shoot = false;
+    boolean autoshoot = false;
     int refire = -1;
     
     
@@ -75,15 +76,26 @@ public class Player extends Actor
     {       
         if(retreatTime > 0)retreatTime--;
         
-        if(retreatTime == 0) SelectPlayer(); //TODO end turn [sprawdz refire i retreattime]
-        
+        if(retreatTime == 0) 
+        {
+            if(autoshoot)
+            {
+                doShooting(gs);
+                return;
+            }
+            else
+            {
+                SelectPlayer(); //TODO end turn [sprawdz refire i retreattime]
+            }
+        }
+            
         if(currentState == PlayerState.ACTIVE) //handle by player movement
         {
             vx = 0;//clear any velocities
             vy = 0;
             
             doFalling(gs);
-            
+                        
             if(moveLeft)
             {
                 doWalking(gs, 1);
@@ -96,7 +108,6 @@ public class Player extends Actor
             {
                 doJumping();
             }
-            
             if(shoot)
             {
                 doShooting(gs);
@@ -119,6 +130,7 @@ public class Player extends Actor
     {
         refire = -1;
         retreatTime = -1;
+        autoshoot = false;
     }
 
     private void doShooting(GSGame gs) 
@@ -151,11 +163,21 @@ public class Player extends Actor
                 refire--;
                 retreatTime = 120;
                 break;
+            case MINIGUN:
+                if(!getCanShootAgain())
+                    refire = 10;
+                
+                autoshoot = true;
+                gs.spawnProjectile(new UZI(horizaim, vertaim, horizthrinst, vertthrinst));
+                refire--;
+                retreatTime = 3;
+                break;
         }
         
         if(!getCanShootAgain())
         {
             retreatTime = 180;
+            autoshoot = false;
         }
         
         aimpower = 0;
