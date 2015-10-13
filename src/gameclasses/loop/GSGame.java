@@ -23,6 +23,11 @@ public class GSGame extends GameState
     public Camera gameCamera;
     public Level currentStage;
     
+    //info
+    ArrayList<Team> teamlist;
+    int nextTeam = 0;
+    int nextPlayerID = 0;
+    
     //game objects
     ArrayList<Explosion> explosions;
     ArrayList<Projectile> projectiles;
@@ -42,6 +47,8 @@ public class GSGame extends GameState
         gameCamera = new Camera(0, 0, 800, 600);
         currentStage = new Level();
         
+        teamlist = new ArrayList<>();
+        
         explosions = new ArrayList<>();
         projectiles = new ArrayList<>();
         players = new ArrayList<>();
@@ -49,15 +56,51 @@ public class GSGame extends GameState
         trashProj = new ArrayList<>();
         spawnProj = new ArrayList<>();
         
+        prepareMatch();
+    }
+
+    private void prepareMatch() {
         Team t1 = new Team("wew", "lel","lel","lel","lel",Color.RED, 0);
         Team t2 = new Team("dupa2", "lel","lel","lel","lel",Color.BLUE, 0);
         
-        activePlayer = new Player(400, 0, t1);
-        players.add(activePlayer);
-        players.add(new Player(700, 0, t2));
-        players.add(new Player(800, 0, t2));
-        players.add(new Player(900, 0, t2));
-        players.add(new Player(1000, 0, t2));
+        teamlist.add(t1);
+        teamlist.add(t2);
+        
+        players.add(new Player(300, 0, t1, 0));
+        players.add(new Player(500, 0, t1, 1));
+        players.add(new Player(700, 0, t1, 2));
+        players.add(new Player(900, 0, t1, 3));
+        players.add(new Player(1100, 0, t2, 0));
+        players.add(new Player(1300, 0, t2, 1));
+        players.add(new Player(1500, 0, t2, 2));
+        players.add(new Player(1700, 0, t2, 3));
+        
+        selectNextPlayer();
+    }
+    
+    public void selectNextPlayer()
+    {
+        for(Player p : players)
+        {
+            if(p.getPlayerTeam() == teamlist.get(nextTeam) && p.getPlayerID() == nextPlayerID)
+            {
+                activePlayer = p;
+                activePlayer.SelectPlayer();
+                
+                gameCamera.MoveCameraAbs((int)p.getX() - 400, (int)p.getY() - 300);
+                
+                break;
+            }
+        }
+        
+        nextTeam++;
+        
+        if(nextTeam >= teamlist.size())
+        {
+            nextTeam = 0;
+            nextPlayerID++;
+        }
+        
     }
     
     @Override
@@ -187,6 +230,11 @@ public class GSGame extends GameState
     {
         if(projectiles.contains(e))
             trashProj.add(e);
+    }
+    
+    public Player getActivePlayer()
+    {
+        return activePlayer;
     }
 
 }

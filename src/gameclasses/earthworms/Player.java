@@ -40,9 +40,13 @@ public class Player extends Actor
     
     //teaminfo
     Team playerTeam;
+    int playerID;
     
     //vital
     int healthPoints = 100;
+    
+    //game logic
+    boolean isCurrentlySelected = false;
     
     //user movement
     boolean moveLeft = false;
@@ -63,17 +67,19 @@ public class Player extends Actor
     boolean autoshoot = false;
     int refire = -1;
     
-    
-    public Player(int ix, int iy, Team it)
+    public Player(int ix, int iy, Team it, int id)
     {
         x = ix;
         y = iy;
         playerTeam = it;
+        playerID = id;
     }
     
     @Override
     public void step(GSGame gs)
     {       
+        isCurrentlySelected = (this == gs.getActivePlayer());
+        
         if(retreatTime > 0)retreatTime--;
         
         if(retreatTime == 0) 
@@ -85,7 +91,7 @@ public class Player extends Actor
             }
             else
             {
-                SelectPlayer(); //TODO end turn [sprawdz refire i retreattime]
+                gs.selectNextPlayer();
             }
         }
             
@@ -128,9 +134,18 @@ public class Player extends Actor
     
     public void SelectPlayer()
     {
+        RestartPlayer();
+    }
+    
+    void RestartPlayer()
+    {
         refire = -1;
         retreatTime = -1;
         autoshoot = false;
+        shoot = false;
+        wantToJump = false;
+        moveLeft = false;
+        moveRight = false;       
     }
 
     private void doShooting(GSGame gs) 
@@ -202,11 +217,14 @@ public class Player extends Actor
         loop.GetGraphicsContext().fillOval(anchx-12, anchy-12, 24, 24);
         
         //celownik
-        int aimx = anchx + (int)(Math.cos(aimangle) * 25);
-        int aimy = anchy + (int)(Math.sin(aimangle) * 25);
-         
-        loop.GetGraphicsContext().setFill(Color.BLUE);
-        loop.GetGraphicsContext().fillOval(aimx-3, aimy-3, 6, 6);
+        if(isCurrentlySelected)
+        {
+            int aimx = anchx + (int)(Math.cos(aimangle) * 25);
+            int aimy = anchy + (int)(Math.sin(aimangle) * 25);
+
+            loop.GetGraphicsContext().setFill(Color.BLUE);
+            loop.GetGraphicsContext().fillOval(aimx-3, aimy-3, 6, 6);
+        }
         
         //strzal
         if(aimpower > 0)
@@ -413,11 +431,21 @@ public class Player extends Actor
     
     boolean getIsRetreading()
     {
-        return retreatTime != -1;
+        return retreatTime > -1;
     }
     
     boolean getCanShootAgain()
     {
         return refire > 0;
+    }
+    
+    public Team getPlayerTeam()
+    {
+        return playerTeam;
+    }
+    
+    public int getPlayerID()
+    {
+        return playerID;
     }
 }
