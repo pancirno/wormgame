@@ -89,9 +89,14 @@ public class Player extends Actor
                 doShooting(gs);
                 return;
             }
+            else if (refire > 0)
+            {
+                retreatTime = -1;
+            }
             else
             {
                 gs.selectNextPlayer();
+                restartPlayer();
             }
         }
             
@@ -134,10 +139,10 @@ public class Player extends Actor
     
     public void SelectPlayer()
     {
-        RestartPlayer();
+        restartPlayer();
     }
     
-    void RestartPlayer()
+    void restartPlayer()
     {
         refire = -1;
         retreatTime = -1;
