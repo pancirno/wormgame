@@ -67,6 +67,9 @@ public class Player extends Actor
     boolean autoshoot = false;
     int refire = -1;
     
+    //rope
+    RopeConnector ropeshoot = null;
+    
     public Player(int ix, int iy, Team it, int id)
     {
         x = ix;
@@ -155,12 +158,14 @@ public class Player extends Actor
 
     private void doShooting(GSGame gs) 
     {
-        double horizaim = x + Math.cos(aimangle) * 5;
-        double vertaim = y + Math.sin(aimangle) * 5;
-        double horizthr = Math.cos(aimangle) * aimpower;
-        double vertthr = Math.sin(aimangle) * aimpower;
-        double horizthrinst = Math.cos(aimangle) * MAX_SHOOT_POWER;
-        double vertthrinst = Math.sin(aimangle) * MAX_SHOOT_POWER;
+        double precos = Math.cos(aimangle);
+        double presin = Math.sin(aimangle);
+        double horizaim = x + precos * 5;
+        double vertaim = y + presin * 5;
+        double horizthr = precos * aimpower;
+        double vertthr = presin * aimpower;
+        double horizthrinst = precos * MAX_SHOOT_POWER;
+        double vertthrinst = presin * MAX_SHOOT_POWER;
         
         switch(equippedGun)
         {
@@ -191,6 +196,17 @@ public class Player extends Actor
                 gs.spawnProjectile(new UZI(horizaim, vertaim, horizthrinst, vertthrinst));
                 refire--;
                 retreatTime = 3;
+                break;
+            case ROPE:
+                refire = 9999;
+                
+                if(!gs.ifObjectExists(ropeshoot))
+                {
+                    ropeshoot = new RopeConnector(horizaim, vertaim, horizthrinst, vertthrinst, 15);
+                    gs.spawnProjectile(ropeshoot);
+                }
+                
+                retreatTime = 120;
                 break;
         }
         
@@ -295,15 +311,23 @@ public class Player extends Actor
             
             if(ie.keyStatus(KeyCode.F1) == true)
             {
+                refire = 0;
                 equippedGun = WeaponInfo.pickWeapon(0);
             }
             if(ie.keyStatus(KeyCode.F2) == true)
             {
+                refire = 0;
                 equippedGun = WeaponInfo.pickWeapon(1);
             }
             if(ie.keyStatus(KeyCode.F3) == true)
             {
+                refire = 0;
                 equippedGun = WeaponInfo.pickWeapon(2);
+            }
+            if(ie.keyStatus(KeyCode.F4) == true)
+            {
+                refire = 0;
+                equippedGun = WeaponInfo.pickWeapon(3);
             }
         }
     }

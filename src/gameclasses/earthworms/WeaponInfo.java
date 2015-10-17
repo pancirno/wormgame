@@ -38,6 +38,7 @@ public class WeaponInfo {
     static final ArrayList<AvailableWeapons> RowA = new ArrayList<>();
     static final ArrayList<AvailableWeapons> RowB = new ArrayList<>();
     static final ArrayList<AvailableWeapons> RowC = new ArrayList<>();
+    static final ArrayList<AvailableWeapons> RowD = new ArrayList<>();
     static
     {
         RowA.add(AvailableWeapons.ROCKET);
@@ -48,6 +49,8 @@ public class WeaponInfo {
         
         RowC.add(AvailableWeapons.SHOTGUN);
         RowC.add(AvailableWeapons.MINIGUN);
+        
+        RowD.add(AvailableWeapons.ROPE);
     }
     
     static AvailableWeapons pickWeapon(int row)
@@ -66,6 +69,8 @@ public class WeaponInfo {
                 return RowB.get(ChoosenWeapon % RowB.size());
             case 2:
                 return RowC.get(ChoosenWeapon % RowC.size());
+            case 3:
+                return RowD.get(ChoosenWeapon % RowD.size());
             
             default:
                 return AvailableWeapons.NULL;

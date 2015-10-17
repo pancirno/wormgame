@@ -242,6 +242,11 @@ public class GSGame extends GameState
             trashProj.add(e);
     }
     
+    public boolean ifObjectExists(Projectile e)
+    {
+        return projectiles.contains(e);
+    }
+    
     public Player getActivePlayer()
     {
         return activePlayer;
