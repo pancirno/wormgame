@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
  */
 public class RopeConnector extends Projectile 
 {
+    public boolean impact = false;
     
     public RopeConnector(double ix, double iy, double ivx, double ivy, int traveltime) {
         super(ix, iy, ivx, ivy);
@@ -31,6 +32,7 @@ public class RopeConnector extends Projectile
         
         if(gs.currentStage.Collide(x, y))
         {
+            impact = true;
             gs.removeObject(this);
             return;
         }
