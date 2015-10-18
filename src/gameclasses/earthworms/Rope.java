@@ -14,31 +14,89 @@ import javafx.geometry.Point2D;
  */
 public class Rope extends Actor
 {
-    double ropelength = 0;
+    private final double maxropelength;
+    private double ropelength;
+    private double endangle;
     
-    public Rope(double srcx, double srcy, double destx, double desty)
+    private double angularvel = 0;
+    
+    private double approxvx = 0;
+    private double approxvy = 0;
+    
+    public Rope(double maxrope, double ropelen, double destx, double desty, Player p)
     {
         x = destx;
         y = desty;
         
-        Point2D plr = new Point2D(srcx, srcy);
-        ropelength = plr.distance(x, y);
+        ropelength = ropelen;
+        maxropelength = maxrope;
+        
+        endangle = calcAngle(p.getX(), p.getY());
     }
     
-    Point2D calcTension(Player p)
+    public Point2D step()
     {
-        Point2D plr = new Point2D(p.getX(), p.getY());
-        double dist = plr.distance(x, y);
-        double pushangle = calcAngle(plr);
-        double tenx = Math.cos(pushangle) * -1;
-        double teny = Math.sin(pushangle);
+        Point2D start = getEndPosition();
         
-        //if(dist > ropelength*1.2) return new Point2D(tenx*3,teny*3);
-        return new Point2D(tenx, teny);
+        if(Math.cos(endangle) < 0)
+            angularvel += Math.abs(Math.cos(endangle));
+        else
+            angularvel -= Math.abs(Math.cos(endangle));
+        
+        endangle += angularvel/getRadius();
+        
+        Point2D delta = getEndPosition();
+        
+        approxvx = delta.getX() - start.getX();
+        approxvy = delta.getY() - start.getY();
+        
+        return delta.add(x,y);
     }
-
-    public double calcAngle(Point2D plr) 
+        
+    private double calcAngle(double ix, double iy) 
     {
-        return Math.atan2(plr.getX() - x, plr.getY() - y) - Math.PI/2;
+        return Math.atan2(ix - x, iy - y) - Math.PI/2;
+    }
+    
+    public double getRadius()
+    {
+        return 2 * Math.PI * ropelength;
+    }
+    
+    public double getLength()
+    {
+        return ropelength;
+    }
+    
+    public void decreaseLength(double amount)
+    {
+        ropelength -= amount;
+        if(ropelength < 10) ropelength = 10;
+    }
+    
+    public void increaseLength(double amount)
+    {
+        ropelength += amount;
+        if(ropelength > maxropelength) ropelength = maxropelength;
+    }
+    
+    public void swingLeft(double amount)
+    {
+        angularvel -= amount;
+    }
+    
+    public void swingRight(double amount)
+    {
+        angularvel += amount;
+    }
+    
+    public Point2D getEndPosition()
+    {
+        return new Point2D(Math.cos(endangle) * ropelength, Math.sin(endangle)*-1*ropelength);
+    }
+    
+    public Point2D getVelocityVector()
+    {
+        return new Point2D(approxvx, approxvy);
     }
 }

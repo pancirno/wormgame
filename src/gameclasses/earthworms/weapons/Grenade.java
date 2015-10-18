@@ -37,7 +37,7 @@ public class Grenade extends Projectile {
     {
         fuse--;
         
-        snapToLevel(gs, vx, vy, true);
+        snapToLevelVel(gs, vx, vy, true);
         
         grenadeBounce(gs, 0.9, 0.9, 0.5);
         

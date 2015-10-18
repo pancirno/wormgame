@@ -64,8 +64,8 @@ public class Level
             }
         }
         
-        gc.setStroke(Color.WHITE);
-        gc.strokeText("drawn level tiles: " + rendered + "/" + PictureTiles.size(), 4, 16);
+        //gc.setStroke(Color.WHITE);
+        //gc.strokeText("drawn level tiles: " + rendered + "/" + PictureTiles.size(), 4, 16);
     }
     
     private void divideImage()

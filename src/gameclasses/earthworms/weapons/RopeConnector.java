@@ -28,7 +28,7 @@ public class RopeConnector extends Projectile
     public void step(GSGame gs)
     {
         fuse --;
-        snapToLevel(gs, vx, vy, false);
+        snapToLevelVel(gs, vx, vy, false);
         
         if(gs.currentStage.Collide(x, y))
         {

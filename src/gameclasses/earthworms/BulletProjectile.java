@@ -22,7 +22,7 @@ public class BulletProjectile extends Projectile
     {
         while(true)
         {
-            snapToLevel(gs, vx, vy, false);
+            snapToLevelVel(gs, vx, vy, false);
 
             if(gs.currentStage.IsOutsideOfLevel(x, y))
             {

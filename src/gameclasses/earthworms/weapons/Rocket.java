@@ -42,7 +42,7 @@ public class Rocket extends Projectile
         fuse--;
         
         vy = vy + StaticPhysics.GRAVITY;
-        snapToLevel(gs, vx, vy, false);
+        snapToLevelVel(gs, vx, vy, false);
         
         if(gs.currentStage.Collide(x, y) || fuse <= 0)
         {

@@ -8,7 +8,7 @@ package gameclasses.earthworms;
 import gameclasses.earthworms.weapons.*;
 import gameclasses.game.*;
 import gameclasses.loop.*;
-import javafx.geometry.Point2D;
+import javafx.geometry.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import wormgame.*;
@@ -86,6 +86,7 @@ public class Player extends Actor
     @Override
     public void step(GSGame gs)
     {       
+        
         isCurrentlySelected = (this == gs.getActivePlayer());
         
         if(retreatTime > 0)retreatTime--;
@@ -113,8 +114,12 @@ public class Player extends Actor
         {
             if(ropeshoot.impact == true)
             {
-                ropestring = new Rope(x,y,ropeshoot.getX(), ropeshoot.getY());
+                Point2D dstp = new Point2D(x,y);
+                double dst = dstp.distance(ropeshoot.getX(), ropeshoot.getY());
+                
+                ropestring = new Rope(300,dst,ropeshoot.getX(), ropeshoot.getY(), this);
                 currentState = PlayerState.ROPING;
+                ropeshoot = null;
             }
         }
             
@@ -155,31 +160,10 @@ public class Player extends Actor
         }
         else if(currentState == PlayerState.ROPING)
         {
-            if(ropeshoot != null)
-            {
-            Point2D r = ropestring.calcTension(this);
-            
-            if(ropepush)
-            {
-                vx += r.getX()*-0.3;
-                vy += r.getY()*-0.3;   
-            }
-            if(ropepull)
-            {
-                vx += r.getX()*0.3;
-                vy += r.getY()*0.3;   
-            }
-            else
-            {
-                vx += r.getX()*0.1;
-                vy += r.getY()*0.1;        
-            }
-            
-            doBounce(gs);
-            }
+            doRope(gs);
         }
     }
-    
+
     public void SelectPlayer()
     {
         restartPlayer();
@@ -485,7 +469,7 @@ public class Player extends Actor
     
     void doBounce(GSGame gs)
     {
-        this.snapToLevel(gs, vx, vy, true);
+        this.snapToLevelVel(gs, vx, vy, true);
         this.grenadeBounce(gs, 0.7, 0.7, 0.3);
         
         if(currentState == PlayerState.RAGDOLL && (Math.abs(vx) + Math.abs(vy)) < 0.2)
@@ -513,6 +497,30 @@ public class Player extends Actor
             case BACKWARD:
                 vx = -0.7 * (double)sign;
                 vy = -5;
+        }
+    }
+    
+    private void doRope(GSGame gs)
+    {        
+        if(ropestring != null)
+        {
+            if(ropepush)
+                ropestring.increaseLength(2);
+            if(ropepull)
+                ropestring.decreaseLength(2);
+            
+            if(moveLeft)
+                ropestring.swingLeft(1);
+            if(moveRight)
+                ropestring.swingRight(1);
+            
+            Point2D d = ropestring.step();
+            x = d.getX();
+            y = d.getY();
+            
+            Point2D v = ropestring.getVelocityVector();
+            vx = v.getX();
+            vy = v.getY();
         }
     }
     

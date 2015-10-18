@@ -38,7 +38,7 @@ public class Bomb extends Grenade
     {
         fuse--;
         
-        snapToLevel(gs, vx, vy, true);
+        snapToLevelVel(gs, vx, vy, true);
         
         grenadeBounce(gs, 0.7, 1.1, 0.25);
 

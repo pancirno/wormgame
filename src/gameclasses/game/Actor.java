@@ -40,12 +40,12 @@ public class Actor
         return y;
     }
     
-    protected void snapToLevel(GSGame gs, double tvx, double tvy, boolean snaptype)
+    protected void snapToLevelAbs(GSGame gs, double destx, double desty, boolean snaptype)
     {
-        double destx = x + tvx;
-        double desty = y + tvy;
-        
         double checkx, checky;
+        
+        double tvx = destx - x;
+        double tvy = desty - y;
         
         int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty)));
         
@@ -65,15 +65,20 @@ public class Actor
                     checky = y + (tvy * ((double)(i-1)/(double)steps));
                 }
                 
-                x = checkx;
-                y = checky;
+                destx = checkx;
+                desty = checky;
                 
-                return;
+                break;
             }
         }
         
         x = destx;
         y = desty;
+    }
+    
+    protected void snapToLevelVel(GSGame gs, double tvx, double tvy, boolean snaptype)
+    {
+        snapToLevelAbs(gs, x + tvx, y + tvy, snaptype);
     }
     
     protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
