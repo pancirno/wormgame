@@ -113,6 +113,11 @@ public class Level
         return !GameArea.contains(x, y);
     }
     
+    public boolean Collide(Point2D p)
+    {
+        return Collide((int)p.getX(), (int)p.getY());
+    }
+    
     public boolean Collide(double x, double y)
     {
         return Collide((int)x, (int)y);

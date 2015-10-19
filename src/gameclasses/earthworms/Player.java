@@ -505,16 +505,16 @@ public class Player extends Actor
         if(ropestring != null)
         {
             if(ropepush)
-                ropestring.increaseLength(2);
+                ropestring.increaseLength(gs, 2);
             if(ropepull)
-                ropestring.decreaseLength(2);
+                ropestring.decreaseLength(gs, 2);
             
             if(moveLeft)
                 ropestring.swingLeft(1);
             if(moveRight)
                 ropestring.swingRight(1);
             
-            Point2D d = ropestring.step();
+            Point2D d = ropestring.calcPlayerPos(gs);
             x = d.getX();
             y = d.getY();
             
