@@ -18,28 +18,42 @@ public class Explosion
     public final int x;
     public final int y;
     
-    public final int drawx;
-    public final int drawy;
+    public int drawx;
+    public int drawy;
     
     public final int damage;
     public final double power;
     public final int bias;
     
-    public final double hurtRadius;
+    public double hurtRadius;
     
     public Explosion(Image es, int xi, int yi, int dmg, double pow, int ibias)
     {
         explosionSprite = es;
-        hurtRadius = es.getWidth() * 0.65;
         
         x = xi;
         y = yi;
         
-        drawx = xi - (int)es.getWidth()/2;
-        drawy = yi - (int)es.getHeight()/2;
+        hurtRadius = 0;
+        drawx = 0;
+        drawy = 0;
+        
+        if(explosionSprite != null)
+        {
+            hurtRadius = es.getWidth() * 0.65;
+            drawx = xi - (int)es.getWidth()/2;
+            drawy = yi - (int)es.getHeight()/2;
+        }
         
         damage = dmg;
         power = pow;
         bias = ibias;
     }
+    
+    public Explosion(Image es, int xi, int yi, int dmg, double pow, int ibias, double hurtrad)
+    {
+        this(es, xi, yi, dmg, pow, ibias);
+        hurtRadius = hurtrad;
+    }
+    
 }

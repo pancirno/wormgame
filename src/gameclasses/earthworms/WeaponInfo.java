@@ -19,6 +19,7 @@ public class WeaponInfo {
         NULL,
         ROCKET,
         GRENADE,
+        FIREGRENADE,
         BOMB,
         MIRV,
         MINIGUN,
@@ -46,6 +47,7 @@ public class WeaponInfo {
         
         RowB.add(AvailableWeapons.GRENADE);
         RowB.add(AvailableWeapons.BOMB);
+        RowB.add(AvailableWeapons.FIREGRENADE);
         
         RowC.add(AvailableWeapons.SHOTGUN);
         RowC.add(AvailableWeapons.MINIGUN);

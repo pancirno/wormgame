@@ -22,6 +22,7 @@ public class GSGame extends GameState
     //game data
     public Camera gameCamera;
     public Level currentStage;
+    public Random randomizer;
     
     //info
     ArrayList<Team> teamList;
@@ -47,6 +48,7 @@ public class GSGame extends GameState
     {
         gameCamera = new Camera(0, 0, 800, 600);
         currentStage = new Level();
+        randomizer = new Random();
         
         teamList = new ArrayList<>();
         teamPlayerList = new HashMap<>();
@@ -251,5 +253,14 @@ public class GSGame extends GameState
     {
         return activePlayer;
     }
-
+    
+    public double getRandomNumber()
+    {
+        return randomizer.nextDouble();
+    }
+    
+    public double getGaussianRandomNumber()
+    {
+        return randomizer.nextGaussian();
+    }
 }

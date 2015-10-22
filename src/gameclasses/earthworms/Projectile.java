@@ -45,4 +45,9 @@ public class Projectile extends Actor {
         vx += ivx/weight;
         vy += ivy/weight;
     }
+    
+    public void explode(GSGame gs)
+    {
+        
+    }
 }

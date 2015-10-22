@@ -202,6 +202,9 @@ public class Player extends Actor
             case GRENADE:
                 gs.spawnProjectile(new Grenade(horizaim, vertaim, horizthr, vertthr, 180));
                 break;
+            case FIREGRENADE:
+                gs.spawnProjectile(new FireGrenade(horizaim, vertaim, horizthr, vertthr, 180));
+                break;
             case BOMB:
                 gs.spawnProjectile(new Bomb(horizaim, vertaim, 1.2 * Math.signum(horizthr), -1.5, -1));
                 break;

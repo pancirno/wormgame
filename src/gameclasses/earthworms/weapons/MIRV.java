@@ -39,11 +39,17 @@ public class MIRV extends Rocket
         
         if(vy > 3.5 || fuse <= 0)
         {
-            gs.spawnProjectile(new Rocket(x,y,vx*1.5,vy*1.1));
-            gs.spawnProjectile(new Rocket(x,y,vx,vy*1.1));
-            gs.spawnProjectile(new Rocket(x,y,vx*0.5,vy*1.1));
-            gs.removeObject(this);
+            explode(gs);
         }
+    }
+    
+    @Override
+    public void explode(GSGame gs)
+    {
+        gs.spawnProjectile(new Rocket(x,y,vx*1.5,vy*1.1));
+        gs.spawnProjectile(new Rocket(x,y,vx,vy*1.1));
+        gs.spawnProjectile(new Rocket(x,y,vx*0.5,vy*1.1));
+        gs.removeObject(this);
     }
     
 }

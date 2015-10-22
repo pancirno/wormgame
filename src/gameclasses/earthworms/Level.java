@@ -152,6 +152,8 @@ public class Level
     
     public void HandleExplosion(Explosion e)
     {
+        if(e.explosionSprite == null) return;
+        
         Rectangle2D erect = new Rectangle2D(e.drawx, e.drawy, e.explosionSprite.getWidth()-1, e.explosionSprite.getHeight()-1);
         
         PictureTiles.stream().filter((i) -> (i.boundary.intersects(erect))).forEach((i) ->

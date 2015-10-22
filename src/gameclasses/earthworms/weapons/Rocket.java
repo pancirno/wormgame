@@ -46,8 +46,14 @@ public class Rocket extends Projectile
         
         if(gs.currentStage.Collide(x, y) || fuse <= 0)
         {
-            gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion((int)x, (int)y));
-            gs.removeObject(this);
+            explode(gs);
         }
+    }
+    
+    @Override
+    public void explode(GSGame gs)
+    {
+        gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion((int)x, (int)y));
+        gs.removeObject(this);
     }
 }

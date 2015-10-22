@@ -44,8 +44,14 @@ public class Bomb extends Grenade
 
         if(fuse <= 0)
         {
-            gs.spawnExplosion(ExplosionFactory.MakeBigExplosion((int)x, (int)y));
-            gs.removeObject(this);
+            explode(gs);
         }
+    }
+    
+    @Override
+    public void explode(GSGame gs)
+    {
+        gs.spawnExplosion(ExplosionFactory.MakeBigExplosion((int)x, (int)y));
+        gs.removeObject(this);
     }
 }
