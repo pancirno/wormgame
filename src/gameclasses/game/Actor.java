@@ -47,7 +47,7 @@ public class Actor
         double tvx = destx - x;
         double tvy = desty - y;
         
-        int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty)));
+        int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty)))*2; //TODO implement this thing https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
         
         for(int i = 1; i <= steps; i++)
         {
