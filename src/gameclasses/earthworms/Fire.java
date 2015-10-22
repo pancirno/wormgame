@@ -17,8 +17,9 @@ import javafx.scene.paint.Color;
 public class Fire extends Projectile 
 {
 
-    public Fire(double ix, double iy, double ivx, double ivy) {
+    public Fire(double ix, double iy, double ivx, double ivy, int f) {
         super(ix, iy, ivx, ivy);
+        fuse = f;
     }
     
     @Override
@@ -57,9 +58,9 @@ public class Fire extends Projectile
             snapToLevelVel(gs, vx + horizdelta, vy, true);
         }
         
-        if(fuse % 6 == 0)
+        if(fuse % 10 == 0)
         {
-            if(gs.getRandomNumber() < 0.05)
+            if(gs.getRandomNumber() < 0.1)
             {
                 gs.spawnExplosion(ExplosionFactory.MakeBlazeExplosion((int)x, (int)y));
             }

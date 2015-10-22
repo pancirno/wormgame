@@ -23,9 +23,9 @@ public class FireGrenade extends Grenade
     {
         super.explode(gs);
         
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < 16; i++)
         {
-            gs.spawnProjectile(new Fire(x, y, i-10, 0));
+            gs.spawnProjectile(new Fire(x, y, (i-8)/2, 0, (int)(gs.getRandomNumber()*50) + 300));
         }
     }
 }
