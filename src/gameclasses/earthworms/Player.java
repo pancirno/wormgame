@@ -301,32 +301,32 @@ public class Player extends Actor
         ropepull = false;
         ropepush = false;
         
-        if(ie.keyStatus(KeyCode.LEFT) == true)
+        if(ie.checkPressed(KeyCode.LEFT) == true)
         {
             faceDirection = false;
             moveLeft = true;
         }
-        if(ie.keyStatus(KeyCode.RIGHT) == true)
+        if(ie.checkPressed(KeyCode.RIGHT) == true)
         {
             faceDirection = true;
             moveRight = true;
         }
-        if(ie.keyStatus(KeyCode.UP) == true)
+        if(ie.checkPressed(KeyCode.UP) == true)
         {
             ropepull = true;
             aimangle -= 0.05;
         }
-        if(ie.keyStatus(KeyCode.DOWN) == true)
+        if(ie.checkPressed(KeyCode.DOWN) == true)
         {
             ropepush = true;
             aimangle += 0.05;
         }
-        if(ie.keyStatus(KeyCode.ENTER) == true)
+        if(ie.checkPulse(KeyCode.ENTER) == true)
         {
             directionToJump = Jump.FORWARD;
             wantToJump = true;
         }
-        if(ie.keyStatus(KeyCode.BACK_SPACE) == true)
+        if(ie.checkPulse(KeyCode.BACK_SPACE) == true)
         {
             directionToJump = Jump.BACKWARD;
             wantToJump = true;
@@ -335,7 +335,7 @@ public class Player extends Actor
         //let go of rope
         if(currentState == PlayerState.ROPING)
         {
-            if(ie.keyStatus(KeyCode.SPACE) == true)
+            if(ie.checkPulse(KeyCode.SPACE) == true)
             {
                 detachRope();
             }
@@ -344,7 +344,7 @@ public class Player extends Actor
             //shoot sequence, increase power on press and shot on release
             if(!getIsRetreading())
             {
-                if(ie.keyStatus(KeyCode.SPACE) == true)
+                if(ie.checkPressed(KeyCode.SPACE) == true)
                 {
                     if(WeaponInfo.InstantShot.contains(equippedGun))
                     {
@@ -354,27 +354,27 @@ public class Player extends Actor
                     aimpower += 0.2;
                     if(aimpower > MAX_SHOOT_POWER) shoot = true;
                 }
-                if(ie.keyStatus(KeyCode.SPACE) == false && aimpower > 0)
+                if(ie.checkPressed(KeyCode.SPACE) == false && aimpower > 0)
                 {
                     shoot = true;
                 }
 
-                if(ie.keyStatus(KeyCode.F1) == true)
+                if(ie.checkPulse(KeyCode.F1) == true)
                 {
                     refire = 0;
                     equippedGun = WeaponInfo.pickWeapon(0);
                 }
-                if(ie.keyStatus(KeyCode.F2) == true)
+                if(ie.checkPulse(KeyCode.F2) == true)
                 {
                     refire = 0;
                     equippedGun = WeaponInfo.pickWeapon(1);
                 }
-                if(ie.keyStatus(KeyCode.F3) == true)
+                if(ie.checkPulse(KeyCode.F3) == true)
                 {
                     refire = 0;
                     equippedGun = WeaponInfo.pickWeapon(2);
                 }
-                if(ie.keyStatus(KeyCode.F4) == true)
+                if(ie.checkPulse(KeyCode.F4) == true)
                 {
                     refire = 0;
                     equippedGun = WeaponInfo.pickWeapon(3);

@@ -14,30 +14,57 @@ import javafx.scene.input.*;
  */
 public class InputEngine
 {
-    private final HashMap<KeyCode, Boolean> PressedTable;
+    public enum KeyStatus
+    {
+        PULSE,
+        CONFIRMED,
+        OFF
+    }
+    
+    private final HashMap<KeyCode, KeyStatus> PressedTable;
     
     public InputEngine()
     {
         PressedTable = new HashMap<>();
         for(KeyCode k : KeyCode.values())
         {
-            PressedTable.put(k, Boolean.FALSE);
+            PressedTable.put(k, KeyStatus.OFF);
         }
     }
     
-    public Boolean keyStatus(KeyCode kc)
+    public KeyStatus keyStatus(KeyCode kc)
     {
-        return PressedTable.get(kc);
+        KeyStatus k = PressedTable.get(kc);
+        if(k == KeyStatus.PULSE)
+        {
+            PressedTable.put(kc, KeyStatus.CONFIRMED);
+            return KeyStatus.PULSE;
+        }
+        else
+            return k;
     }
     
     public void setPressed(KeyCode kc)
     {
-        PressedTable.put(kc, Boolean.TRUE);
+        PressedTable.put(kc, KeyStatus.PULSE);
     }
     
     public void setReleased(KeyCode kc)
     {
-        PressedTable.put(kc, Boolean.FALSE);
+        PressedTable.put(kc, KeyStatus.OFF);
     }
+    
+    public boolean checkPressed(KeyCode kc)
+    {
+        KeyStatus k = keyStatus(kc);
+        return k == KeyStatus.PULSE || k == KeyStatus.CONFIRMED;
+    }
+    
+    public boolean checkPulse(KeyCode kc)
+    {
+        KeyStatus k = keyStatus(kc);
+        return k == KeyStatus.PULSE;
+    }
+            
 }
 

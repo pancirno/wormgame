@@ -84,19 +84,19 @@ public class Camera
     public void move(InputEngine ie)
     {
         //call for actions
-        if(ie.keyStatus(KeyCode.W) == true)
+        if(ie.checkPressed(KeyCode.W) == true)
         {
             MoveCameraRel(0, -3);
         }
-        if(ie.keyStatus(KeyCode.S) == true)
+        if(ie.checkPressed(KeyCode.S) == true)
         {
             MoveCameraRel(0, 3);
         }
-        if(ie.keyStatus(KeyCode.A) == true)
+        if(ie.checkPressed(KeyCode.A) == true)
         {
             MoveCameraRel(-3, 0);
         }
-        if(ie.keyStatus(KeyCode.D) == true)
+        if(ie.checkPressed(KeyCode.D) == true)
         {
             MoveCameraRel(3, 0);
         }

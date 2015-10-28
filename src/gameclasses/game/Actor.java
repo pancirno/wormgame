@@ -63,6 +63,9 @@ public class Actor
                 {
                     checkx = x + (tvx * ((double)(i-1)/(double)steps));
                     checky = y + (tvy * ((double)(i-1)/(double)steps));
+                    
+                    checkx = Math.round(checkx);
+                    checky = Math.round(checky);
                 }
                 
                 destx = checkx;
