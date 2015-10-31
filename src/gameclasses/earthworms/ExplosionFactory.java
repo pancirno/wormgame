@@ -28,6 +28,7 @@ public class ExplosionFactory
     
     static final Image BulletI;
     static final Image MediumI;
+    static final Image MediumPlusI;
     static final Image LargeI;
     static final Image ExtraLargeI;
     static final Image HugeI;
@@ -36,6 +37,7 @@ public class ExplosionFactory
     {
         BulletI = GenerateHoleSprite(15,15);
         MediumI = GenerateHoleSprite(49,49);
+        MediumPlusI = GenerateHoleSprite(69,69);
         LargeI = GenerateHoleSprite(99,99);
         ExtraLargeI = GenerateHoleSprite(149,149);
         HugeI = GenerateHoleSprite(255,255);
@@ -90,6 +92,13 @@ public class ExplosionFactory
     }
     
     static public Explosion MakeMediumExplosion(int x, int y)
+    {
+        Explosion e = new Explosion(MediumPlusI, x, y, 35, 2, -10);
+        
+        return e;
+    }
+    
+    static public Explosion MakeLargeExplosion(int x, int y)
     {
         Explosion e = new Explosion(LargeI, x, y, 50, 5, -10);
         

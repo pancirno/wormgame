@@ -69,6 +69,12 @@ public class Player extends Actor
     boolean autoshoot = false;
     int refire = -1;
     
+    //marker
+    boolean ismarked = false;
+    Point2D markerClick;
+    double targetmarkerX = 0;
+    double targetmarkerY = 0;
+    
     //rope
     RopeConnector ropeshoot = null;
     Rope ropestring = null;
@@ -146,7 +152,14 @@ public class Player extends Actor
             {
                 doShooting(gs);
             }
-            
+            if(markerClick != null)
+            {
+                //targetmarkerX = gs.gameCamera.GetCameraDeltaX((int)markerClick.getX());
+                //targetmarkerY = gs.gameCamera.GetCameraDeltaY((int)markerClick.getY());
+                targetmarkerX = gs.gameCamera.GetBoundary().getMinX() + markerClick.getX();
+                targetmarkerY = gs.gameCamera.GetBoundary().getMinY() + markerClick.getY();
+                markerClick = null;
+            }
         }
         else if(currentState == PlayerState.FREEFALL) //free fall
         {
@@ -177,7 +190,8 @@ public class Player extends Actor
         shoot = false;
         wantToJump = false;
         moveLeft = false;
-        moveRight = false;       
+        moveRight = false;
+        ismarked = false;
     }
 
     private void doShooting(GSGame gs) 
@@ -235,6 +249,14 @@ public class Player extends Actor
                 
                 retreatTime = 120;
                 break;
+            case AIRSTRIKE:
+                if(!ismarked)return;
+                gs.spawnProjectile(new AirStrike(targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
+                break;
+            case FIRESTRIKE:
+                if(!ismarked)return;
+                gs.spawnProjectile(new AirFireStrike(targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
+                break;
         }
         
         if(!getCanShootAgain())
@@ -264,14 +286,24 @@ public class Player extends Actor
         loop.GetGraphicsContext().setFill(playerTeam.teamcolor);
         loop.GetGraphicsContext().fillOval(anchx-12, anchy-12, 24, 24);
         
-        //celownik
         if(isCurrentlySelected)
         {
+            //celownik
             int aimx = anchx + (int)(Math.cos(aimangle) * 25);
             int aimy = anchy + (int)(Math.sin(aimangle) * 25);
 
             loop.GetGraphicsContext().setFill(Color.BLUE);
             loop.GetGraphicsContext().fillOval(aimx-3, aimy-3, 6, 6);
+            
+            //marker
+            if(ismarked)
+            {
+                loop.GetGraphicsContext().setFill(Color.YELLOW);
+                int mx = c.GetCameraDeltaX((int)targetmarkerX);
+                int my = c.GetCameraDeltaY((int)targetmarkerY);
+                loop.GetGraphicsContext().strokeLine(mx - 8, my - 8, mx + 8, my + 8);
+                loop.GetGraphicsContext().strokeLine(mx - 8, my + 8, mx + 8, my - 8);
+            }
         }
         
         //strzal
@@ -300,6 +332,12 @@ public class Player extends Actor
         moveRight = false;
         ropepull = false;
         ropepush = false;
+        
+        if(ie.isClicked())
+        {
+            ismarked = true;
+            markerClick = ie.getClicked();
+        }
         
         if(ie.checkPressed(KeyCode.LEFT) == true)
         {
@@ -341,45 +379,50 @@ public class Player extends Actor
             }
         }
         
-            //shoot sequence, increase power on press and shot on release
-            if(!getIsRetreading())
+        //shoot sequence, increase power on press and shot on release
+        if(!getIsRetreading())
+        {
+            if(ie.checkPressed(KeyCode.SPACE) == true)
             {
-                if(ie.checkPressed(KeyCode.SPACE) == true)
-                {
-                    if(WeaponInfo.InstantShot.contains(equippedGun))
-                    {
-                        shoot = true;
-                    }
-
-                    aimpower += 0.2;
-                    if(aimpower > MAX_SHOOT_POWER) shoot = true;
-                }
-                if(ie.checkPressed(KeyCode.SPACE) == false && aimpower > 0)
+                if(WeaponInfo.InstantShot.contains(equippedGun))
                 {
                     shoot = true;
                 }
 
-                if(ie.checkPulse(KeyCode.F1) == true)
-                {
-                    refire = 0;
-                    equippedGun = WeaponInfo.pickWeapon(0);
-                }
-                if(ie.checkPulse(KeyCode.F2) == true)
-                {
-                    refire = 0;
-                    equippedGun = WeaponInfo.pickWeapon(1);
-                }
-                if(ie.checkPulse(KeyCode.F3) == true)
-                {
-                    refire = 0;
-                    equippedGun = WeaponInfo.pickWeapon(2);
-                }
-                if(ie.checkPulse(KeyCode.F4) == true)
-                {
-                    refire = 0;
-                    equippedGun = WeaponInfo.pickWeapon(3);
-                }
+                aimpower += 0.2;
+                if(aimpower > MAX_SHOOT_POWER) shoot = true;
             }
+            if(ie.checkPressed(KeyCode.SPACE) == false && aimpower > 0)
+            {
+                shoot = true;
+            }
+
+            if(ie.checkPulse(KeyCode.F1) == true)
+            {
+                refire = 0;
+                equippedGun = WeaponInfo.pickWeapon(0);
+            }
+            if(ie.checkPulse(KeyCode.F2) == true)
+            {
+                refire = 0;
+                equippedGun = WeaponInfo.pickWeapon(1);
+            }
+            if(ie.checkPulse(KeyCode.F3) == true)
+            {
+                refire = 0;
+                equippedGun = WeaponInfo.pickWeapon(2);
+            }
+            if(ie.checkPulse(KeyCode.F4) == true)
+            {
+                refire = 0;
+                equippedGun = WeaponInfo.pickWeapon(3);
+            }
+            if(ie.checkPulse(KeyCode.F5) == true)
+            {
+                refire = 0;
+                equippedGun = WeaponInfo.pickWeapon(4);
+            }
+        }
     }
 
     private void detachRope() 
@@ -512,10 +555,20 @@ public class Player extends Actor
             if(ropepull)
                 ropestring.decreaseLength(gs, 2);
             
-            if(moveLeft)
-                ropestring.swingLeft(1);
-            if(moveRight)
-                ropestring.swingRight(1);
+            if(y >= ropestring.getY())
+            {
+                if(moveLeft)
+                    ropestring.swingLeft(0.5);
+                if(moveRight)
+                    ropestring.swingRight(0.5);
+            }
+            else
+            {
+                if(moveLeft)
+                    ropestring.swingRight(0.5);
+                if(moveRight)
+                    ropestring.swingLeft(0.5);
+            }
             
             Point2D d = ropestring.calcPlayerPos(gs);
             x = d.getX();

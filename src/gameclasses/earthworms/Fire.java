@@ -16,10 +16,11 @@ import javafx.scene.paint.Color;
  */
 public class Fire extends Projectile 
 {
-
+    int burnout;
     public Fire(double ix, double iy, double ivx, double ivy, int f) {
         super(ix, iy, ivx, ivy);
-        fuse = f;
+        fuse = f + 1800;
+        burnout = f;
     }
     
     @Override
@@ -37,6 +38,7 @@ public class Fire extends Projectile
     public void step(GSGame gs)
     {
         fuse--;
+        if(gs.currentStage.Collide(x, y+1)) burnout--;
         
         double horizdelta = 0;
         
@@ -70,7 +72,7 @@ public class Fire extends Projectile
             }
         }
         
-        if(fuse <= 0)
+        if(burnout <= 0 || fuse <= 0)
         {
             gs.removeObject(this);
         }

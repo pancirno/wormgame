@@ -6,6 +6,7 @@
 package wormgame;
 
 import java.util.*;
+import javafx.geometry.Point2D;
 import javafx.scene.input.*;
 
 /**
@@ -14,6 +15,7 @@ import javafx.scene.input.*;
  */
 public class InputEngine
 {
+    //keyboard
     public enum KeyStatus
     {
         PULSE,
@@ -22,6 +24,9 @@ public class InputEngine
     }
     
     private final HashMap<KeyCode, KeyStatus> PressedTable;
+    
+    //mouse
+    private Point2D mousePos = null;
     
     public InputEngine()
     {
@@ -66,5 +71,25 @@ public class InputEngine
         return k == KeyStatus.PULSE;
     }
             
+    
+    //mouse support, clear mouse after receiving it or refreshing game state
+    public void setClicked(double sceneX, double sceneY) 
+    {
+        mousePos = new Point2D(sceneX, sceneY);
+    }
+    
+    public boolean isClicked()
+    {
+        return mousePos != null;
+    }
+    
+    public Point2D getClicked()
+    {
+        Point2D tmp = mousePos;
+        mousePos = null;
+        return tmp;
+    }
+    
+    
 }
 

@@ -53,7 +53,7 @@ public class Rocket extends Projectile
     @Override
     public void explode(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion((int)x, (int)y));
+        gs.spawnExplosion(ExplosionFactory.MakeLargeExplosion((int)x, (int)y));
         gs.removeObject(this);
     }
 }

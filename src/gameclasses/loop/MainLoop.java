@@ -65,6 +65,10 @@ public class MainLoop extends AnimationTimer
         inputreceiver.setReleased(kc);
     }
         
+    public void OnClick(double sceneX, double sceneY) {
+        inputreceiver.setClicked(sceneX, sceneY);
+    }
+    
     public InputEngine GetInputEngine()
     {
         return inputreceiver;
@@ -84,4 +88,6 @@ public class MainLoop extends AnimationTimer
     {
         return WindowHeight;
     }
+
+    
 }

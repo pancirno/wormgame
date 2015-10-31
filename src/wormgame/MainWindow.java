@@ -52,6 +52,11 @@ public class MainWindow
             Game.OnRelease(event.getCode());
         });
         
+        SceneContainer.setOnMouseClicked((MouseEvent event) ->
+        {
+            Game.OnClick(event.getSceneX(), event.getSceneY());
+        });
+        
         Game.start();
     }
     
