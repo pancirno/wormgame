@@ -60,7 +60,7 @@ public class Fire extends Projectile
             snapToLevelVel(gs, vx + horizdelta, vy, true);
         }
         
-        if(fuse % 10 == 0)
+        if(fuse % 15 == 0)
         {
             if(gs.getRandomNumber() < 0.1)
             {

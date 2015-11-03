@@ -72,7 +72,7 @@ public class ExplosionFactory
     
     static public Explosion MakeBlazeNoDigExplosion(int x, int y)
     {
-        Explosion e = new Explosion(null, x, y, 2, 1, -3, 20);
+        Explosion e = new Explosion(null, x, y, 1, 1, -3, 20);
         
         return e;
     }

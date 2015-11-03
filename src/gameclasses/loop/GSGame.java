@@ -183,8 +183,8 @@ public class GSGame extends GameState
             if(dist <= exp.hurtRadius)
             {
                 double pushangle = calculatePushAngle(pro.getX(), pro.getY(), exppoint, exp, dist);
-                
-                pro.push(CommonMath.getDirectionVector(pushangle).multiply(exp.power));
+                double epower = exp.power * (1 - (dist/exp.hurtRadius));
+                pro.push(CommonMath.getDirectionVector(pushangle).multiply(epower));
             }
         }
     }
@@ -200,12 +200,13 @@ public class GSGame extends GameState
             {
                 double pushangle = calculatePushAngle(plr.getX(), plr.getY(), exppoint, exp, dist);
                 
-                double damage = (exp.damage * (1 - ((dist - 5)/exp.hurtRadius)));
+                double epower = exp.power * (1 - (dist/exp.hurtRadius));
+                double damage = Math.min(exp.damage * (1 - ((dist - 5)/exp.hurtRadius)), exp.damage);
                 if(damage > exp.damage) damage = exp.damage;
                 if(damage < 0) damage = 0;
                 
                 plr.dealDamage((int) damage);
-                plr.push(CommonMath.getDirectionVector(pushangle).multiply(exp.power));
+                plr.push(CommonMath.getDirectionVector(pushangle).multiply(epower));
             }
         }
     }

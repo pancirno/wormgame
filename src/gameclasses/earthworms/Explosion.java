@@ -40,7 +40,7 @@ public class Explosion
         
         if(explosionSprite != null)
         {
-            hurtRadius = es.getWidth() * 0.65;
+            hurtRadius = es.getWidth()*0.90;
             drawx = xi - (int)es.getWidth()/2;
             drawy = yi - (int)es.getHeight()/2;
         }
