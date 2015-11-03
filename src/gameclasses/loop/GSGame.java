@@ -182,17 +182,12 @@ public class GSGame extends GameState
             double dist = exppoint.distance(pro.getX(), pro.getY());
             if(dist <= exp.hurtRadius)
             {
-                double xDiff = pro.getX() - exppoint.getX();
-                double yDiff = pro.getY() - exppoint.getY() + exp.bias;
+                double pushangle = calculatePushAngle(pro.getX(), pro.getY(), exppoint, exp, dist);
                 
-                double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
-                double epower = exp.power * (1 - (dist/exp.hurtRadius));
-                
-                pro.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
+                pro.push(CommonMath.getDirectionVector(pushangle).multiply(exp.power));
             }
         }
     }
-    
     
     private void HurtPlayers(Explosion exp) 
     {
@@ -203,20 +198,24 @@ public class GSGame extends GameState
             double dist = exppoint.distance(plr.getX(), plr.getY());
             if(dist <= exp.hurtRadius)
             {
-                double xDiff = plr.getX() - exppoint.getX();
-                double yDiff = plr.getY() - exppoint.getY() + exp.bias;
-                
-                double pushangle = Math.atan2(xDiff, yDiff) - Math.PI/2;
-                double epower = exp.power * (1 - (dist/exp.hurtRadius));
+                double pushangle = calculatePushAngle(plr.getX(), plr.getY(), exppoint, exp, dist);
                 
                 double damage = (exp.damage * (1 - ((dist - 5)/exp.hurtRadius)));
                 if(damage > exp.damage) damage = exp.damage;
                 if(damage < 0) damage = 0;
                 
                 plr.dealDamage((int) damage);
-                plr.push(Math.cos(pushangle) * exp.power, Math.sin(pushangle) * -1 * exp.power);
+                plr.push(CommonMath.getDirectionVector(pushangle).multiply(exp.power));
             }
         }
+    }
+    
+    private double calculatePushAngle(double targetX, double targetY, Point2D exppoint, Explosion exp, double dist)
+    {
+        double xDiff = targetX - exppoint.getX();
+        double yDiff = targetY - exppoint.getY() + exp.bias;
+        
+        return CommonMath.getInvertedDiffAngle(xDiff, yDiff);
     }
     
     private void drawBackground(GraphicsContext gc, Camera cam)

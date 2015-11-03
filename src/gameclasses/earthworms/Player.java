@@ -213,6 +213,10 @@ public class Player extends Actor
             case MIRV:
                 gs.spawnProjectile(new MIRV(horizaim, vertaim, horizthr, vertthr));
                 break;
+            case HOMINGMISSILE:
+                if(!ismarked)return;
+                gs.spawnProjectile(new HomingMissile(horizaim, vertaim, horizthr, vertthr, (int)targetmarkerX, (int)targetmarkerY));
+                break;
             case GRENADE:
                 gs.spawnProjectile(new Grenade(horizaim, vertaim, horizthr, vertthr, 180));
                 break;
@@ -590,6 +594,11 @@ public class Player extends Actor
         vx += ivx;
         vy += ivy;
         currentState = PlayerState.RAGDOLL;
+    }
+    
+    public void push(Point2D p)
+    {
+        push(p.getX(), p.getY());
     }
     
     boolean getIsRetreading()

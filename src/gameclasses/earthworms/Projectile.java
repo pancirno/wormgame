@@ -9,6 +9,7 @@ import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
+import javafx.geometry.Point2D;
 
 /**
  *
@@ -44,6 +45,11 @@ public class Projectile extends Actor {
         if (weight == 0) return;
         vx += ivx/weight;
         vy += ivy/weight;
+    }
+    
+    public void push(Point2D p)
+    {
+        push(p.getX(), p.getY());
     }
     
     public void explode(GSGame gs)

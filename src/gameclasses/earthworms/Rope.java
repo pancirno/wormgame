@@ -84,7 +84,8 @@ public class Rope extends Actor
         
     private double calcAngle(double ix, double iy) 
     {
-        return Math.atan2(ix - x, iy - y) - Math.PI/2;
+        //return Math.atan2(ix - x, iy - y) - Math.PI/2;
+        return CommonMath.getInvertedDiffAngle(ix - x, iy - y);
     }
     
     public double getRadius()
