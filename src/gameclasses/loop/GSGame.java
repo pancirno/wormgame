@@ -48,6 +48,7 @@ public class GSGame extends GameState
     //turn data
     boolean pickNextPlayer = false;
     
+    
     public GSGame()
     {
         gameCamera = new Camera(0, 0, 800, 600);
@@ -107,7 +108,18 @@ public class GSGame extends GameState
     
     public void selectNextPlayer()
     {        
+        if(nextTeam >= teamList.size())
+        {
+            nextTeam = 0;
+        }
+        
         Team t = teamList.get(nextTeam);
+        if(teamPlayerList.get(t).isEmpty())
+        {
+            nextTeam++;
+            selectNextPlayer();
+            return;
+        }
         
         int nextPlayerId = teamIterator.get(t);
         nextPlayerId = ++nextPlayerId % teamPlayerList.get(t).size();
@@ -120,11 +132,6 @@ public class GSGame extends GameState
         teamIterator.replace(t, nextPlayerId);
         
         nextTeam++;
-        
-        if(nextTeam >= teamList.size())
-        {
-            nextTeam = 0;
-        }
         
         pickNextPlayer = false;
     }
@@ -201,7 +208,6 @@ public class GSGame extends GameState
         }
         //draw foreground
         //draw ui
-        
     }
 
     private void PushProjectiles(Explosion exp)

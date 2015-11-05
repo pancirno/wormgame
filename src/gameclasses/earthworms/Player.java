@@ -343,7 +343,7 @@ public class Player extends Actor
         ropepull = false;
         ropepush = false;
         
-        if(ie.isClicked())
+        if(ie.isClicked() && WeaponInfo.SetMarker.contains(equippedGun));
         {
             ismarked = true;
             markerClick = ie.getClicked();
