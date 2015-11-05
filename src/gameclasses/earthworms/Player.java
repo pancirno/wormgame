@@ -92,8 +92,14 @@ public class Player extends Actor
     @Override
     public void step(GSGame gs)
     {       
-        
         isCurrentlySelected = (this == gs.getActivePlayer());
+        
+        //sprawdzamy czy nie spad z rowera
+        if(isDead(gs))
+        {
+            gs.removePlayer(this);
+            return;
+        }
         
         if(retreatTime > 0)retreatTime--;
         
@@ -110,7 +116,7 @@ public class Player extends Actor
             }
             else
             {
-                gs.selectNextPlayer();
+                gs.endTheTurn();
                 restartPlayer();
             }
         }
@@ -619,5 +625,10 @@ public class Player extends Actor
     public int getPlayerID()
     {
         return playerID;
+    }
+    
+    public boolean isDead(GSGame gs)
+    {
+        return (this.isOutsideAreaOfPlay(gs) || this.healthPoints <= 0);
     }
 }

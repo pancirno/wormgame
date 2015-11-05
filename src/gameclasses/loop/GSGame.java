@@ -37,12 +37,16 @@ public class GSGame extends GameState
     
     //trashbins
     ArrayList<Projectile> trashProj;
+    ArrayList<Player> trashPlayer;
     
     //spawners
     ArrayList<Projectile> spawnProj;
     
     //current moving object
     Player activePlayer;
+    
+    //turn data
+    boolean pickNextPlayer = false;
     
     public GSGame()
     {
@@ -60,6 +64,8 @@ public class GSGame extends GameState
         
         trashProj = new ArrayList<>();
         spawnProj = new ArrayList<>();
+        
+        trashPlayer = new ArrayList<>();
         
         prepareMatch();
     }
@@ -93,6 +99,12 @@ public class GSGame extends GameState
         teamPlayerList.get(p.getPlayerTeam()).add(p);
     }
     
+    public void endTheTurn()
+    {
+        activePlayer = null;
+        pickNextPlayer = true;
+    }
+    
     public void selectNextPlayer()
     {        
         Team t = teamList.get(nextTeam);
@@ -113,14 +125,23 @@ public class GSGame extends GameState
         {
             nextTeam = 0;
         }
+        
+        pickNextPlayer = false;
     }
     
     @Override
     protected void execute(MainLoop loop)
     {
+        //check if player needs to be switched
+        if(pickNextPlayer && explosions.isEmpty() && projectiles.isEmpty() && !arePlayersMoving())
+        {
+            selectNextPlayer();
+        }
+        
         //collect inputs
         gameCamera.move(loop.GetInputEngine());
-        activePlayer.move(loop.GetInputEngine());
+        if(activePlayer != null)
+            activePlayer.move(loop.GetInputEngine());
         
         //create new objects
         projectiles.addAll(spawnProj);
@@ -153,6 +174,16 @@ public class GSGame extends GameState
             projectiles.remove(tpro);
         }
         trashProj.clear();
+        
+        //kill dead players
+        for(Player p : trashPlayer)
+        {
+            if(p == activePlayer)
+                endTheTurn();
+
+            deletePlayer(p);
+        }
+        trashPlayer.clear();
         
         //draw background
         drawBackground(loop.GetGraphicsContext(), gameCamera);
@@ -262,5 +293,27 @@ public class GSGame extends GameState
     public double getGaussianRandomNumber()
     {
         return randomizer.nextGaussian();
+    }
+    
+    public boolean arePlayersMoving()
+    {
+        for(Player p : players)
+            if(p.isMoving())
+            {
+                return true;
+            }
+        
+        return false;
+    }
+    
+    public void removePlayer(Player p)
+    {
+        trashPlayer.add(p);
+    }
+    
+    private void deletePlayer(Player p)
+    {
+        players.remove(p);
+        teamPlayerList.get(p.getPlayerTeam()).remove(p);
     }
 }
