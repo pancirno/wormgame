@@ -18,7 +18,7 @@ import javafx.geometry.Point2D;
 public class Projectile extends Actor {
         
     protected double weight = 1;
-    protected int fuse = 10000;
+    protected int fuse = 600;
     
     public Projectile(double ix, double iy, double ivx, double ivy)
     {

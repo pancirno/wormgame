@@ -76,6 +76,11 @@ public class Fire extends Projectile
         {
             gs.removeObject(this);
         }
+        
+        if(this.isOutsideAreaOfPlay(gs))
+        {
+            gs.removeObject(this);
+        }
     }
     
 }
