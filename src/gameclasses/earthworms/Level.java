@@ -45,7 +45,7 @@ public class Level
         levelWidth = (int)MainPictureData.getWidth();
         levelHeight = (int)MainPictureData.getHeight();
         
-        GameArea = new Rectangle2D(-1000,-1000, levelWidth + 1000, levelHeight + 1000);
+        GameArea = new Rectangle2D(-1000, -1000, levelWidth + 2000, levelHeight + 1000);
         
         divideImage();
     }

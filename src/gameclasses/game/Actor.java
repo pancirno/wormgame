@@ -109,4 +109,14 @@ public class Actor
             vy = vy + StaticPhysics.GRAVITY;
         }
     }
+    
+    public boolean isMoving()
+    {
+        return (vx != 0) && (vy != 0);
+    }
+    
+    public boolean isOutsideAreaOfPlay(GSGame gs)
+    {
+        return !gs.currentStage.GameArea.contains(x, y);
+    }
 }

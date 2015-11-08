@@ -48,6 +48,11 @@ public class Rocket extends Projectile
         {
             explode(gs);
         }
+        
+        if(this.isOutsideAreaOfPlay(gs))
+        {
+            gs.removeObject(this);
+        }
     }
     
     @Override
