@@ -5,14 +5,13 @@
  */
 package gameclasses.loop;
 
-import gameclasses.game.Camera;
-import gameclasses.earthworms.Level;
+import gameclasses.game.*;
 import gameclasses.earthworms.*;
-import gameclasses.game.Particle;
 import java.util.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
+import varunpant.QuadTree;
 
 /**
  *
@@ -49,11 +48,15 @@ public class GSGame extends GameState
     ArrayList<LevelObject> spawnObject;
     ArrayList<Particle> spawnParticle;
     
+    //check for collisions
+    QuadTree collisionTree;
+    
     //current moving object
     Player activePlayer;
     
     //turn data
     boolean pickNextPlayer = false;
+    
     
     
     public GSGame()
@@ -82,6 +85,8 @@ public class GSGame extends GameState
         spawnParticle = new ArrayList<>();
         
         trashPlayer = new ArrayList<>();
+        
+        collisionTree = new QuadTree(currentStage.GameArea.getMinX(), currentStage.GameArea.getMinY(), currentStage.GameArea.getMaxX(), currentStage.GameArea.getMaxY());
         
         prepareMatch();
     }
@@ -168,6 +173,8 @@ public class GSGame extends GameState
         executeSpawnObjects();
         
         executeHandleExplosions();
+        
+        executeHandleCollisions();
         
         executeStep();
         
@@ -264,6 +271,29 @@ public class GSGame extends GameState
             HurtPlayers(exp);
         }
         explosions.clear();
+    }
+    
+    private void executeHandleCollisions()
+    {
+        collisionTree.clear();
+        
+        for(Actor ac : players)
+        {
+            if(!ac.isOutsideAreaOfPlay(this))
+                collisionTree.set(ac.getX(), ac.getY(), ac);
+        }
+        
+        for(Actor ac : projectiles)
+        {
+            if(!ac.isOutsideAreaOfPlay(this))
+                collisionTree.set(ac.getX(), ac.getY(), ac);
+        }
+        
+        for(Actor ac : objects)
+        {
+            if(!ac.isOutsideAreaOfPlay(this))
+                collisionTree.set(ac.getX(), ac.getY(), ac);
+        }
     }
 
     private void executeSpawnObjects() {
@@ -401,4 +431,5 @@ public class GSGame extends GameState
         players.remove(p);
         teamPlayerList.get(p.getPlayerTeam()).remove(p);
     }
+
 }

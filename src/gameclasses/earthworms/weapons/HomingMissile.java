@@ -6,7 +6,6 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.CommonMath;
-import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.GSGame;
 import javafx.geometry.Point2D;
 
@@ -18,7 +17,7 @@ public class HomingMissile extends Rocket
 {
     Point2D target;
     
-    int burnout = 90;
+    int burnout = 45;
     
     public HomingMissile(double ix, double iy, double ivx, double ivy, int tx, int ty)
     {
@@ -40,15 +39,24 @@ public class HomingMissile extends Rocket
         {
             if(burnout == 0)
             {
-                vx /= 2;
-                vy /= 2;
+                vx *= 0.65;
+                vy *= 0.65;
             }
             
             double angle = CommonMath.getInvertedDiffAngle(target.getX() - x, target.getY() - y);
             Point2D vec = CommonMath.getDirectionVector(angle);
             
-            vx += vec.getX() * 0.30;
-            vy += vec.getY() * 0.30;
+            
+            if(target.distance(x, y) > 128)
+            {
+                vx += vec.getX() * 0.20;
+                vy += vec.getY() * 0.20;
+            }
+            else
+            {
+                vx += vec.getX() * 0.5;
+                vy += vec.getY() * 0.5;
+            }
             
             fuse--;
         
