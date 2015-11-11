@@ -7,6 +7,7 @@ package gameclasses.loop;
 
 import gameclasses.game.*;
 import gameclasses.earthworms.*;
+import gameclasses.earthworms.objects.OilBarrel;
 import java.util.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
@@ -111,6 +112,12 @@ public class GSGame extends GameState
         insertPlayer(new Player(1500, 0, t2, 2));
         insertPlayer(new Player(1700, 0, t2, 3));
         
+        for(int i = 0; i < 4; i++)
+        {
+            spawnObject(new OilBarrel(this.getRandomNumber() * 1900, 0));
+        }
+        
+        
         selectNextPlayer();
     }
     
@@ -160,10 +167,11 @@ public class GSGame extends GameState
     protected void execute(MainLoop loop)
     {
         //check if player needs to be switched
-        if(pickNextPlayer && explosions.isEmpty() && projectiles.isEmpty() && !arePlayersMoving())
-        {
+        if(pickNextPlayer)
+            if(explosions.isEmpty() && projectiles.isEmpty() && !arePlayersMoving() && !areObjectsMoving())
+            {
             selectNextPlayer();
-        }
+            }
         
         //collect inputs
         gameCamera.move(loop.GetInputEngine());
@@ -267,8 +275,8 @@ public class GSGame extends GameState
         for(Explosion exp : explosions)
         {
             currentStage.HandleExplosion(exp);
-            PushProjectiles(exp);
-            HurtPlayers(exp);
+            executePushObjects(exp);
+            executeHurtPlayers(exp);
         }
         explosions.clear();
     }
@@ -308,7 +316,7 @@ public class GSGame extends GameState
         spawnParticle.clear();
     }
 
-    private void PushProjectiles(Explosion exp)
+    private void executePushObjects(Explosion exp)
     {
         Point2D exppoint = new Point2D(exp.x, exp.y);
         //push all nearby projectiles
@@ -317,14 +325,21 @@ public class GSGame extends GameState
             double dist = exppoint.distance(pro.getX(), pro.getY());
             if(dist <= exp.hurtRadius)
             {
-                double pushangle = calculatePushAngle(pro.getX(), pro.getY(), exppoint, exp, dist);
-                double epower = exp.power * (1 - (dist/exp.hurtRadius));
-                pro.push(CommonMath.getDirectionVector(pushangle).multiply(epower));
+                PushObject(pro, exppoint, exp, dist);
+            }
+        }
+        
+        for(LevelObject lo : objects)
+        {
+            double dist = exppoint.distance(lo.getX(), lo.getY());
+            if(dist <= exp.hurtRadius)
+            {
+                PushObject(lo, exppoint, exp, dist);
             }
         }
     }
     
-    private void HurtPlayers(Explosion exp) 
+    private void executeHurtPlayers(Explosion exp) 
     {
         Point2D exppoint = new Point2D(exp.x, exp.y);
         //push all nearby projectiles
@@ -344,6 +359,13 @@ public class GSGame extends GameState
                 plr.push(CommonMath.getDirectionVector(pushangle).multiply(epower));
             }
         }
+    }
+    
+    private void PushObject(Actor pro, Point2D exppoint, Explosion exp, double dist)
+    {
+        double pushangle = calculatePushAngle(pro.getX(), pro.getY(), exppoint, exp, dist);
+        double epower = exp.power * (1 - (dist/exp.hurtRadius));
+        pro.push(CommonMath.getDirectionVector(pushangle).multiply(epower));
     }
     
     private double calculatePushAngle(double targetX, double targetY, Point2D exppoint, Explosion exp, double dist)
@@ -419,6 +441,17 @@ public class GSGame extends GameState
     {
         for(Player p : players)
             if(p.isMoving())
+            {
+                return true;
+            }
+        
+        return false;
+    }
+    
+    public boolean areObjectsMoving()
+    {
+        for(LevelObject lo : objects)
+            if(lo.isMoving())
             {
                 return true;
             }

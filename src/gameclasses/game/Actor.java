@@ -7,6 +7,7 @@ package gameclasses.game;
 
 import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.*;
+import javafx.geometry.Point2D;
 
 /**
  *
@@ -20,6 +21,8 @@ public class Actor
     protected double vx = 0;
     protected double vy = 0;
 
+    protected int healthPoints;
+    
     public void render(MainLoop loop, Camera c)
     {
         
@@ -38,6 +41,15 @@ public class Actor
     public double getY()
     {
         return y;
+    }
+    
+    public void push(double ivx, double ivy)
+    {
+    }
+    
+    public void push(Point2D p)
+    {
+        push(p.getX(), p.getY());
     }
     
     protected void snapToLevelAbs(GSGame gs, double destx, double desty, boolean snaptype)

@@ -44,9 +44,6 @@ public class Player extends Actor
     Team playerTeam;
     int playerID;
     
-    //vital
-    int healthPoints = 100;
-    
     //game logic
     boolean isCurrentlySelected = false;
     
@@ -87,6 +84,8 @@ public class Player extends Actor
         y = iy;
         playerTeam = it;
         playerID = id;
+        
+        healthPoints = 100;
     }
     
     @Override
@@ -595,18 +594,14 @@ public class Player extends Actor
         healthPoints -= dmg;
     }
     
+    @Override
     public void push(double ivx, double ivy)
     {
         vx += ivx;
         vy += ivy;
         currentState = PlayerState.RAGDOLL;
     }
-    
-    public void push(Point2D p)
-    {
-        push(p.getX(), p.getY());
-    }
-    
+        
     boolean getIsRetreading()
     {
         return retreatTime > -1;

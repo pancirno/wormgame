@@ -40,16 +40,12 @@ public class Projectile extends Actor {
         
     }
     
+    @Override
     public void push(double ivx, double ivy)
     {
         if (weight == 0) return;
         vx += ivx/weight;
         vy += ivy/weight;
-    }
-    
-    public void push(Point2D p)
-    {
-        push(p.getX(), p.getY());
     }
     
     public void explode(GSGame gs)
