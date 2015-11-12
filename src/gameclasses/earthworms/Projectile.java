@@ -31,7 +31,10 @@ public class Projectile extends Actor {
     @Override
     public void step(GSGame gs)
     {
-        
+        if(this.isOutsideAreaOfPlay(gs))
+        {
+            gs.removeObject(this);
+        }
     }
     
     @Override

@@ -6,6 +6,7 @@
 package gameclasses.earthworms;
 
 import gameclasses.game.Actor;
+import gameclasses.loop.*;
 
 /**
  *
@@ -13,5 +14,11 @@ import gameclasses.game.Actor;
  */
 public class LevelObject extends Actor
 {
-    
+    @Override public void step(GSGame gs)
+    {
+        if(this.isOutsideAreaOfPlay(gs))
+        {
+            gs.removeObject(this);
+        }
+    }
 }

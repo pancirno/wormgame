@@ -7,12 +7,12 @@ package gameclasses.loop;
 
 import gameclasses.game.*;
 import gameclasses.earthworms.*;
-import gameclasses.earthworms.objects.OilBarrel;
+import gameclasses.earthworms.objects.*;
 import java.util.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
-import varunpant.QuadTree;
+import varunpant.*;
 
 /**
  *
@@ -22,8 +22,8 @@ public class GSGame extends GameState
 {
     //game data
     public Camera gameCamera;
-    public Level currentStage;
     public Random randomizer;
+    public Level currentStage;
     
     //info
     ArrayList<Team> teamList;
@@ -63,8 +63,8 @@ public class GSGame extends GameState
     public GSGame()
     {
         gameCamera = new Camera(0, 0, 800, 600);
-        currentStage = new Level();
         randomizer = new Random();
+        currentStage = new Level(randomizer.nextInt());
         
         teamList = new ArrayList<>();
         teamPlayerList = new HashMap<>();
@@ -115,6 +115,7 @@ public class GSGame extends GameState
         for(int i = 0; i < 4; i++)
         {
             spawnObject(new OilBarrel(this.getRandomNumber() * 1900, 0));
+            spawnObject(new Mine(this.getRandomNumber() * 1900, 0, 180));
         }
         
         
@@ -285,22 +286,41 @@ public class GSGame extends GameState
     {
         collisionTree.clear();
         
+        //set points
         for(Actor ac : players)
         {
-            if(!ac.isOutsideAreaOfPlay(this))
+            if(ac.checkCollidable() && !ac.isOutsideAreaOfPlay(this))
                 collisionTree.set(ac.getX(), ac.getY(), ac);
         }
         
         for(Actor ac : projectiles)
         {
-            if(!ac.isOutsideAreaOfPlay(this))
+            if(ac.checkCollidable() && !ac.isOutsideAreaOfPlay(this))
                 collisionTree.set(ac.getX(), ac.getY(), ac);
         }
         
         for(Actor ac : objects)
         {
-            if(!ac.isOutsideAreaOfPlay(this))
+            if(ac.checkCollidable() && !ac.isOutsideAreaOfPlay(this))
                 collisionTree.set(ac.getX(), ac.getY(), ac);
+        }
+        
+        //decide what to do
+        for(Actor ac : players)
+        {
+        }
+        
+        for(Actor ac : projectiles)
+        {
+        }
+        
+        for(Actor ac : objects)
+        {
+            Rectangle2D col = ac.getCollisionArea();
+            for(Point p : collisionTree.searchWithin(col.getMinX(), col.getMinY(), col.getMaxX(), col.getMaxY()))
+            {
+                ac.checkCollide((Actor)p.getValue());
+            }
         }
     }
 

@@ -85,6 +85,9 @@ public class Player extends Actor
         playerTeam = it;
         playerID = id;
         
+        cx = 32;
+        cy = 32;
+        
         healthPoints = 100;
     }
     

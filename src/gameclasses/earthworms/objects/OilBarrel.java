@@ -43,10 +43,7 @@ public class OilBarrel extends LevelObject
             }
         }
         
-        if(this.isOutsideAreaOfPlay(gs))
-        {
-            gs.removeObject(this);
-        }
+        super.step(gs);
     }
     
     @Override

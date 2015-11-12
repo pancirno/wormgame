@@ -37,9 +37,9 @@ public class Level
     
     public final Rectangle2D GameArea;
     
-    public Level()
+    public Level(int seed)
     {
-        TerrainGen LevelGenerator = new TerrainGen(889);
+        TerrainGen LevelGenerator = new TerrainGen(seed);
         MainPictureData = LevelGenerator.returnImage();
         
         levelWidth = (int)MainPictureData.getWidth();
@@ -48,6 +48,11 @@ public class Level
         GameArea = new Rectangle2D(-1000, -1000, levelWidth + 2000, levelHeight + 1000);
         
         divideImage();
+    }
+    
+    public Level()
+    {
+        this(889);
     }
     
     public void render(GraphicsContext gc, Camera cd)

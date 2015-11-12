@@ -7,7 +7,8 @@ package gameclasses.game;
 
 import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.*;
-import javafx.geometry.Point2D;
+import javafx.geometry.*;
+import javafx.scene.shape.*;
 
 /**
  *
@@ -20,6 +21,9 @@ public class Actor
     
     protected double vx = 0;
     protected double vy = 0;
+    
+    protected double cx = 0;
+    protected double cy = 0;
 
     protected int healthPoints;
     
@@ -33,6 +37,16 @@ public class Actor
 
     }
     
+    public void checkCollide(Actor ac)
+    {
+        
+    }
+    
+    public boolean checkCollidable()
+    {
+        return (cx > 0 && cy > 0);
+    }
+    
     public double getX()
     {
         return x;
@@ -41,6 +55,11 @@ public class Actor
     public double getY()
     {
         return y;
+    }
+    
+    public Rectangle2D getCollisionArea()
+    {
+        return new Rectangle2D(x - cx/2, y - cy/2, cx, cy);
     }
     
     public void push(double ivx, double ivy)
@@ -98,6 +117,7 @@ public class Actor
     
     protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
     {
+        //horizontal bounce
         if(gs.currentStage.Collide(x+(-1 * Math.signum(vx)), y))
         {
             vx = vx * StaticPhysics.TORQUE * rollred; //0.9
@@ -120,6 +140,10 @@ public class Actor
         {
             vy = vy + StaticPhysics.GRAVITY;
         }
+        
+        //stop if speed is too small
+        if(Math.abs(vx) < 0.0001) vx = 0;
+        if(Math.abs(vy) < 0.0001) vy = 0;
     }
     
     public boolean isMoving()
