@@ -74,4 +74,11 @@ public class Mine extends LevelObject
         vx += ivx;
         vy += ivy;
     }
+    
+    @Override
+    public boolean isMoving()
+    {
+        if(healthPoints != maxfuse) return true;
+        else return super.isMoving();
+    }
 }

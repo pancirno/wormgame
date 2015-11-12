@@ -250,6 +250,15 @@ public class Player extends Actor
                 refire--;
                 retreatTime = 3;
                 break;
+            case FLAMETHROWER:
+                if(!getCanShootAgain())
+                    refire = 20;
+                
+                autoshoot = true;
+                gs.spawnProjectile(new Flamethrower(horizaim, vertaim, horizthrinst/2.5, vertthrinst/2.5));
+                refire--;
+                retreatTime = 10;
+                break;
             case ROPE:
                 refire = 9999;
                 

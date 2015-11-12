@@ -24,6 +24,7 @@ public class WeaponInfo {
         MIRV,
         HOMINGMISSILE,
         MINIGUN,
+        FLAMETHROWER,
         SHOTGUN,
         RIFLE,
         BLOWTORCH,
@@ -34,7 +35,7 @@ public class WeaponInfo {
         HIBARI
     }
     
-    public static EnumSet<AvailableWeapons> InstantShot = EnumSet.of(AvailableWeapons.BOMB, AvailableWeapons.MINIGUN, AvailableWeapons.SHOTGUN, AvailableWeapons.RIFLE, AvailableWeapons.BLOWTORCH, AvailableWeapons.ROPE);
+    public static EnumSet<AvailableWeapons> InstantShot = EnumSet.of(AvailableWeapons.BOMB, AvailableWeapons.MINIGUN, AvailableWeapons.SHOTGUN, AvailableWeapons.RIFLE, AvailableWeapons.BLOWTORCH, AvailableWeapons.ROPE, AvailableWeapons.FLAMETHROWER);
     public static EnumSet<AvailableWeapons> SetMarker = EnumSet.of(AvailableWeapons.AIRSTRIKE, AvailableWeapons.FIRESTRIKE, AvailableWeapons.HOMINGMISSILE);
     
     static int ChoosenWeapon = 0;
@@ -58,6 +59,7 @@ public class WeaponInfo {
         
         RowC.add(AvailableWeapons.SHOTGUN);
         RowC.add(AvailableWeapons.MINIGUN);
+        RowC.add(AvailableWeapons.FLAMETHROWER);
         
         RowD.add(AvailableWeapons.ROPE);
         
