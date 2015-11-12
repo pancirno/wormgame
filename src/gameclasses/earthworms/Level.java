@@ -19,6 +19,7 @@ import landgen.*;
  */
 public class Level
 {
+
     class PictureNode
     {
         public static final int nodeSize = 256;
@@ -53,6 +54,32 @@ public class Level
     public Level()
     {
         this(889);
+    }
+    
+    public ArrayList<Point2D> findAvailablePoints()
+    {
+        ArrayList<Point2D> pointArray = new ArrayList<>();
+        
+        for(int x = 16; x < MainPictureData.getWidth(); x+=16)
+        {
+            int y = (int)MainPictureData.getHeight() - 1;
+            boolean terrain = false;
+            while(y > 0)
+            {
+                Color cc = MainPictureData.getPixelReader().getColor(x,y);
+                if(cc.isOpaque()) terrain = true;
+                else if(terrain == true)
+                {
+                    //todo sprawdz wysokosc
+                    terrain = false;
+                    pointArray.add(new Point2D(x,y));
+                }
+                
+                y--;
+            }
+        }
+        
+        return pointArray;
     }
     
     public void render(GraphicsContext gc, Camera cd)

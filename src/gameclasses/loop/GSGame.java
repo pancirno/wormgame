@@ -102,24 +102,42 @@ public class GSGame extends GameState
         teamList.add(t2);
         teamPlayerList.put(t2, new ArrayList<>());
         teamIterator.put(t2, 0);
+        
+        ArrayList<Point2D> availablePlaces = currentStage.findAvailablePoints();
                 
-        insertPlayer(new Player(300, 0, t1, 0));
-        insertPlayer(new Player(500, 0, t1, 1));
-        insertPlayer(new Player(700, 0, t1, 2));
-        insertPlayer(new Player(900, 0, t1, 3));
-        insertPlayer(new Player(1100, 0, t2, 0));
-        insertPlayer(new Player(1300, 0, t2, 1));
-        insertPlayer(new Player(1500, 0, t2, 2));
-        insertPlayer(new Player(1700, 0, t2, 3));
+        for(int i = 0; i < 4; i++)
+        {
+            Point2D p = pickRandomPointElement(availablePlaces);
+            insertPlayer(new Player((int)p.getX(), (int)p.getY(), t1, i));
+        }
         
         for(int i = 0; i < 4; i++)
         {
-            spawnObject(new OilBarrel(this.getRandomNumber() * 1900, 0));
-            spawnObject(new Mine(this.getRandomNumber() * 1900, 0, 180));
+            Point2D p = pickRandomPointElement(availablePlaces);
+            insertPlayer(new Player((int)p.getX(), (int)p.getY(), t2, i));
         }
         
         
+        for(int i = 0; i < 4; i++)
+        {
+            Point2D p = pickRandomPointElement(availablePlaces);
+            spawnObject(new OilBarrel((int)p.getX(), (int)p.getY()));
+        }
+        
+        for(int i = 0; i < 4; i++)
+        {
+            Point2D p = pickRandomPointElement(availablePlaces);
+            spawnObject(new Mine((int)p.getX(), (int)p.getY(), 180));
+        }
+        
         selectNextPlayer();
+    }
+    
+    private Point2D pickRandomPointElement(ArrayList<Point2D> l)
+    {
+        Point2D p = l.get(randomizer.nextInt(l.size()));
+        l.remove(p);
+        return p;
     }
     
     private void insertPlayer(Player p)

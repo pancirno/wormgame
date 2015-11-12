@@ -8,7 +8,6 @@ package gameclasses.game;
 import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.*;
 import javafx.geometry.*;
-import javafx.scene.shape.*;
 
 /**
  *

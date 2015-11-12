@@ -5,6 +5,7 @@
  */
 package gameclasses.earthworms;
 
+import java.util.*;
 import javafx.geometry.Point2D;
 
 /**
