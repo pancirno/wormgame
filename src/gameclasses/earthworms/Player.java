@@ -85,8 +85,8 @@ public class Player extends Actor
         playerTeam = it;
         playerID = id;
         
-        cx = 32;
-        cy = 32;
+        cx = 8;
+        cy = 16;
         
         healthPoints = 100;
     }
@@ -304,8 +304,9 @@ public class Player extends Actor
         loop.GetGraphicsContext().strokeText(String.valueOf(healthPoints) + " " + equippedGun.name(), anchx-6, anchy-25);
         
         //sprite
+        Rectangle2D r2d = getCollisionArea();
         loop.GetGraphicsContext().setFill(playerTeam.teamcolor);
-        loop.GetGraphicsContext().fillOval(anchx-12, anchy-12, 24, 24);
+        loop.GetGraphicsContext().fillRect(anchx - cx/2, anchy - cy, cx, cy);
         
         if(isCurrentlySelected)
         {
@@ -344,6 +345,8 @@ public class Player extends Actor
             loop.GetGraphicsContext().strokeLine(anchx, anchy, anchrx, anchry);
 
         }
+        
+        
     }
 
     public void move(InputEngine ie)
@@ -462,7 +465,7 @@ public class Player extends Actor
         
         while(speed > 0)
             {
-                if(gs.currentStage.Collide(x  + (speed * sign), y))
+                if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(speed * sign, 0)))
                 {
                     speed--;
                 }
@@ -476,9 +479,9 @@ public class Player extends Actor
                 {
                     for(int climb = 1; climb <= 8; climb++)
                     {
-                        if(!gs.currentStage.Collide(x, y-climb))
+                        if(!gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -climb)))
                         {
-                            if(!gs.currentStage.Collide(x + 1 * sign , y-climb));
+                            if(!gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(1 * sign , -climb)));
                             {
                                 y = y-climb;
                                 x = x+1*sign;
@@ -492,7 +495,7 @@ public class Player extends Actor
 
     void doFalling(GSGame gs)
     {
-        if(gs.currentStage.Collide(x, y+1))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, 1)))
         {
             currentState = PlayerState.ACTIVE;
             return;
@@ -500,7 +503,7 @@ public class Player extends Actor
         
         for(int fall = 2; fall <= 8; fall++)
         {
-            if(gs.currentStage.Collide(x, y+fall))
+            if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, fall)))
             {
                 y = y+fall-1;
                 currentState = PlayerState.ACTIVE;
@@ -516,7 +519,7 @@ public class Player extends Actor
         //verticals first
         vy = vy + StaticPhysics.GRAVITY;
         
-        if(gs.currentStage.Collide(x, y + vy))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy)))
         {
             vy = 0;
             currentState = PlayerState.ACTIVE;
@@ -526,7 +529,7 @@ public class Player extends Actor
         else y = y + vy;
         
         //horizontal
-        if(gs.currentStage.Collide(x + vx, y))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx, 0)))
         {
             vx = vx * StaticPhysics.TORQUE * -1;
         }
@@ -637,5 +640,17 @@ public class Player extends Actor
     public boolean isDead(GSGame gs)
     {
         return (this.isOutsideAreaOfPlay(gs) || this.healthPoints <= 0);
+    }
+    
+    @Override
+    public Rectangle2D getCollisionArea()
+    {
+        return new Rectangle2D(x - cx/2, y - cy, cx, cy);
+    }
+    
+    @Override
+    public Rectangle2D getCollisionAreaDelta(double dx, double dy)
+    {
+        return new Rectangle2D((x + dx) - cx/2, (y + dy) - cy, cx, cy);
     }
 }

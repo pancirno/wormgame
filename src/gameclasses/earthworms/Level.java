@@ -145,6 +145,17 @@ public class Level
         return !GameArea.contains(x, y);
     }
     
+    public boolean RectangleOverlapsStage(Rectangle2D rect)
+    {
+        for(double x = rect.getMinX(); x < rect.getMaxX(); x++)
+            for(double y = rect.getMinY(); y < rect.getMaxY(); y++)
+                if(Collide(x,y)) 
+                {
+                    return true;
+                }
+        return false;
+    }
+    
     public boolean Collide(Point2D p)
     {
         return Collide((int)p.getX(), (int)p.getY());

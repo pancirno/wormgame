@@ -334,8 +334,7 @@ public class GSGame extends GameState
         
         for(Actor ac : objects)
         {
-            Rectangle2D col = ac.getCollisionArea();
-            for(Point p : collisionTree.searchWithin(col.getMinX(), col.getMinY(), col.getMaxX(), col.getMaxY()))
+            for(Point p : collisionTree.searchWithin(ac.getX()-128, ac.getY()-128, ac.getX()+128, ac.getY()+128))
             {
                 ac.checkCollide((Actor)p.getValue());
             }

@@ -25,9 +25,6 @@ public class Mine extends LevelObject
         y = iy;
         healthPoints = ifuse;
         maxfuse = ifuse;
-        
-        cx = 100;
-        cy = 100;
     }
     
     @Override public void step(GSGame gs)

@@ -21,8 +21,8 @@ public class Actor
     protected double vx = 0;
     protected double vy = 0;
     
-    protected double cx = 0;
-    protected double cy = 0;
+    protected double cx = 1;
+    protected double cy = 1;
 
     protected int healthPoints;
     
@@ -58,7 +58,12 @@ public class Actor
     
     public Rectangle2D getCollisionArea()
     {
-        return new Rectangle2D(x - cx/2, y - cy/2, cx, cy);
+        return new Rectangle2D(x, y, cx, cy);
+    }
+    
+    public Rectangle2D getCollisionAreaDelta(double dx, double dy)
+    {
+        return new Rectangle2D(x + dx - cx/2, y + dy - cy/2, cx, cy);
     }
     
     public void push(double ivx, double ivy)
@@ -81,25 +86,25 @@ public class Actor
         
         for(int i = 1; i <= steps; i++)
         {
-            checkx = x + (tvx * ((double)i/(double)steps));
-            checky = y + (tvy * ((double)i/(double)steps));
+            checkx = tvx * ((double)i/(double)steps);
+            checky = tvy * ((double)i/(double)steps);
             
-            if(gs.currentStage.Collide(checkx, checky))
+            if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(checkx, checky)))
             {
                 if(!snaptype)
                 {
                 }
                 else if (i > 1)
                 {
-                    checkx = x + (tvx * ((double)(i-1)/(double)steps));
-                    checky = y + (tvy * ((double)(i-1)/(double)steps));
+                    checkx = tvx * ((double)(i-1)/(double)steps);
+                    checky = tvy * ((double)(i-1)/(double)steps);
                     
                     checkx = Math.round(checkx);
                     checky = Math.round(checky);
                 }
                 
-                destx = checkx;
-                desty = checky;
+                destx = x + checkx;
+                desty = y + checky;
                 
                 break;
             }
@@ -117,21 +122,21 @@ public class Actor
     protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
     {
         //horizontal bounce
-        if(gs.currentStage.Collide(x+(-1 * Math.signum(vx)), y))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(-1 * Math.signum(vx), 0)))
         {
             vx = vx * StaticPhysics.TORQUE * rollred; //0.9
         }
-        else if(gs.currentStage.Collide(x+(1 * Math.signum(vx)), y))
+        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(1 * Math.signum(vx), 0)))
         {
             vx = vx * StaticPhysics.TORQUE * -1 * impactred;
         }
             
         //vertical bounce
-        if(gs.currentStage.Collide(x, y+1))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, 1)))
         {
             vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
         }
-        else if(gs.currentStage.Collide(x, y-1))
+        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1)))
         {
             vy = Math.abs(vy + StaticPhysics.GRAVITY);
         }
@@ -154,4 +159,5 @@ public class Actor
     {
         return !gs.currentStage.GameArea.contains(x, y);
     }
+    
 }
