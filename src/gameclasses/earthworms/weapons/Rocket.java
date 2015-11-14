@@ -23,6 +23,9 @@ public class Rocket extends Projectile
     {
         super(ix, iy, ivx, ivy);
         weight = 10;
+        
+        cx = 5;
+        cy = 5;
     }
     
     @Override
@@ -42,9 +45,8 @@ public class Rocket extends Projectile
         fuse--;
         
         vy = vy + StaticPhysics.GRAVITY;
-        snapToLevelVel(gs, vx, vy, false);
         
-        if(gs.currentStage.Collide(x, y) || fuse <= 0)
+        if(snapToLevelVel(gs, vx, vy, false) || fuse <= 0)
         {
             explode(gs);
         }

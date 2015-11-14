@@ -20,6 +20,9 @@ public class Grenade extends Projectile {
     {
         super(ix, iy, ivx, ivy);
         fuse = ifuse;
+        
+        cx = 4;
+        cy = 4;
     }
     
     @Override

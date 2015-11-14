@@ -22,19 +22,19 @@ public class RopeConnector extends Projectile
     public RopeConnector(double ix, double iy, double ivx, double ivy, int traveltime) {
         super(ix, iy, ivx, ivy);
         fuse = traveltime;
+        
+        cx = 4;
+        cy = 4;
     }
     
     @Override
     public void step(GSGame gs)
     {
         fuse --;
-        snapToLevelVel(gs, vx, vy, false);
         
-        if(gs.currentStage.Collide(x, y))
+        if(snapToLevelVel(gs, vx, vy, false))
         {
-            impact = true;
-            gs.removeObject(this);
-            return;
+            explode(gs);
         }
         
         if(fuse <= 0)
@@ -51,5 +51,12 @@ public class RopeConnector extends Projectile
                 
         loop.GetGraphicsContext().setFill(Color.WHITE);
         loop.GetGraphicsContext().fillOval(anchx-8, anchy-8, 16, 16);
+    }
+    
+    @Override
+    public void explode(GSGame gs)
+    {
+        impact = true;
+        gs.removeObject(this);
     }
 }

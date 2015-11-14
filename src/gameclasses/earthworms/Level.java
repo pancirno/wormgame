@@ -147,8 +147,8 @@ public class Level
     
     public boolean RectangleOverlapsStage(Rectangle2D rect)
     {
-        for(double x = rect.getMinX(); x < rect.getMaxX(); x++)
-            for(double y = rect.getMinY(); y < rect.getMaxY(); y++)
+        for(int x = (int)rect.getMinX(); x <= (int)rect.getMinX() + rect.getWidth(); x++)
+            for(int y = (int)rect.getMinY(); y <= (int)rect.getMinY() + rect.getHeight(); y++)
                 if(Collide(x,y)) 
                 {
                     return true;

@@ -49,20 +49,18 @@ public class HomingMissile extends Rocket
             
             if(target.distance(x, y) > 128)
             {
-                vx += vec.getX() * 0.20;
-                vy += vec.getY() * 0.20;
+                vx += vec.getX() * 0.25;
+                vy += vec.getY() * 0.25;
             }
             else
             {
-                vx += vec.getX() * 0.5;
-                vy += vec.getY() * 0.5;
+                vx = vec.getX() * 1 + vx * 0.9;
+                vy = vec.getY() * 1 + vy * 0.9;
             }
             
             fuse--;
         
-            snapToLevelVel(gs, vx, vy, false);
-
-            if(gs.currentStage.Collide(x, y) || fuse <= 0)
+            if(snapToLevelVel(gs, vx, vy, false) || fuse <= 0)
             {
                 explode(gs);
             }

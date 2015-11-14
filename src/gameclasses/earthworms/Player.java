@@ -562,11 +562,11 @@ public class Player extends Actor
         {
             case FORWARD:
                 vx = 2 * (double)sign;
-                vy = -3;
+                vy = -2.5;
                 break;
             case BACKWARD:
                 vx = -0.7 * (double)sign;
-                vy = -5;
+                vy = -4;
         }
     }
     

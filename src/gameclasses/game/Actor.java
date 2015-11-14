@@ -58,12 +58,12 @@ public class Actor
     
     public Rectangle2D getCollisionArea()
     {
-        return new Rectangle2D(x, y, cx, cy);
+        return new Rectangle2D((int)x, (int)y, cx, cy);
     }
     
     public Rectangle2D getCollisionAreaDelta(double dx, double dy)
     {
-        return new Rectangle2D(x + dx - cx/2, y + dy - cy/2, cx, cy);
+        return new Rectangle2D((int)(x + dx - cx/2), (int)(y + dy - cy/2), cx, cy);
     }
     
     public void push(double ivx, double ivy)
@@ -75,12 +75,15 @@ public class Actor
         push(p.getX(), p.getY());
     }
     
-    protected void snapToLevelAbs(GSGame gs, double destx, double desty, boolean snaptype)
+    //returns true if snapped to level or object
+    protected boolean snapToLevelAbs(GSGame gs, double destx, double desty, boolean snaptype)
     {
         double checkx, checky;
         
         double tvx = destx - x;
         double tvy = desty - y;
+        
+        boolean ifcollided = false;
         
         int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty)))*2; //TODO implement this thing https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
         
@@ -91,10 +94,9 @@ public class Actor
             
             if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(checkx, checky)))
             {
-                if(!snaptype)
-                {
-                }
-                else if (i > 1)
+                ifcollided = true;
+                
+                if (snaptype && i > 1)
                 {
                     checkx = tvx * ((double)(i-1)/(double)steps);
                     checky = tvy * ((double)(i-1)/(double)steps);
@@ -112,11 +114,14 @@ public class Actor
         
         x = destx;
         y = desty;
+        
+        return ifcollided;
     }
     
-    protected void snapToLevelVel(GSGame gs, double tvx, double tvy, boolean snaptype)
+    //returns true if snapped to level or object
+    protected boolean snapToLevelVel(GSGame gs, double tvx, double tvy, boolean snaptype)
     {
-        snapToLevelAbs(gs, x + tvx, y + tvy, snaptype);
+        return snapToLevelAbs(gs, x + tvx, y + tvy, snaptype);
     }
     
     protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
