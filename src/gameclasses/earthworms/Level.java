@@ -145,6 +145,7 @@ public class Level
         return !GameArea.contains(x, y);
     }
     
+    //
     public boolean RectangleOverlapsStage(Rectangle2D rect)
     {
         for(int x = (int)rect.getMinX(); x <= (int)rect.getMinX() + rect.getWidth(); x++)

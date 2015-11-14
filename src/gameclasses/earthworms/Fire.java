@@ -38,12 +38,12 @@ public class Fire extends Projectile
     public void step(GSGame gs)
     {
         fuse--;
-        if(gs.currentStage.Collide(x, y+1)) burnout--;
+        if(gs.currentStage.Collide(x, y+2)) burnout--;
         
         double horizdelta = 0;
         
-        boolean wiggleleft = !gs.currentStage.Collide(x-1, y);
-        boolean wiggleright = !gs.currentStage.Collide(x+1, y);
+        boolean wiggleleft = !gs.currentStage.Collide(x-2, y);
+        boolean wiggleright = !gs.currentStage.Collide(x+2, y);
         
         if(wiggleleft) horizdelta -= gs.getRandomNumber() * 1;
         if(wiggleright) horizdelta += gs.getRandomNumber() * 1;

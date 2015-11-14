@@ -19,7 +19,10 @@ import wormgame.*;
  */
 public class Player extends Actor
 {
-    final int MAX_SHOOT_POWER = 15;
+    static final int MAX_SHOOT_POWER = 15;
+    
+    public static final int BOX_WIDTH = 8;
+    public static final int BOX_HEIGHT = 16;
     
     //action types
     enum Jump
@@ -85,8 +88,8 @@ public class Player extends Actor
         playerTeam = it;
         playerID = id;
         
-        cx = 8;
-        cy = 16;
+        cx = BOX_WIDTH;
+        cy = BOX_HEIGHT;
         
         healthPoints = 100;
     }

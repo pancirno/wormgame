@@ -41,31 +41,6 @@ public class Actor
         
     }
     
-    public boolean checkCollidable()
-    {
-        return (cx > 0 && cy > 0);
-    }
-    
-    public double getX()
-    {
-        return x;
-    }
-    
-    public double getY()
-    {
-        return y;
-    }
-    
-    public Rectangle2D getCollisionArea()
-    {
-        return new Rectangle2D((int)x, (int)y, cx, cy);
-    }
-    
-    public Rectangle2D getCollisionAreaDelta(double dx, double dy)
-    {
-        return new Rectangle2D((int)(x + dx - cx/2), (int)(y + dy - cy/2), cx, cy);
-    }
-    
     public void push(double ivx, double ivy)
     {
     }
@@ -85,12 +60,12 @@ public class Actor
         
         boolean ifcollided = false;
         
-        int steps = (int)(Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty)))*2; //TODO implement this thing https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+        double steps = Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty))*2; //TODO implement this thing https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
         
         for(int i = 1; i <= steps; i++)
         {
-            checkx = tvx * ((double)i/(double)steps);
-            checky = tvy * ((double)i/(double)steps);
+            checkx = tvx * ((double)i/steps);
+            checky = tvy * ((double)i/steps);
             
             if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(checkx, checky)))
             {
@@ -98,11 +73,14 @@ public class Actor
                 
                 if (snaptype && i > 1)
                 {
-                    checkx = tvx * ((double)(i-1)/(double)steps);
-                    checky = tvy * ((double)(i-1)/(double)steps);
-                    
-                    checkx = Math.round(checkx);
-                    checky = Math.round(checky);
+                    while(!gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(checkx, checky)) && i > 0)
+                    {
+                        checkx = tvx * ((double)(--i)/(double)steps);
+                        checky = tvy * ((double)(--i)/(double)steps);
+
+                        checkx = Math.round(checkx);
+                        checky = Math.round(checky);
+                    }
                 }
                 
                 destx = x + checkx;
@@ -151,8 +129,8 @@ public class Actor
         }
         
         //stop if speed is too small
-        if(Math.abs(vx) < 0.0001) vx = 0;
-        if(Math.abs(vy) < 0.0001) vy = 0;
+        if(Math.abs(vx) < 0.001) vx = 0;
+        if(Math.abs(vy) < 0.001) vy = 0;
     }
     
     public boolean isMoving()
@@ -165,4 +143,28 @@ public class Actor
         return !gs.currentStage.GameArea.contains(x, y);
     }
     
+    public boolean checkCollidable()
+    {
+        return (cx > 0 && cy > 0);
+    }
+    
+    public double getX()
+    {
+        return x;
+    }
+    
+    public double getY()
+    {
+        return y;
+    }
+    
+    public Rectangle2D getCollisionArea()
+    {
+        return new Rectangle2D((int)x, (int)y, cx, cy);
+    }
+    
+    public Rectangle2D getCollisionAreaDelta(double dx, double dy)
+    {
+        return new Rectangle2D((int)(x + dx - cx/2), (int)(y + dy - cy/2), cx, cy);
+    }
 }

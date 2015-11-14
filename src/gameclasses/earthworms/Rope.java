@@ -8,6 +8,7 @@ package gameclasses.earthworms;
 import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 
 /**
  *
@@ -46,17 +47,21 @@ public class Rope extends Actor
         
         //double angledelta = angularvel/getRadius();
         double i = 0;
+        double previousi = 0;
         double anglesign = Math.signum(angularvel);
         
         while(true)
         {
+            previousi = i;
             i++; i = Math.min(Math.abs(i), Math.abs(angularvel));
             double angledelta = i/getRadius() * anglesign;
+            Point2D p2delta = getEndPosition(endangle + angledelta);
             
-            if(gs.currentStage.Collide(getEndPosition(endangle + angledelta).add(x, y)))
+            if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(p2delta.getX(), p2delta.getY())))
             {
-                angledelta = (i-1)/getRadius() * anglesign;
-                if(gs.currentStage.Collide(getEndPosition(endangle + angledelta).add(x, y)))
+                angledelta = (previousi)/getRadius() * anglesign;
+                p2delta = getEndPosition(endangle + angledelta);
+                if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(p2delta.getX(), p2delta.getY())))
                 {
                     angularvel = 0;
                     break;
@@ -101,7 +106,8 @@ public class Rope extends Actor
     public void decreaseLength(GSGame gs, double amount)
     {
         ropelength -= amount;
-        if(gs.currentStage.Collide(getEndPosition(endangle).add(x,y)))
+        Point2D endp = getEndPosition(endangle);
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(endp.getX(), endp.getY())))
             ropelength += amount;
         
         if(ropelength < 10) ropelength = 10;
@@ -110,7 +116,8 @@ public class Rope extends Actor
     public void increaseLength(GSGame gs, double amount)
     {
         ropelength += amount;
-        if(gs.currentStage.Collide(getEndPosition(endangle).add(x,y)))
+        Point2D endp = getEndPosition(endangle);
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(endp.getX(), endp.getY())))
             ropelength -= amount;
         
         if(ropelength > maxropelength) ropelength = maxropelength;
@@ -135,4 +142,18 @@ public class Rope extends Actor
     {
         return new Point2D(approxvx, approxvy);
     }
+    
+    @Override
+    public Rectangle2D getCollisionArea()
+    {
+        return new Rectangle2D(x - Player.BOX_WIDTH/2, y - Player.BOX_HEIGHT, Player.BOX_WIDTH, Player.BOX_HEIGHT);
+    }
+    
+    @Override
+    public Rectangle2D getCollisionAreaDelta(double dx, double dy)
+    {
+        return new Rectangle2D((x + dx) - Player.BOX_WIDTH/2, (y + dy) - Player.BOX_HEIGHT, Player.BOX_WIDTH, Player.BOX_HEIGHT);
+    }
+    
+    //
 }
