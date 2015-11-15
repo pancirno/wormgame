@@ -7,6 +7,7 @@ package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.ExplosionFactory;
 import gameclasses.earthworms.Fire;
+import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 
 /**
@@ -16,9 +17,9 @@ import gameclasses.loop.GSGame;
 public class AirFireStrikeBomb extends AirStrikeBomb
 {
 
-    public AirFireStrikeBomb(double ix, double iy, double ivx, double ivy)
+    public AirFireStrikeBomb(Actor p, double ix, double iy, double ivx, double ivy)
     {
-        super(ix, iy, ivx, ivy);
+        super(p, ix, iy, ivx, ivy);
         
         fuse = 45;
     }

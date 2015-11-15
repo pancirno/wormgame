@@ -37,7 +37,7 @@ public class WeaponInfo {
     
     public static EnumSet<AvailableWeapons> InstantShot = EnumSet.of(AvailableWeapons.BOMB, AvailableWeapons.MINIGUN, AvailableWeapons.SHOTGUN, AvailableWeapons.RIFLE, AvailableWeapons.BLOWTORCH, AvailableWeapons.ROPE, AvailableWeapons.FLAMETHROWER);
     public static EnumSet<AvailableWeapons> SetMarker = EnumSet.of(AvailableWeapons.AIRSTRIKE, AvailableWeapons.FIRESTRIKE, AvailableWeapons.HOMINGMISSILE);
-    
+        
     static int ChoosenWeapon = 0;
     static int CurrentRow = -1;
     
@@ -49,6 +49,8 @@ public class WeaponInfo {
     
     static
     {
+        
+        
         RowA.add(AvailableWeapons.ROCKET);
         RowA.add(AvailableWeapons.HOMINGMISSILE);
         RowA.add(AvailableWeapons.MIRV);

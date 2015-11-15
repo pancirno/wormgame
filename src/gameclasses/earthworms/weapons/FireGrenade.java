@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.Fire;
+import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 
 /**
@@ -14,8 +15,8 @@ import gameclasses.loop.GSGame;
  */
 public class FireGrenade extends Grenade
 {
-    public FireGrenade(double ix, double iy, double ivx, double ivy, int ifuse) {
-        super(ix, iy, ivx, ivy, ifuse);
+    public FireGrenade(Actor p, double ix, double iy, double ivx, double ivy, int ifuse) {
+        super(p, ix, iy, ivx, ivy, ifuse);
     }
     
     @Override

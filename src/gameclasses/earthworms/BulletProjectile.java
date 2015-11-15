@@ -5,6 +5,7 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 
 /**
@@ -13,8 +14,8 @@ import gameclasses.loop.GSGame;
  */
 public class BulletProjectile extends Projectile
 {
-    public BulletProjectile(double ix, double iy, double ivx, double ivy) {
-        super(ix, iy, ivx, ivy);
+    public BulletProjectile(Actor p, double ix, double iy, double ivx, double ivy) {
+        super(p, ix, iy, ivx, ivy);
     }
     
     @Override
@@ -22,15 +23,13 @@ public class BulletProjectile extends Projectile
     {
         while(true)
         {
-            snapToLevelVel(gs, vx, vy, false);
-
             if(gs.currentStage.IsOutsideOfLevel(x, y))
             {
                 gs.removeObject(this);
                 return;
             }
 
-            if(gs.currentStage.Collide(x, y))
+            if(snapToLevelVel(gs, vx, vy, false))
             {
                 hitScanExp(gs);
                 gs.removeObject(this);

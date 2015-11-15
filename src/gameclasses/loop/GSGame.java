@@ -340,6 +340,35 @@ public class GSGame extends GameState
             }
         }
     }
+    
+    public Object[] findObjectsInCollisionTree(int x, int y, int mx, int my)
+    {
+        int t;
+        
+        if(x > mx)
+        {
+            t = mx;
+            mx = x;
+            x = t;
+        }
+        
+        if(y > my)
+        {
+            t = my;
+            my = y;
+            y = t;
+        }
+        
+        Point[] pts = collisionTree.searchWithin(x, y, mx, my);
+        ArrayList<Object> ob = new ArrayList<>();
+        
+        for(Point pt : pts)
+        {
+            ob.add(pt.getValue());
+        }
+        
+        return ob.toArray();
+    }
 
     private void executeSpawnObjects() {
         //create new objects
@@ -362,7 +391,7 @@ public class GSGame extends GameState
             double dist = exppoint.distance(pro.getX(), pro.getY());
             if(dist <= exp.hurtRadius)
             {
-                PushObject(pro, exppoint, exp, dist);
+                PushObject(pro, exppoint.getX(), exppoint.getY(), exp, dist);
             }
         }
         
@@ -371,7 +400,7 @@ public class GSGame extends GameState
             double dist = exppoint.distance(lo.getX(), lo.getY());
             if(dist <= exp.hurtRadius)
             {
-                PushObject(lo, exppoint, exp, dist);
+                PushObject(lo, exppoint.getX(), exppoint.getY(), exp, dist);
             }
         }
     }
@@ -385,11 +414,13 @@ public class GSGame extends GameState
             double dist = exppoint.distance(plr.getX(), plr.getY());
             if(dist <= exp.hurtRadius)
             {
-                double pushangle = calculatePushAngle(plr.getX(), plr.getY(), exppoint, exp, dist);
-                
+                double pushangle = calculatePushAngle(plr.getX(), plr.getY(), exppoint.getX(), exppoint.getY(), exp, dist);
                 double epower = exp.power * (1 - (dist/exp.hurtRadius));
-                double damage = Math.min(exp.damage * (1 - ((dist - 5)/exp.hurtRadius)), exp.damage);
-                if(damage > exp.damage) damage = exp.damage;
+                
+                double damage;
+                
+                if(dist <= 20) damage = exp.damage;
+                else damage = Math.min(exp.damage * (1 - (dist/exp.hurtRadius)), exp.damage);    
                 if(damage < 0) damage = 0;
                 
                 plr.dealDamage((int) damage);
@@ -398,17 +429,17 @@ public class GSGame extends GameState
         }
     }
     
-    private void PushObject(Actor pro, Point2D exppoint, Explosion exp, double dist)
+    private void PushObject(Actor pro, double expx, double expy,  Explosion exp, double dist)
     {
-        double pushangle = calculatePushAngle(pro.getX(), pro.getY(), exppoint, exp, dist);
+        double pushangle = calculatePushAngle(pro.getX(), pro.getY(), expx, expy, exp, dist);
         double epower = exp.power * (1 - (dist/exp.hurtRadius));
         pro.push(CommonMath.getDirectionVector(pushangle).multiply(epower));
     }
     
-    private double calculatePushAngle(double targetX, double targetY, Point2D exppoint, Explosion exp, double dist)
+    private double calculatePushAngle(double targetX, double targetY, double expx, double expy, Explosion exp, double dist)
     {
-        double xDiff = targetX - exppoint.getX();
-        double yDiff = targetY - exppoint.getY() + exp.bias;
+        double xDiff = targetX - expx;
+        double yDiff = targetY - expy + exp.bias;
         
         return CommonMath.getInvertedDiffAngle(xDiff, yDiff);
     }

@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 
 /**
@@ -14,9 +15,9 @@ import gameclasses.loop.GSGame;
  */
 public class AirStrikeBomb extends Rocket
 {    
-    public AirStrikeBomb(double ix, double iy, double ivx, double ivy)
+    public AirStrikeBomb(Actor p, double ix, double iy, double ivx, double ivy)
     {
-        super(ix, iy, ivx, ivy);
+        super(p, ix, iy, ivx, ivy);
     }
     
     @Override

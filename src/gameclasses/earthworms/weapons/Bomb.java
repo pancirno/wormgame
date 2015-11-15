@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
@@ -18,8 +19,8 @@ import javafx.scene.paint.Color;
 public class Bomb extends Grenade 
 {
 
-    public Bomb(double ix, double iy, double ivx, double ivy, int ifuse) {
-        super(ix, iy, ivx, ivy, 300);
+    public Bomb(Actor p, double ix, double iy, double ivx, double ivy, int ifuse) {
+        super(p, ix, iy, ivx, ivy, 300);
         weight = 2;
     }
     

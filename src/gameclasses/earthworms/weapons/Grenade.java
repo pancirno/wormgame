@@ -5,6 +5,7 @@
  */
 package gameclasses.earthworms.weapons;
 import gameclasses.earthworms.*;
+import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
@@ -16,9 +17,9 @@ import javafx.scene.paint.Color;
  */
 public class Grenade extends Projectile {
     
-    public Grenade(double ix, double iy, double ivx, double ivy, int ifuse) 
+    public Grenade(Actor p, double ix, double iy, double ivx, double ivy, int ifuse) 
     {
-        super(ix, iy, ivx, ivy);
+        super(p, ix, iy, ivx, ivy);
         fuse = ifuse;
         
         cx = 4;

@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.CommonMath;
+import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 import javafx.geometry.Point2D;
 
@@ -19,9 +20,9 @@ public class HomingMissile extends Rocket
     
     int burnout = 45;
     
-    public HomingMissile(double ix, double iy, double ivx, double ivy, int tx, int ty)
+    public HomingMissile(Actor p, double ix, double iy, double ivx, double ivy, int tx, int ty)
     {
-        super(ix, iy, ivx, ivy);
+        super(p, ix, iy, ivx, ivy);
         
         target = new Point2D(tx,ty);
     }

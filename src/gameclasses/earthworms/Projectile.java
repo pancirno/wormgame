@@ -20,8 +20,9 @@ public class Projectile extends Actor {
     protected double weight = 1;
     protected int fuse = 600;
     
-    public Projectile(double ix, double iy, double ivx, double ivy)
+    public Projectile(Actor p, double ix, double iy, double ivx, double ivy)
     {
+        parent = p;
         x = ix;
         y = iy;
         vx = ivx;

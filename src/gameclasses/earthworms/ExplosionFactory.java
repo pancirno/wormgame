@@ -35,7 +35,7 @@ public class ExplosionFactory
     
     static
     {
-        BulletI = GenerateHoleSprite(15,15);
+        BulletI = GenerateHoleSprite(19,19);
         MediumI = GenerateHoleSprite(49,49);
         MediumPlusI = GenerateHoleSprite(69,69);
         LargeI = GenerateHoleSprite(99,99);
@@ -65,7 +65,7 @@ public class ExplosionFactory
     
     static public Explosion MakeBlazeExplosion(int x, int y)
     {
-        Explosion e = new Explosion(BulletI, x, y, 2, 1, -3, 20);
+        Explosion e = new Explosion(BulletI, x, y, 1, 1, -3, 20);
         
         return e;
     }
@@ -79,7 +79,7 @@ public class ExplosionFactory
     
     static public Explosion MakeBulletExplosion(int x, int y)
     {
-        Explosion e = new Explosion(BulletI, x, y, 5, 0.5, 0);
+        Explosion e = new Explosion(BulletI, x, y, 5, 2, -10);
         
         return e;
     }
@@ -100,14 +100,14 @@ public class ExplosionFactory
     
     static public Explosion MakeLargeExplosion(int x, int y)
     {
-        Explosion e = new Explosion(LargeI, x, y, 50, 5, -10);
+        Explosion e = new Explosion(LargeI, x, y, 50, 5, 0);
         
         return e;
     }
     
     static public Explosion MakeBigExplosion(int x, int y)
     {
-        Explosion e = new Explosion(ExtraLargeI, x, y, 75, 7, -25);
+        Explosion e = new Explosion(ExtraLargeI, x, y, 75, 7, -15);
         
         return e;
     }

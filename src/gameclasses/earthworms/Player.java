@@ -219,55 +219,56 @@ public class Player extends Actor
         switch(equippedGun)
         {
             case ROCKET:
-                gs.spawnProjectile(new Rocket(horizaim, vertaim, horizthr, vertthr));
+                gs.spawnProjectile(new Rocket(this, horizaim, vertaim, horizthr, vertthr));
                 break;
             case MIRV:
-                gs.spawnProjectile(new MIRV(horizaim, vertaim, horizthr, vertthr));
+                gs.spawnProjectile(new MIRV(this, horizaim, vertaim, horizthr, vertthr));
                 break;
             case HOMINGMISSILE:
                 if(!ismarked)return;
-                gs.spawnProjectile(new HomingMissile(horizaim, vertaim, horizthr, vertthr, (int)targetmarkerX, (int)targetmarkerY));
+                gs.spawnProjectile(new HomingMissile(this, horizaim, vertaim, horizthr, vertthr, (int)targetmarkerX, (int)targetmarkerY));
                 break;
             case GRENADE:
-                gs.spawnProjectile(new Grenade(horizaim, vertaim, horizthr, vertthr, 180));
+                gs.spawnProjectile(new Grenade(this, horizaim, vertaim, horizthr, vertthr, 180));
                 break;
             case FIREGRENADE:
-                gs.spawnProjectile(new FireGrenade(horizaim, vertaim, horizthr, vertthr, 180));
+                gs.spawnProjectile(new FireGrenade(this, horizaim, vertaim, horizthr, vertthr, 180));
                 break;
             case BOMB:
-                gs.spawnProjectile(new Bomb(horizaim, vertaim, 1.2 * Math.signum(horizthr), -1.5, -1));
+                gs.spawnProjectile(new Bomb(this, horizaim, vertaim, 1.2 * Math.signum(horizthr), -1.5, -1));
                 break;
             case SHOTGUN:
                 if(!getCanShootAgain())
                     refire = 2;
-                gs.spawnProjectile(new Shotgun(horizaim, vertaim, horizthrinst, vertthrinst));
+                gs.spawnProjectile(new Shotgun(this, horizaim, vertaim, horizthrinst, vertthrinst));
                 refire--;
                 retreatTime = 120;
                 break;
             case MINIGUN:
                 if(!getCanShootAgain())
-                    refire = 10;
+                    refire = 15;
                 
                 autoshoot = true;
-                gs.spawnProjectile(new UZI(horizaim, vertaim, horizthrinst, vertthrinst));
+                
+                gs.spawnProjectile(new UZI(this, horizaim , vertaim, aimangle, gs));
                 refire--;
-                retreatTime = 3;
+                retreatTime = 5;
                 break;
             case FLAMETHROWER:
                 if(!getCanShootAgain())
-                    refire = 20;
+                    refire = 15;
                 
                 autoshoot = true;
-                gs.spawnProjectile(new Flamethrower(horizaim, vertaim, horizthrinst/2.5, vertthrinst/2.5));
+                gs.spawnProjectile(new Flamethrower(this, horizaim, vertaim, horizthrinst/2.5, vertthrinst/2.5));
                 refire--;
-                retreatTime = 10;
+                retreatTime = 8;
                 break;
             case ROPE:
                 refire = 9999;
                 
                 if(!gs.ifObjectExists(ropeshoot))
                 {
-                    ropeshoot = new RopeConnector(horizaim, vertaim, horizthrinst, vertthrinst, 15);
+                    ropeshoot = new RopeConnector(this, horizaim, vertaim, horizthrinst, vertthrinst, 15);
                     gs.spawnProjectile(ropeshoot);
                 }
                 
@@ -275,11 +276,11 @@ public class Player extends Actor
                 break;
             case AIRSTRIKE:
                 if(!ismarked)return;
-                gs.spawnProjectile(new AirStrike(targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
+                gs.spawnProjectile(new AirStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
                 break;
             case FIRESTRIKE:
                 if(!ismarked)return;
-                gs.spawnProjectile(new AirFireStrike(targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
+                gs.spawnProjectile(new AirFireStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
                 break;
         }
         

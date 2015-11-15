@@ -18,7 +18,7 @@ public class Fire extends Projectile
 {
     int burnout;
     public Fire(double ix, double iy, double ivx, double ivy, int f) {
-        super(ix, iy, ivx, ivy);
+        super(null, ix, iy, ivx, ivy);
         fuse = f + 1800;
         burnout = f;
     }

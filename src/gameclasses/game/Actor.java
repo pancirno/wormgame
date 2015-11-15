@@ -23,6 +23,8 @@ public class Actor
     
     protected double cx = 1;
     protected double cy = 1;
+    
+    protected Actor parent = null;
 
     protected int healthPoints;
     
@@ -59,15 +61,22 @@ public class Actor
         double tvy = desty - y;
         
         boolean ifcollided = false;
+        boolean objectcollide = false;
         
         double steps = Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty))*2; //TODO implement this thing https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+        
+        Object[] colobjects = gs.findObjectsInCollisionTree((int)x-64, (int)y-64, (int)destx+64, (int)desty+64);
         
         for(int i = 1; i <= steps; i++)
         {
             checkx = tvx * ((double)i/steps);
             checky = tvy * ((double)i/steps);
             
-            if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(checkx, checky)))
+            for(Object o : colobjects)
+                if(o instanceof Actor && o != this && o != parent)
+                    if(((Actor)o).getCollisionArea().intersects(getCollisionAreaDelta(checkx, checky))) objectcollide = true;
+            
+            if(objectcollide || gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(checkx, checky)))
             {
                 ifcollided = true;
                 
@@ -160,7 +169,7 @@ public class Actor
     
     public Rectangle2D getCollisionArea()
     {
-        return new Rectangle2D((int)x, (int)y, cx, cy);
+        return new Rectangle2D((int)(x - cx/2), (int)(y - cy/2), cx, cy);
     }
     
     public Rectangle2D getCollisionAreaDelta(double dx, double dy)

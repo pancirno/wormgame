@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.Projectile;
+import gameclasses.game.Actor;
 
 /**
  *
@@ -14,8 +15,8 @@ import gameclasses.earthworms.Projectile;
 public class DoubleBarelledShotgun extends Projectile
 {
 
-    public DoubleBarelledShotgun(double ix, double iy, double ivx, double ivy) {
-        super(ix, iy, ivx, ivy);
+    public DoubleBarelledShotgun(Actor p, double ix, double iy, double ivx, double ivy) {
+        super(p, ix, iy, ivx, ivy);
     }
     
 }

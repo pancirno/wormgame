@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.Projectile;
+import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
@@ -19,8 +20,8 @@ public class RopeConnector extends Projectile
 {
     public boolean impact = false;
     
-    public RopeConnector(double ix, double iy, double ivx, double ivy, int traveltime) {
-        super(ix, iy, ivx, ivy);
+    public RopeConnector(Actor p, double ix, double iy, double ivx, double ivy, int traveltime) {
+        super(p, ix, iy, ivx, ivy);
         fuse = traveltime;
         
         cx = 4;

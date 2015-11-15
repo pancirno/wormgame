@@ -16,9 +16,9 @@ import javafx.scene.paint.*;
 public class MIRV extends Rocket
 {
 
-    public MIRV(double ix, double iy, double ivx, double ivy)
+    public MIRV(Actor p, double ix, double iy, double ivx, double ivy)
     {
-        super(ix, iy, ivx, ivy);
+        super(p, ix, iy, ivx, ivy);
     }
     
     @Override
@@ -46,9 +46,9 @@ public class MIRV extends Rocket
     @Override
     public void explode(GSGame gs)
     {
-        gs.spawnProjectile(new Rocket(x,y,vx*1.5,vy*1.1));
-        gs.spawnProjectile(new Rocket(x,y,vx,vy*1.1));
-        gs.spawnProjectile(new Rocket(x,y,vx*0.5,vy*1.1));
+        gs.spawnProjectile(new Rocket(this,x,y,vx*1.5,vy*1.1));
+        gs.spawnProjectile(new Rocket(this,x,y,vx,vy*1.1));
+        gs.spawnProjectile(new Rocket(this,x,y,vx*0.5,vy*1.1));
         gs.removeObject(this);
     }
     

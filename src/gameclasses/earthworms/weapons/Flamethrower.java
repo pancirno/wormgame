@@ -16,9 +16,9 @@ import javafx.scene.paint.*;
  */
 public class Flamethrower extends Rocket
 {    
-    public Flamethrower(double ix, double iy, double ivx, double ivy)
+    public Flamethrower(Actor p, double ix, double iy, double ivx, double ivy)
     {
-        super(ix, iy, ivx, ivy);
+        super(p, ix, iy, ivx, ivy);
         fuse = 30;
     }
     

@@ -6,7 +6,9 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.BulletProjectile;
+import gameclasses.earthworms.CommonMath;
 import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 
 /**
@@ -15,8 +17,20 @@ import gameclasses.loop.GSGame;
  */
 public class UZI extends BulletProjectile
 {
-    public UZI(double ix, double iy, double ivx, double ivy) {
-        super(ix, iy, ivx, ivy);
+    public UZI(Actor p, double ix, double iy, double angle, GSGame gs)
+    {
+        this(p, ix, iy, 0, 0);
+        
+        angle += (gs.getGaussianRandomNumber() - 0.5)*0.1;
+        
+        double precos = Math.cos(angle);
+        double presin = Math.sin(angle);
+        vx = precos * 10;
+        vy = presin * 10;
+    }
+    
+    public UZI(Actor p, double ix, double iy, double ivx, double ivy) {
+        super(p, ix, iy, ivx, ivy);
     }
     
     @Override protected void hitScanExp(GSGame gs)

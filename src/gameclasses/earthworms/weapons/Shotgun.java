@@ -7,6 +7,7 @@ package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.BulletProjectile;
 import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 
 /**
@@ -15,8 +16,8 @@ import gameclasses.loop.GSGame;
  */
 public class Shotgun extends BulletProjectile
 {
-    public Shotgun(double ix, double iy, double ivx, double ivy) {
-        super(ix, iy, ivx, ivy);
+    public Shotgun(Actor p, double ix, double iy, double ivx, double ivy) {
+        super(p, ix, iy, ivx, ivy);
     }
     
     @Override protected void hitScanExp(GSGame gs)

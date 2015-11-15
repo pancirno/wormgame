@@ -8,6 +8,7 @@ package gameclasses.earthworms.weapons;
 import gameclasses.earthworms.ExplosionFactory;
 import gameclasses.earthworms.Projectile;
 import gameclasses.earthworms.StaticPhysics;
+import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
@@ -19,9 +20,9 @@ import javafx.scene.paint.Color;
  */
 public class Rocket extends Projectile 
 {
-    public Rocket(double ix, double iy, double ivx, double ivy) 
+    public Rocket(Actor p, double ix, double iy, double ivx, double ivy) 
     {
-        super(ix, iy, ivx, ivy);
+        super(p, ix, iy, ivx, ivy);
         weight = 10;
         
         cx = 5;
