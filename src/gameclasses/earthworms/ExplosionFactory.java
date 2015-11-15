@@ -66,28 +66,28 @@ public class ExplosionFactory
     static public Explosion MakeBlazeExplosion(int x, int y)
     {
         Explosion e = new Explosion(BulletI, x, y, 1, 1, -3, 20);
-        
+        e.constDamage = true;
         return e;
     }
     
     static public Explosion MakeBlazeNoDigExplosion(int x, int y)
     {
         Explosion e = new Explosion(null, x, y, 1, 1, -3, 20);
-        
+        e.constDamage = true;
         return e;
     }
     
     static public Explosion MakeBulletExplosion(int x, int y)
     {
         Explosion e = new Explosion(BulletI, x, y, 5, 2, -10);
-        
+        e.constDamage = true;
         return e;
     }
     
     static public Explosion MakeSmallExplosion(int x, int y)
     {
         Explosion e = new Explosion(MediumI, x, y, 20, 2, -10);
-        
+        e.constDamage = true;
         return e;
     }
     

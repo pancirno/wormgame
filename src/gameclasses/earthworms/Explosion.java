@@ -26,6 +26,7 @@ public class Explosion
     public final int bias;
     
     public double hurtRadius;
+    public boolean constDamage;
     
     public Explosion(Image es, int xi, int yi, int dmg, double pow, int ibias)
     {
@@ -48,6 +49,8 @@ public class Explosion
         damage = dmg;
         power = pow;
         bias = ibias;
+        
+        constDamage = false;
     }
     
     public Explosion(Image es, int xi, int yi, int dmg, double pow, int ibias, double hurtrad)

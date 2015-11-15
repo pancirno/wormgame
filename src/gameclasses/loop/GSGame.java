@@ -95,6 +95,8 @@ public class GSGame extends GameState
     private void prepareMatch() {
         Team t1 = new Team("wew", "lel","lel","lel","lel",Color.RED, 0);
         Team t2 = new Team("dupa2", "lel","lel","lel","lel",Color.BLUE, 0);
+        Team t3 = new Team("ebin", "lel","lel","lel","lel",Color.GREEN, 0);
+        Team t4 = new Team("murzyny", "lel","lel","lel","lel",Color.YELLOW, 0);
         
         teamList.add(t1);
         teamPlayerList.put(t1, new ArrayList<>());
@@ -102,20 +104,23 @@ public class GSGame extends GameState
         teamList.add(t2);
         teamPlayerList.put(t2, new ArrayList<>());
         teamIterator.put(t2, 0);
+        teamList.add(t3);
+        teamPlayerList.put(t3, new ArrayList<>());
+        teamIterator.put(t3, 0);
+        teamList.add(t4);
+        teamPlayerList.put(t4, new ArrayList<>());
+        teamIterator.put(t4, 0);
         
         ArrayList<Point2D> availablePlaces = currentStage.findAvailablePoints();
                 
-        for(int i = 0; i < 4; i++)
+        teamList.stream().forEach((_item) ->
         {
-            Point2D p = pickRandomPointElement(availablePlaces);
-            insertPlayer(new Player((int)p.getX(), (int)p.getY(), t1, i));
-        }
-        
-        for(int i = 0; i < 4; i++)
-        {
-            Point2D p = pickRandomPointElement(availablePlaces);
-            insertPlayer(new Player((int)p.getX(), (int)p.getY(), t2, i));
-        }
+            for(int i = 0; i < 4; i++)
+            {
+                Point2D p = pickRandomPointElement(availablePlaces);
+                insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i));
+            }
+        });
         
         
         for(int i = 0; i < 4; i++)
@@ -324,6 +329,7 @@ public class GSGame extends GameState
         }
         
         //decide what to do
+        //todo remove that section
         for(Actor ac : players)
         {
         }
@@ -411,7 +417,8 @@ public class GSGame extends GameState
         //push all nearby projectiles
         for(Player plr : players)
         {
-            double dist = exppoint.distance(plr.getX(), plr.getY());
+            Rectangle2D plrrec = plr.getCollisionArea();
+            double dist = exppoint.distance(plrrec.getMinX() + plrrec.getWidth()/2, plrrec.getMinY() + plrrec.getHeight()/2);
             if(dist <= exp.hurtRadius)
             {
                 double pushangle = calculatePushAngle(plr.getX(), plr.getY(), exppoint.getX(), exppoint.getY(), exp, dist);
@@ -419,8 +426,9 @@ public class GSGame extends GameState
                 
                 double damage;
                 
-                if(dist <= 20) damage = exp.damage;
-                else damage = Math.min(exp.damage * (1 - (dist/exp.hurtRadius)), exp.damage);    
+                if(exp.constDamage) damage = exp.damage;
+                else damage = Math.min(exp.damage * (1 - (dist/exp.hurtRadius)), exp.damage);   
+                
                 if(damage < 0) damage = 0;
                 
                 plr.dealDamage((int) damage);
