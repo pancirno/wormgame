@@ -23,6 +23,7 @@ public class Player extends Actor
     
     public static final int BOX_WIDTH = 8;
     public static final int BOX_HEIGHT = 16;
+    public static final int AIM_HEIGHT = 12;
     
     //action types
     enum Jump
@@ -210,7 +211,7 @@ public class Player extends Actor
         double precos = Math.cos(aimangle);
         double presin = Math.sin(aimangle);
         double horizaim = x + precos * 5;
-        double vertaim = y + presin * 5;
+        double vertaim = y - AIM_HEIGHT + presin * 5;
         double horizthr = precos * aimpower;
         double vertthr = presin * aimpower;
         double horizthrinst = precos * MAX_SHOOT_POWER;
@@ -316,7 +317,7 @@ public class Player extends Actor
         {
             //celownik
             int aimx = anchx + (int)(Math.cos(aimangle) * 25);
-            int aimy = anchy + (int)(Math.sin(aimangle) * 25);
+            int aimy = anchy - AIM_HEIGHT + (int)(Math.sin(aimangle) * 25);
 
             loop.GetGraphicsContext().setFill(Color.BLUE);
             loop.GetGraphicsContext().fillOval(aimx-3, aimy-3, 6, 6);
@@ -336,7 +337,7 @@ public class Player extends Actor
         if(aimpower > 0)
         {
             loop.GetGraphicsContext().setStroke(Color.WHITE);
-            loop.GetGraphicsContext().strokeLine(anchx, anchy, anchx + Math.cos(aimangle) * (100 * aimpower/15), anchy + Math.sin(aimangle) * (100 * aimpower/15));
+            loop.GetGraphicsContext().strokeLine(anchx, anchy - AIM_HEIGHT, anchx + Math.cos(aimangle) * (100 * aimpower/15), anchy - AIM_HEIGHT + Math.sin(aimangle) * (100 * aimpower/15));
         }
         
         //sznur
