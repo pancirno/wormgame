@@ -38,7 +38,7 @@ public class Fire extends Projectile
     public void step(GSGame gs)
     {
         fuse--;
-        if(gs.currentStage.Collide(x, y+2)) burnout--;
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0,1))) burnout--;
         
         double horizdelta = 0;
         
@@ -49,7 +49,7 @@ public class Fire extends Projectile
         if(wiggleright) horizdelta += gs.getRandomNumber() * 1;
         
         vx = vx * 0.90;
-        if(gs.currentStage.Collide(x + vx + horizdelta, y+1))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + horizdelta,1)))
         {
             vx = 0;
             vy = 0;
