@@ -283,6 +283,10 @@ public class Player extends Actor
                 if(!ismarked)return;
                 gs.spawnProjectile(new AirFireStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
                 break;
+            case HIBARI:
+                if(!ismarked)return;
+                gs.spawnProjectile(new Hibari(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0, 1));
+                break;
         }
         
         if(!getCanShootAgain())
