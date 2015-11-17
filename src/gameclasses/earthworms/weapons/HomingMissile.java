@@ -61,7 +61,7 @@ public class HomingMissile extends Rocket
             
             fuse--;
         
-            if(snapToLevelVel(gs, vx, vy, false) || fuse <= 0)
+            if(snapToLevelVel(gs, vx, vy, false, false) || fuse <= 0)
             {
                 explode(gs);
             }

@@ -28,6 +28,8 @@ public class Actor
 
     protected int healthPoints;
     
+    protected Object[] nearbyobjects = null;
+    
     public void render(MainLoop loop, Camera c)
     {
         
@@ -35,12 +37,13 @@ public class Actor
 
     public void step(GSGame gs)
     {
-
+        
     }
     
-    public void checkCollide(Actor ac)
+    public void checkCollide(GSGame gs)
     {
-        
+        nearbyobjects = null;
+        nearbyobjects = findNearbyObjects(gs, x, y, 64);
     }
     
     public void push(double ivx, double ivy)
@@ -53,7 +56,7 @@ public class Actor
     }
     
     //returns true if snapped to level or object
-    protected boolean snapToLevelAbs(GSGame gs, double destx, double desty, boolean snaptype)
+    protected boolean snapToLevelAbs(GSGame gs, double destx, double desty, boolean snaptype, boolean ignoreobjects)
     {
         double tvx = destx - x;
         double tvy = desty - y;
@@ -62,11 +65,11 @@ public class Actor
         double pcheckx, pchecky;
         
         boolean ifcollided = false;
-        boolean objectcollide = false;
+        boolean objectcollide;
         
         double steps = Math.sqrt((x - destx)*(x - destx) + (y-desty)*(y-desty)); //TODO implement this thing https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
         
-        Object[] colobjects = gs.findObjectsInCollisionTree((int)x-64, (int)y-64, (int)destx+64, (int)desty+64);
+        Object[] colobjects = ignoreobjects ? null : findNearbyObjects(gs, destx, desty, 64);
         
         for(int i = 1; i <= steps; i++)
         {
@@ -77,7 +80,7 @@ public class Actor
             
             objectcollide = checkForObjectOverlap(colobjects, checkx, checky);
             
-            if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(checkx, checky)))
+            if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(checkx, checky)) || (objectcollide && !ignoreobjects))
             {
                 ifcollided = true;
                                 
@@ -93,9 +96,17 @@ public class Actor
         
         return ifcollided;
     }
+    
+    //returns true if snapped to level or object
+    protected boolean snapToLevelVel(GSGame gs, double tvx, double tvy, boolean snaptype, boolean ignoreobjects)
+    {
+        return snapToLevelAbs(gs, x + tvx, y + tvy, snaptype, ignoreobjects);
+    }
 
     private boolean checkForObjectOverlap(Object[] colobjects, double checkx, double checky)
     {
+        if(colobjects == null) return false;
+        
         for(Object o : colobjects)
             if(o instanceof Actor && o != this && o != parent)
                 if(((Actor)o).getCollisionArea().intersects(getCollisionAreaDelta(checkx, checky)))
@@ -104,30 +115,32 @@ public class Actor
         return false;
     }
     
-    //returns true if snapped to level or object
-    protected boolean snapToLevelVel(GSGame gs, double tvx, double tvy, boolean snaptype)
+    private Object[] findNearbyObjects(GSGame gs, double destx, double desty, int radius) 
     {
-        return snapToLevelAbs(gs, x + tvx, y + tvy, snaptype);
+        return gs.findObjectsInCollisionTree((int)x-radius, (int)y-radius, (int)destx+radius, (int)desty+radius);
+        //return colobjects;
     }
     
     protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
     {
+        Object[] nearbyobjects = findNearbyObjects(gs, x, y, 64);
+       
         //horizontal bounce
-        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(-1 * vx, 0)))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(-1 * vx, 0)) || checkForObjectOverlap(nearbyobjects, -1 * vx, 0))
         {
             vx = vx * StaticPhysics.TORQUE * rollred; //0.9
         }
-        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx, 0)))
+        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx, 0)) || checkForObjectOverlap(nearbyobjects, vx, 0))
         {
             vx = vx * StaticPhysics.TORQUE * -1 * impactred;
         }
             
         //vertical bounce
-        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy)))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy)) || checkForObjectOverlap(nearbyobjects, 0, vy))
         {
             vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
         }
-        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1 * vy)))
+        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1 * vy))  || checkForObjectOverlap(nearbyobjects, 0, -1 * vy))
         {
             vy = Math.abs(vy + StaticPhysics.GRAVITY);
         }

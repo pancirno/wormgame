@@ -33,7 +33,7 @@ public class RopeConnector extends Projectile
     {
         fuse --;
         
-        if(snapToLevelVel(gs, vx, vy, false))
+        if(snapToLevelVel(gs, vx, vy, false, true))
         {
             explode(gs);
         }

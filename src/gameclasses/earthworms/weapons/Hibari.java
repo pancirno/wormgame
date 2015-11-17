@@ -34,7 +34,7 @@ public class Hibari extends Projectile
         vx = 0;
         vy = vy + StaticPhysics.GRAVITY;
                 
-        if(snapToLevelVel(gs, vx, vy, true))
+        if(snapToLevelVel(gs, vx, vy, true, true))
         {
             explode(gs);
         }

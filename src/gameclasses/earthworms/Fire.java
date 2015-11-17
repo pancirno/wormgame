@@ -57,7 +57,7 @@ public class Fire extends Projectile
         else
         {
             vy = 2;
-            snapToLevelVel(gs, vx + horizdelta, vy, true);
+            snapToLevelVel(gs, vx + horizdelta, vy, true, true);
         }
         
         if(fuse % 15 == 0)

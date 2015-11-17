@@ -29,7 +29,7 @@ public class BulletProjectile extends Projectile
                 return;
             }
 
-            if(snapToLevelVel(gs, vx, vy, false))
+            if(snapToLevelVel(gs, vx, vy, false, false))
             {
                 hitScanExp(gs);
                 gs.removeObject(this);

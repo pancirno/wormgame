@@ -29,7 +29,12 @@ public class Mine extends LevelObject
     
     @Override public void step(GSGame gs)
     {
-        snapToLevelVel(gs, vx, vy, true);
+        checkCollide(gs);
+        
+        if(healthPoints == maxfuse)
+            detonateMine();
+        
+        snapToLevelVel(gs, vx, vy, true, false);
         grenadeBounce(gs, 0.9, 0.9, 0.5);
         
         if(healthPoints != maxfuse)
@@ -43,6 +48,15 @@ public class Mine extends LevelObject
         
         super.step(gs);
     }
+
+    private void detonateMine() {
+        for(Object ac : nearbyobjects)
+            if(ac instanceof Player)
+                if(Point2D.distance(x, y, ((Player)ac).getX(), ((Player)ac).getY()) < 50)
+                {
+                    healthPoints--;
+                }
+    }
     
     @Override
     public void render(MainLoop loop, Camera c)
@@ -53,16 +67,6 @@ public class Mine extends LevelObject
         if(healthPoints == maxfuse) loop.GetGraphicsContext().setFill(Color.GREEN);
         else loop.GetGraphicsContext().setFill(Color.RED);
         loop.GetGraphicsContext().fillOval(anchx-6, anchy-6, 12, 12);
-    }
-    
-    @Override public void checkCollide(Actor ac)
-    {
-        if(healthPoints == maxfuse)
-            if(ac instanceof Player)
-                if(Point2D.distance(x, y, ac.getX(), ac.getY()) < 50)
-                {
-                    healthPoints--;
-                }
     }
     
     @Override

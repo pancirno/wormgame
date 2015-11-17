@@ -47,7 +47,7 @@ public class Rocket extends Projectile
         
         vy = vy + StaticPhysics.GRAVITY;
         
-        if(snapToLevelVel(gs, vx, vy, false) || fuse <= 0)
+        if(snapToLevelVel(gs, vx, vy, false, false) || fuse <= 0)
         {
             explode(gs);
         }

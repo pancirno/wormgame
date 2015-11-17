@@ -29,7 +29,7 @@ public class OilBarrel extends LevelObject
     @Override
     public void step(GSGame gs)
     {
-        snapToLevelVel(gs, vx, vy, true);
+        snapToLevelVel(gs, vx, vy, true, false);
         grenadeBounce(gs, 0.25, 0.25, 0.25);
         
         if(healthPoints == 0)

@@ -548,7 +548,7 @@ public class Player extends Actor
     
     void doBounce(GSGame gs)
     {
-        this.snapToLevelVel(gs, vx, vy, true);
+        this.snapToLevelVel(gs, vx, vy, true, false);
         this.grenadeBounce(gs, 0.7, 0.7, 0.3);
         
         if(currentState == PlayerState.RAGDOLL && (Math.abs(vx) + Math.abs(vy)) < 0.2)

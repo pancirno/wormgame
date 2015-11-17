@@ -328,23 +328,6 @@ public class GSGame extends GameState
                 collisionTree.set(ac.getX(), ac.getY(), ac);
         }
         
-        //decide what to do
-        //todo remove that section
-        for(Actor ac : players)
-        {
-        }
-        
-        for(Actor ac : projectiles)
-        {
-        }
-        
-        for(Actor ac : objects)
-        {
-            for(Point p : collisionTree.searchWithin(ac.getX()-128, ac.getY()-128, ac.getX()+128, ac.getY()+128))
-            {
-                ac.checkCollide((Actor)p.getValue());
-            }
-        }
     }
     
     public Object[] findObjectsInCollisionTree(int x, int y, int mx, int my)
