@@ -46,9 +46,9 @@ public class MIRV extends Rocket
     @Override
     public void explode(GSGame gs)
     {
-        gs.spawnProjectile(new Rocket(this,x,y,vx*1.5,vy*1.1));
-        gs.spawnProjectile(new Rocket(this,x,y,vx,vy*1.1));
-        gs.spawnProjectile(new Rocket(this,x,y,vx*0.5,vy*1.1));
+        gs.spawnProjectile(new MIRVSplit(this,x,y,(vx*1.5) + 1,vy*1.1));
+        gs.spawnProjectile(new MIRVSplit(this,x,y,vx,vy*1.1));
+        gs.spawnProjectile(new MIRVSplit(this,x,y,(vx*0.5) - 1,vy*1.1));
         gs.removeObject(this);
     }
     

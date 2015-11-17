@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
  */
 public class Rocket extends Projectile 
 {
+    
     public Rocket(Actor p, double ix, double iy, double ivx, double ivy) 
     {
         super(p, ix, iy, ivx, ivy);

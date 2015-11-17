@@ -103,7 +103,7 @@ public class Actor
         return snapToLevelAbs(gs, x + tvx, y + tvy, snaptype, ignoreobjects);
     }
 
-    private boolean checkForObjectOverlap(Object[] colobjects, double checkx, double checky)
+    protected boolean checkForObjectOverlap(Object[] colobjects, double checkx, double checky)
     {
         if(colobjects == null) return false;
         
@@ -115,16 +115,23 @@ public class Actor
         return false;
     }
     
-    private Object[] findNearbyObjects(GSGame gs, double destx, double desty, int radius) 
+    protected Object[] findNearbyObjects(GSGame gs, double destx, double desty, int radius) 
     {
         return gs.findObjectsInCollisionTree((int)x-radius, (int)y-radius, (int)destx+radius, (int)desty+radius);
         //return colobjects;
     }
     
+    protected void excludeOwnClassObjects(Object[] obj) 
+    {
+        for(int i = 0; i < obj.length; i++)
+        {
+            if(obj[i].getClass() == this.getClass())
+                obj[i] = new Object();
+        }
+    }
+    
     protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
     {
-        Object[] nearbyobjects = findNearbyObjects(gs, x, y, 64);
-       
         //horizontal bounce
         if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(-1 * vx, 0)) || checkForObjectOverlap(nearbyobjects, -1 * vx, 0))
         {
