@@ -415,7 +415,7 @@ public class GSGame extends GameState
                 if(damage < 0) damage = 0;
                 
                 plr.dealDamage((int) damage);
-                plr.push(CommonMath.getDirectionVector(pushangle).multiply(epower));
+                plr.push(this, CommonMath.getDirectionVector(pushangle).multiply(epower));
             }
         }
     }
@@ -424,7 +424,7 @@ public class GSGame extends GameState
     {
         double pushangle = calculatePushAngle(pro.getX(), pro.getY(), expx, expy, exp, dist);
         double epower = exp.power * (1 - (dist/exp.hurtRadius));
-        pro.push(CommonMath.getDirectionVector(pushangle).multiply(epower));
+        pro.push(this, CommonMath.getDirectionVector(pushangle).multiply(epower));
     }
     
     private double calculatePushAngle(double targetX, double targetY, double expx, double expy, Explosion exp, double dist)

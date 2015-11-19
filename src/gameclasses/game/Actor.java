@@ -46,13 +46,13 @@ public class Actor
         nearbyobjects = findNearbyObjects(gs, x, y, 64);
     }
     
-    public void push(double ivx, double ivy)
+    public void push(GSGame gs, double ivx, double ivy)
     {
     }
     
-    public void push(Point2D p)
+    public void push(GSGame gs, Point2D p)
     {
-        push(p.getX(), p.getY());
+        push(gs, p.getX(), p.getY());
     }
     
     //returns true if snapped to level or object

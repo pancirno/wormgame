@@ -39,8 +39,9 @@ public class Bomb extends Grenade
     {
         fuse--;
         
-        snapToLevelVel(gs, vx, vy, true, false);
+        checkCollide(gs);
         
+        snapToLevelVel(gs, vx, vy, true, false);
         grenadeBounce(gs, 0.7, 1.1, 0.25);
 
         if(fuse <= 0)

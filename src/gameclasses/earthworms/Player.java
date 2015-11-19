@@ -559,6 +559,14 @@ public class Player extends Actor
         }
     }
     
+    @Override
+    protected Object[] findNearbyObjects(GSGame gs, double destx, double desty, int radius) 
+    {
+        Object[] obj = super.findNearbyObjects(gs, destx, desty, radius);
+        excludeOwnClassObjects(obj);
+        return obj;
+    }
+    
     void doJumping()
     {
         int sign = 1;
@@ -619,8 +627,28 @@ public class Player extends Actor
     }
     
     @Override
-    public void push(double ivx, double ivy)
+    public void push(GSGame gs, double ivx, double ivy)
     {
+        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, 0)) && ivx != 0) 
+        {
+            ivx *= -0.9;
+            if(Math.abs(ivx) <= 0.05) ivx = 0;
+        }
+        
+        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy + ivy)) && ivy != 0) 
+        {
+            ivy *= -0.9;
+            if(Math.abs(ivy) <= 0.05) ivy = 0;
+        }
+        
+        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, vy + ivy)) && ivx != 0 && ivy != 0) 
+        {
+            ivx *= -0.9;
+            if(Math.abs(ivx) <= 0.05) ivx = 0;
+            ivy *= -0.9;
+            if(Math.abs(ivy) <= 0.05) ivy = 0;
+        }
+        
         vx += ivx;
         vy += ivy;
         currentState = PlayerState.RAGDOLL;

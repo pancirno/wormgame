@@ -25,6 +25,7 @@ public class Hibari extends Projectile
         super(p, ix, iy, ivx, ivy);
         cx = 96;
         cy = 2;
+        weight = 10;
     }
     
     @Override
@@ -56,5 +57,6 @@ public class Hibari extends Projectile
     public void explode(GSGame gs)
     {
         gs.spawnExplosion(ExplosionFactory.MakeBigExplosion((int)x, (int)y));
+        vy = -1;
     }
 }

@@ -70,7 +70,7 @@ public class Mine extends LevelObject
     }
     
     @Override
-    public void push(double ivx, double ivy)
+    public void push(GSGame gs, double ivx, double ivy)
     {
         vx += ivx;
         vy += ivy;

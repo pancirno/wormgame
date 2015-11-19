@@ -9,7 +9,6 @@ import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
-import javafx.geometry.Point2D;
 
 /**
  *
@@ -45,7 +44,7 @@ public class Projectile extends Actor {
     }
     
     @Override
-    public void push(double ivx, double ivy)
+    public void push(GSGame gs, double ivx, double ivy)
     {
         if (weight == 0) return;
         vx += ivx/weight;

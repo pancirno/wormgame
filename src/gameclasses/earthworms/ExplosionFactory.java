@@ -100,14 +100,14 @@ public class ExplosionFactory
     
     static public Explosion MakeLargeExplosion(int x, int y)
     {
-        Explosion e = new Explosion(LargeI, x, y, 50, 5, -10);
+        Explosion e = new Explosion(LargeI, x, y, 50, 6, -10);
         
         return e;
     }
     
     static public Explosion MakeBigExplosion(int x, int y)
     {
-        Explosion e = new Explosion(ExtraLargeI, x, y, 75, 7, -15);
+        Explosion e = new Explosion(ExtraLargeI, x, y, 75, 8, -15);
         
         return e;
     }

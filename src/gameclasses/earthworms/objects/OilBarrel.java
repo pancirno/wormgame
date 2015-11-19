@@ -47,7 +47,7 @@ public class OilBarrel extends LevelObject
     }
     
     @Override
-    public void push(double ivx, double ivy)
+    public void push(GSGame gs, double ivx, double ivy)
     {
         healthPoints = 0;
     }
