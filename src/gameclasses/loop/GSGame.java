@@ -7,6 +7,7 @@ package gameclasses.loop;
 
 import gameclasses.game.*;
 import gameclasses.earthworms.*;
+import gameclasses.earthworms.GUIHelper.*;
 import gameclasses.earthworms.objects.*;
 import java.util.*;
 import javafx.geometry.*;
@@ -94,10 +95,10 @@ public class GSGame extends GameState
     }
 
     private void prepareMatch() {
-        Team t1 = new Team("wew", "lel","lel","lel","lel",Color.RED, 0);
-        Team t2 = new Team("dupa2", "lel","lel","lel","lel",Color.BLUE, 0);
-        Team t3 = new Team("ebin", "lel","lel","lel","lel",Color.GREEN, 0);
-        Team t4 = new Team("murzyny", "lel","lel","lel","lel",Color.YELLOW, 0);
+        Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0);
+        Team t2 = new Team("dupa2", "lelelel","saddsadsa","zxxczxc","bvbvbv",Color.BLUE, 0);
+        Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0);
+        Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0);
         
         teamList.add(t1);
         teamPlayerList.put(t1, new ArrayList<>());
@@ -119,7 +120,7 @@ public class GSGame extends GameState
             for(int i = 0; i < 4; i++)
             {
                 Point2D p = pickRandomPointElement(availablePlaces);
-                insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i));
+                insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
             }
         });
         
@@ -256,7 +257,7 @@ public class GSGame extends GameState
             //gc.setFill(Color.WHITE);
             //gc.fillText(String.valueOf(), 10, 22);
             
-//            GUIHelper.drawTextCube(gc, 20, 20, String.valueOf(MainLoop.executionrate), Color.WHITE);
+            GUIHelper.drawTextCube(gc, 20, 20, String.valueOf(MainLoop.executionrate), Color.WHITE, boxAlignment.left);
 //            GUIHelper.drawTextCube(gc, 20, 50, "TEXTBOX", Color.WHITE);
 //            GUIHelper.drawTextCube(gc, 20, 100, "TEXTBOX", Color.WHITE);
 //            GUIHelper.drawTextCube(gc, 20, 150, "TEXTBOX", Color.WHITE);

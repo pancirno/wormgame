@@ -28,11 +28,33 @@ public class GUIHelper
         gc.strokeRoundRect(x, y, w, h, 4, 4);
     }
     
-    static public void drawTextCube(GraphicsContext gc, int x, int y, String s, Paint p)
+    public enum boxAlignment
     {
-        drawRoundCube(gc, x, y, renderedTextWidth(s) + 8, 16);
-        gc.setStroke(p);
-        gc.strokeText(s, x+4, y+12);
+        left,
+        center,
+        right
+    }
+    
+    static public void drawTextCube(GraphicsContext gc, int x, int y, String s, Paint p, boxAlignment top)
+    {
+        int lt = renderedTextWidth(s);
+        
+        switch(top)
+        {
+            case left:
+                drawRoundCube(gc, x, y, lt + 8, 16);
+                gc.setStroke(p);
+                gc.strokeText(s, x+4, y+12);
+                break;
+            
+            case center:
+                drawRoundCube(gc, x - (lt/2) - 4, y, lt + 8, 16);
+                gc.setStroke(p);
+                gc.strokeText(s, x - (lt/2), y+12);
+                break;
+        }
+        
+        
     }
     
     static int renderedTextWidth(String s)

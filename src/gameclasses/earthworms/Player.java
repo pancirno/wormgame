@@ -48,6 +48,7 @@ public class Player extends Actor
     //teaminfo
     Team playerTeam;
     int playerID;
+    String playerName;
     
     //game logic
     boolean isCurrentlySelected = false;
@@ -83,12 +84,13 @@ public class Player extends Actor
     boolean ropepush = false;
     boolean ropepull = false;
     
-    public Player(int ix, int iy, Team it, int id)
+    public Player(int ix, int iy, Team it, int id, String name)
     {
         x = ix;
         y = iy;
         playerTeam = it;
         playerID = id;
+        playerName = name;
         
         cx = BOX_WIDTH;
         cy = BOX_HEIGHT;
@@ -309,9 +311,9 @@ public class Player extends Actor
         int anchx = c.GetCameraDeltaX((int)x);
         int anchy = c.GetCameraDeltaY((int)y);
                 
-        //hp text
-        loop.GetGraphicsContext().setStroke(playerTeam.teamcolor);
-        loop.GetGraphicsContext().strokeText(String.valueOf(healthPoints) + " " + equippedGun.name(), anchx-6, anchy-25);
+        //new hp text
+        GUIHelper.drawTextCube(loop.GetGraphicsContext(), anchx, anchy-42, String.valueOf(healthPoints), playerTeam.teamcolor, GUIHelper.boxAlignment.center);
+        GUIHelper.drawTextCube(loop.GetGraphicsContext(), anchx, anchy-60, playerName, playerTeam.teamcolor, GUIHelper.boxAlignment.center);
         
         //sprite
         Rectangle2D r2d = getCollisionArea();
@@ -320,6 +322,8 @@ public class Player extends Actor
         
         if(isCurrentlySelected)
         {
+            GUIHelper.drawTextCube(loop.GetGraphicsContext(), 20, 50, equippedGun.name(), Color.WHITE, GUIHelper.boxAlignment.left);
+            
             //celownik
             int aimx = anchx + (int)(Math.cos(aimangle) * 25);
             int aimy = anchy - AIM_HEIGHT + (int)(Math.sin(aimangle) * 25);
