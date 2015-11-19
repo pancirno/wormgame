@@ -256,8 +256,21 @@ public class GSGame extends GameState
             //gc.setFill(Color.WHITE);
             //gc.fillText(String.valueOf(), 10, 22);
             
-            GUIHelper.drawTextCube(gc, 20, 20, String.valueOf(MainLoop.executionrate), Color.WHITE);
-            GUIHelper.drawTextCube(gc, 20, 50, "PAPIERZ PEDAŁ", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 20, 20, String.valueOf(MainLoop.executionrate), Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 20, 50, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 20, 100, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 20, 150, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 20, 200, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 20, 250, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 20, 300, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 20, 350, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 120, 50, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 120, 100, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 120, 150, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 120, 200, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 120, 250, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 120, 300, "TEXTBOX", Color.WHITE);
+//            GUIHelper.drawTextCube(gc, 120, 350, "TEXTBOX", Color.WHITE);
         }
     }
 
