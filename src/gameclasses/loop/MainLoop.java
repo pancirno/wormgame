@@ -18,11 +18,14 @@ public class MainLoop extends AnimationTimer
 {        
     GameState g;
     
-    private final InputEngine inputreceiver = new InputEngine();;
+    private final InputEngine inputreceiver = new InputEngine();
     private final GraphicsContext drawengine;
     
     int WindowWidth;
     int WindowHeight;
+    
+    //measure how fast it goes
+    public static double executionrate = 0;
     
     public MainLoop(GraphicsContext cg)
     {
@@ -33,10 +36,7 @@ public class MainLoop extends AnimationTimer
     public void start()
     {
         if(drawengine == null) return;
-        
-        WindowWidth = 800;
-        WindowHeight = 600;
-        
+                
         g = new GSGame();
         
         super.start();
@@ -52,6 +52,7 @@ public class MainLoop extends AnimationTimer
     public void handle(long now)
     {     
         g.execute(this);
+        executionrate = (int)(((double)(System.nanoTime() - now) / 16666666)*100);
     }
         
     //konfiguracja przesylu wejscia wyjscia

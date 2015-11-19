@@ -58,7 +58,8 @@ public class GSGame extends GameState
     //turn data
     boolean pickNextPlayer = false;
     
-    
+    //debug
+    boolean debug = true;
     
     public GSGame()
     {
@@ -215,11 +216,17 @@ public class GSGame extends GameState
         executeDraw(loop);
     }
 
-    private void executeDraw(MainLoop loop) {
+    private void executeDraw(MainLoop loop) 
+    {
+        GraphicsContext gc = loop.GetGraphicsContext();
+        
+        gameCamera.SetResolution((int)gc.getCanvas().getWidth(), (int)loop.GetGraphicsContext().getCanvas().getHeight());
+        gameCamera.RefreshBoundary();
+        
         //draw background
-        drawBackground(loop.GetGraphicsContext(), gameCamera);
+        drawBackground(gc, gameCamera);
         //draw terrain
-        currentStage.render(loop.GetGraphicsContext(), gameCamera);
+        currentStage.render(gc, gameCamera);
         //draw sprites
         for(Player p : players)
         {
@@ -242,6 +249,16 @@ public class GSGame extends GameState
         }
         //draw foreground
         //draw ui
+        
+        if(debug)
+        {
+            //GUIHelper.drawRoundCube(gc, 5, 10, 40, 15);
+            //gc.setFill(Color.WHITE);
+            //gc.fillText(String.valueOf(), 10, 22);
+            
+            GUIHelper.drawTextCube(gc, 20, 20, String.valueOf(MainLoop.executionrate), Color.WHITE);
+            GUIHelper.drawTextCube(gc, 20, 50, "PAPIERZ PEDAŁ", Color.WHITE);
+        }
     }
 
     private void executeRemoveObjects() {

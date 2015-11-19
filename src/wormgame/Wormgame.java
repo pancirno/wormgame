@@ -20,7 +20,7 @@ public class Wormgame extends Application
     {
         primaryStage.setTitle("wormgame");
         primaryStage.setScene(MainWindow.Instance.getSceneContainer());
-        primaryStage.setResizable(false);
+        //primaryStage.setResizable(false);
         primaryStage.initStyle(StageStyle.UTILITY);
         
         MainWindow.Instance.setCanvasScalable(primaryStage);

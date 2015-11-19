@@ -29,7 +29,7 @@ public class MainWindow
     {        
         RenderContainer = new Group();
         SceneContainer = new Scene(RenderContainer, 800, 600, Color.BLACK);
-        DrawObject = new Canvas(800,600);
+        DrawObject = new Canvas();
         
         RenderContainer.getChildren().add(DrawObject);
         
@@ -56,6 +56,8 @@ public class MainWindow
         {
             Game.OnClick(event.getSceneX(), event.getSceneY());
         });
+        
+        
         
         Game.start();
     }

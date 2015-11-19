@@ -35,6 +35,7 @@ public class Player extends Actor
     enum PlayerState
     {
         ACTIVE,
+        STATIC,
         JUMPING,
         FALLING,
         FREEFALL,
@@ -629,17 +630,17 @@ public class Player extends Actor
     @Override
     public void push(GSGame gs, double ivx, double ivy)
     {
-        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, 0)) && ivx != 0) 
-        {
-            ivx *= -0.9;
-            if(Math.abs(ivx) <= 0.05) ivx = 0;
-        }
-        
-        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy + ivy)) && ivy != 0) 
-        {
-            ivy *= -0.9;
-            if(Math.abs(ivy) <= 0.05) ivy = 0;
-        }
+//        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, 0)) && ivx != 0) 
+//        {
+//            ivx *= -0.9;
+//            if(Math.abs(ivx) <= 0.05) ivx = 0;
+//        }
+//        
+//        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy + ivy)) && ivy != 0) 
+//        {
+//            ivy *= -0.9;
+//            if(Math.abs(ivy) <= 0.05) ivy = 0;
+//        }
         
         while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, vy + ivy)) && ivx != 0 && ivy != 0) 
         {

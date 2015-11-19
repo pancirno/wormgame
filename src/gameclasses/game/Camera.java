@@ -6,6 +6,7 @@
 package gameclasses.game;
 
 import javafx.geometry.*;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.*;
 import wormgame.*;
 
@@ -17,10 +18,11 @@ public class Camera
 {
     private int CameraX;
     private int CameraY;
-    private final int Width;
-    private final int Height;
+    private int Width;
+    private int Height;
     
     private Rectangle2D CameraBoundary;
+    private GraphicsContext GC;
     
     public Camera(int x, int y, int w, int h)
     {
@@ -32,7 +34,13 @@ public class Camera
         RefreshBoundary();
     }
     
-    final void RefreshBoundary()
+    public void SetResolution(int x, int y)
+    {
+        Width = x;
+        Height = y;
+    }
+    
+    final public void RefreshBoundary()
     {
         CameraBoundary = new Rectangle2D(CameraX, CameraY, Width, Height);
     }
@@ -41,14 +49,14 @@ public class Camera
     {
         CameraX = x;
         CameraY = y;
-        RefreshBoundary();
+        //RefreshBoundary();
     }
     
     public void MoveCameraRel(int x, int y)
     {
         CameraX += x;
         CameraY += y;
-        RefreshBoundary();
+        //RefreshBoundary();
     }
     
     public Rectangle2D GetBoundary()
