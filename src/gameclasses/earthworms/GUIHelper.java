@@ -42,24 +42,46 @@ public class GUIHelper
         switch(top)
         {
             case left:
-                drawRoundCube(gc, x, y, lt + 8, 16);
+                drawRoundCube(gc, x, y, lt + 9, 16);
                 gc.setStroke(p);
                 gc.strokeText(s, x+4, y+12);
                 break;
             
             case center:
-                drawRoundCube(gc, x - (lt/2) - 4, y, lt + 8, 16);
+                drawRoundCube(gc, x - (lt/2) - 4, y, lt + 9, 16);
                 gc.setStroke(p);
                 gc.strokeText(s, x - (lt/2), y+12);
                 break;
+                
+            case right:
+                drawRoundCube(gc, x - lt - 4, y, lt + 9, 16);
+                gc.setStroke(p);
+                gc.strokeText(s, x - lt, y+12);
         }
-        
+    }
+    
+    static public void drawWindMeter(GraphicsContext gc, int x, int y, double wind)
+    {
+        drawRoundCube(gc, x, y, 80, 16);
+        wind *= 2;
+        if(wind > 0)
+        {
+            gc.setFill(Color.RED);
+            gc.fillRect(x+40, y+2, 36*wind, 12);
+        }
+        else
+        {
+            gc.setFill(Color.BLUE);
+            double width = 36 * Math.abs(wind);
+            gc.fillRect(x+40-width, y+2, width, 12);
+        }
+            
         
     }
     
     static int renderedTextWidth(String s)
     {
-        if(textWidthCache.size() > 256) 
+        if(textWidthCache.size() > 512) 
         {
             textWidthCache.clear();
         }

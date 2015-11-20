@@ -40,7 +40,7 @@ public class Fire extends Projectile
         fuse--;
         if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0,1))) burnout--;
         
-        double horizdelta = 0;
+        double horizdelta = gs.getActualWind()*1.33;
         
         boolean wiggleleft = !gs.currentStage.Collide(x-2, y);
         boolean wiggleright = !gs.currentStage.Collide(x+2, y);
