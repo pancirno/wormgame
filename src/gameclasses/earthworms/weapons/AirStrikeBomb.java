@@ -18,6 +18,7 @@ public class AirStrikeBomb extends Rocket
     public AirStrikeBomb(Actor p, double ix, double iy, double ivx, double ivy)
     {
         super(p, ix, iy, ivx, ivy);
+        windAffected = false;
     }
     
     @Override

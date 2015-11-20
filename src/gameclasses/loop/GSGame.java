@@ -58,6 +58,7 @@ public class GSGame extends GameState
     
     //turn data
     boolean pickNextPlayer = false;
+    double windPower = 0.0;
     
     //debug
     boolean debug = true;
@@ -187,6 +188,26 @@ public class GSGame extends GameState
         nextTeam++;
         
         pickNextPlayer = false;
+        
+        changeWind();
+    }
+    
+    public double getWind()
+    {
+        return windPower / 10;
+    }
+    
+    public double getActualWind()
+    {
+        return windPower;
+    }
+    
+    //od -0.5 do 0.5
+    private void changeWind()
+    {
+        windPower = getRandomNumber() - 0.5; 
+        if(Math.abs(windPower) < 0.05) windPower = 0;
+        if(Math.abs(windPower) > 0.45) windPower = 0.5 * Math.signum(windPower);
     }
     
     @Override
@@ -220,7 +241,7 @@ public class GSGame extends GameState
     private void executeDraw(MainLoop loop) 
     {
         GraphicsContext gc = loop.GetGraphicsContext();
-        
+                
         gameCamera.SetResolution((int)gc.getCanvas().getWidth(), (int)loop.GetGraphicsContext().getCanvas().getHeight());
         gameCamera.RefreshBoundary();
         
@@ -258,7 +279,7 @@ public class GSGame extends GameState
             //gc.fillText(String.valueOf(), 10, 22);
             
             GUIHelper.drawTextCube(gc, 20, 20, String.valueOf(MainLoop.executionrate), Color.WHITE, boxAlignment.left);
-//            GUIHelper.drawTextCube(gc, 20, 50, "TEXTBOX", Color.WHITE);
+            GUIHelper.drawWindMeter(gc, (int)gc.getCanvas().getWidth() - 120, (int)gc.getCanvas().getHeight() - 80, windPower);
 //            GUIHelper.drawTextCube(gc, 20, 100, "TEXTBOX", Color.WHITE);
 //            GUIHelper.drawTextCube(gc, 20, 150, "TEXTBOX", Color.WHITE);
 //            GUIHelper.drawTextCube(gc, 20, 200, "TEXTBOX", Color.WHITE);

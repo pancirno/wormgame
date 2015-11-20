@@ -16,6 +16,7 @@ public class MIRVSplit extends Rocket
 {
     public MIRVSplit(Actor p, double ix, double iy, double ivx, double ivy) {
         super(p, ix, iy, ivx, ivy);
+        windAffected = false;
     }
     
     @Override

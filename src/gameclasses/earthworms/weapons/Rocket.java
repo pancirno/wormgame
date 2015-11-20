@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
  */
 public class Rocket extends Projectile 
 {
+    boolean windAffected = true;
     
     public Rocket(Actor p, double ix, double iy, double ivx, double ivy) 
     {
@@ -46,6 +47,7 @@ public class Rocket extends Projectile
     {
         fuse--;
         
+        if(windAffected) vx = vx + gs.getWind();
         vy = vy + StaticPhysics.GRAVITY;
         
         if(snapToLevelVel(gs, vx, vy, false, false) || fuse <= 0)
