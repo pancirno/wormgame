@@ -290,6 +290,10 @@ public class Player extends Actor
                 if(!ismarked)return;
                 gs.spawnProjectile(new Hibari(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0, 1));
                 break;
+            case DOUBLESHOTGUN:
+                for(int i = 0; i < 15; i++)
+                    gs.spawnProjectile(new UZI(this, horizaim , vertaim, aimangle, gs));
+                break;
         }
         
         if(!getCanShootAgain())
@@ -459,6 +463,11 @@ public class Player extends Actor
             {
                 refire = 0;
                 equippedGun = WeaponInfo.pickWeapon(4);
+            }
+            if(ie.checkPulse(KeyCode.F6) == true)
+            {
+                refire = 0;
+                equippedGun = WeaponInfo.pickWeapon(5);
             }
         }
     }

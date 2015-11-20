@@ -37,4 +37,12 @@ public class UZI extends BulletProjectile
     {
         gs.spawnExplosion(ExplosionFactory.MakeBulletExplosion((int)x, (int)y));
     }
+    
+    @Override
+    protected Object[] findNearbyObjects(GSGame gs, double destx, double desty, int radius) 
+    {
+        Object[] obj = super.findNearbyObjects(gs, destx, desty, radius);
+        excludeOwnClassObjects(obj);
+        return obj;
+    }
 }

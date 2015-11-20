@@ -79,7 +79,7 @@ public class ExplosionFactory
     
     static public Explosion MakeBulletExplosion(int x, int y)
     {
-        Explosion e = new Explosion(BulletI, x, y, 5, 2, -10);
+        Explosion e = new Explosion(BulletI, x, y, 5, 1, -10);
         e.constDamage = true;
         return e;
     }
