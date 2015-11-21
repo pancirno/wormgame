@@ -76,7 +76,7 @@ public class WeaponInfo {
         
         RowC.add(AvailableWeapons.SHOTGUN);
         RowC.add(AvailableWeapons.MINIGUN);
-        RowC.add(AvailableWeapons.FLAMETHROWER);
+        RowC.add(AvailableWeapons.DOUBLESHOTGUN);
         
         RowD.add(AvailableWeapons.ROPE);
         
@@ -84,7 +84,8 @@ public class WeaponInfo {
         RowE.add(AvailableWeapons.FIRESTRIKE);
         RowE.add(AvailableWeapons.HIBARI);
         
-        RowF.add(AvailableWeapons.DOUBLESHOTGUN);
+        RowF.add(AvailableWeapons.FLAMETHROWER);
+        
     }
     
     static AvailableWeapons pickWeapon(int row)

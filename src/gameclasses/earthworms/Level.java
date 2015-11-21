@@ -56,7 +56,7 @@ public class Level
         this(889);
     }
     
-    public ArrayList<Point2D> findAvailablePoints()
+    public ArrayList<Point2D> findAvailablePointsForPlayers()
     {
         ArrayList<Point2D> pointArray = new ArrayList<>();
         
@@ -70,9 +70,23 @@ public class Level
                 if(cc.isOpaque()) terrain = true;
                 else if(terrain == true)
                 {
-                    //todo sprawdz wysokosc
-                    terrain = false;
-                    pointArray.add(new Point2D(x,y));
+                    for(int yd = 1; yd < 20; yd++)
+                    {
+                        terrain = false;
+                        Color yc = MainPictureData.getPixelReader().getColor(x,y-yd);
+                        if(yc.isOpaque()) 
+                        {
+                            terrain = true;
+                            break;
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                    
+                    if(!terrain)
+                        pointArray.add(new Point2D(x,y-2));
                 }
                 
                 y--;

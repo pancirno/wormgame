@@ -114,7 +114,7 @@ public class GSGame extends GameState
         teamPlayerList.put(t4, new ArrayList<>());
         teamIterator.put(t4, 0);
         
-        ArrayList<Point2D> availablePlaces = currentStage.findAvailablePoints();
+        ArrayList<Point2D> availablePlaces = currentStage.findAvailablePointsForPlayers();
                 
         teamList.stream().forEach((_item) ->
         {

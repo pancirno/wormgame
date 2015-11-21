@@ -169,8 +169,7 @@ public class Player extends Actor
             }
             if(markerClick != null)
             {
-                //targetmarkerX = gs.gameCamera.GetCameraDeltaX((int)markerClick.getX());
-                //targetmarkerY = gs.gameCamera.GetCameraDeltaY((int)markerClick.getY());
+                ismarked = true;
                 targetmarkerX = gs.gameCamera.GetBoundary().getMinX() + markerClick.getX();
                 targetmarkerY = gs.gameCamera.GetBoundary().getMinY() + markerClick.getY();
                 markerClick = null;
@@ -377,7 +376,6 @@ public class Player extends Actor
         
         if(ie.isClicked() && WeaponInfo.SetMarker.contains(equippedGun));
         {
-            ismarked = true;
             markerClick = ie.getClicked();
         }
         
