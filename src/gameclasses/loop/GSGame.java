@@ -96,10 +96,10 @@ public class GSGame extends GameState
     }
 
     private void prepareMatch() {
-        Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0);
-        Team t2 = new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0);
-//        Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0);
-//        Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0);
+        Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false);
+        Team t2 = new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, true);
+        Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0, true);
+        Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0, true);
         
         teamList.add(t1);
         teamPlayerList.put(t1, new ArrayList<>());
@@ -107,35 +107,27 @@ public class GSGame extends GameState
         teamList.add(t2);
         teamPlayerList.put(t2, new ArrayList<>());
         teamIterator.put(t2, 0);
-//        teamList.add(t3);
-//        teamPlayerList.put(t3, new ArrayList<>());
-//        teamIterator.put(t3, 0);
-//        teamList.add(t4);
-//        teamPlayerList.put(t4, new ArrayList<>());
-//        teamIterator.put(t4, 0);
+        teamList.add(t3);
+        teamPlayerList.put(t3, new ArrayList<>());
+        teamIterator.put(t3, 0);
+        teamList.add(t4);
+        teamPlayerList.put(t4, new ArrayList<>());
+        teamIterator.put(t4, 0);
         
         ArrayList<Point2D> availablePlaces = currentStage.findAvailablePointsForPlayers();
                 
-//        teamList.stream().forEach((_item) ->
-//        {
-//            for(int i = 0; i < 4; i++)
-//            {
-//                Point2D p = pickRandomPointElement(availablePlaces);
-//                insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
-//            }
-//        });
-        
-        for(int i = 0; i < 4; i++)
+        teamList.stream().forEach((_item) ->
         {
-            Point2D p = pickRandomPointElement(availablePlaces);
-            insertPlayer(new Player((int)p.getX(), (int)p.getY(), t1, i, t1.playernames.get(i)));
-        }
+            for(int i = 0; i < 4; i++)
+            {
+                Point2D p = pickRandomPointElement(availablePlaces);
+                if(_item.ai)
+                    insertPlayer(new PlayerAI((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
+                else
+                    insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
+            }
+        });
         
-        for(int i = 0; i < 4; i++)
-        {
-            Point2D p = pickRandomPointElement(availablePlaces);
-            insertPlayer(new PlayerAI((int)p.getX(), (int)p.getY(), t2, i, t2.playernames.get(i)));
-        }
         
         for(int i = 0; i < 4; i++)
         {

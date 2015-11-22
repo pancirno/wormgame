@@ -18,10 +18,11 @@ public class Team {
     public ArrayList<String> playernames = new ArrayList<>();
     public Color teamcolor;
     public int teamweapon;
+    public boolean ai;
     
     public ArrayList<Player> ingameobjects = new ArrayList<>();
     
-    public Team(String iname, String iplay1, String iplay2, String iplay3, String iplay4, Color iteamcolor, int iteamweapon)
+    public Team(String iname, String iplay1, String iplay2, String iplay3, String iplay4, Color iteamcolor, int iteamweapon, boolean isai)
     {
         name = iname;
         playernames.add(iplay1);
@@ -30,6 +31,7 @@ public class Team {
         playernames.add(iplay4);
         teamcolor = iteamcolor;
         teamweapon = iteamweapon;
+        ai = isai;
     }
     
 }
