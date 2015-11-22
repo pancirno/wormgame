@@ -97,9 +97,9 @@ public class GSGame extends GameState
 
     private void prepareMatch() {
         Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0);
-        Team t2 = new Team("dupa2", "lelelel","saddsadsa","zxxczxc","bvbvbv",Color.BLUE, 0);
-        Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0);
-        Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0);
+        Team t2 = new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0);
+//        Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0);
+//        Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0);
         
         teamList.add(t1);
         teamPlayerList.put(t1, new ArrayList<>());
@@ -107,24 +107,35 @@ public class GSGame extends GameState
         teamList.add(t2);
         teamPlayerList.put(t2, new ArrayList<>());
         teamIterator.put(t2, 0);
-        teamList.add(t3);
-        teamPlayerList.put(t3, new ArrayList<>());
-        teamIterator.put(t3, 0);
-        teamList.add(t4);
-        teamPlayerList.put(t4, new ArrayList<>());
-        teamIterator.put(t4, 0);
+//        teamList.add(t3);
+//        teamPlayerList.put(t3, new ArrayList<>());
+//        teamIterator.put(t3, 0);
+//        teamList.add(t4);
+//        teamPlayerList.put(t4, new ArrayList<>());
+//        teamIterator.put(t4, 0);
         
         ArrayList<Point2D> availablePlaces = currentStage.findAvailablePointsForPlayers();
                 
-        teamList.stream().forEach((_item) ->
-        {
-            for(int i = 0; i < 4; i++)
-            {
-                Point2D p = pickRandomPointElement(availablePlaces);
-                insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
-            }
-        });
+//        teamList.stream().forEach((_item) ->
+//        {
+//            for(int i = 0; i < 4; i++)
+//            {
+//                Point2D p = pickRandomPointElement(availablePlaces);
+//                insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
+//            }
+//        });
         
+        for(int i = 0; i < 4; i++)
+        {
+            Point2D p = pickRandomPointElement(availablePlaces);
+            insertPlayer(new Player((int)p.getX(), (int)p.getY(), t1, i, t1.playernames.get(i)));
+        }
+        
+        for(int i = 0; i < 4; i++)
+        {
+            Point2D p = pickRandomPointElement(availablePlaces);
+            insertPlayer(new PlayerAI((int)p.getX(), (int)p.getY(), t2, i, t2.playernames.get(i)));
+        }
         
         for(int i = 0; i < 4; i++)
         {
@@ -538,6 +549,11 @@ public class GSGame extends GameState
         return activePlayer;
     }
     
+    public List<Player> getPlayerList()
+    {
+        return players;
+    }
+    
     public double getRandomNumber()
     {
         return randomizer.nextDouble();
@@ -546,6 +562,16 @@ public class GSGame extends GameState
     public double getGaussianRandomNumber()
     {
         return randomizer.nextGaussian();
+    }
+    
+    public int getRandomInt()
+    {
+        return randomizer.nextInt();
+    }
+    
+    public int getRandomInt(int limit)
+    {
+        return randomizer.nextInt(limit);
     }
     
     public boolean arePlayersMoving()

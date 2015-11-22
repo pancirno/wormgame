@@ -27,7 +27,6 @@ public class WeaponInfo {
         FLAMETHROWER,
         SHOTGUN,
         DOUBLESHOTGUN,
-        RIFLE,
         BLOWTORCH,
         ROPE,
         BALLOON,
@@ -36,21 +35,41 @@ public class WeaponInfo {
         HIBARI
     }
     
+    
+    //weapon info
     public static EnumSet<AvailableWeapons> InstantShot = EnumSet.of(
             AvailableWeapons.BOMB, 
             AvailableWeapons.MINIGUN, 
             AvailableWeapons.SHOTGUN, 
             AvailableWeapons.DOUBLESHOTGUN,
-            AvailableWeapons.RIFLE, 
             AvailableWeapons.BLOWTORCH,
             AvailableWeapons.ROPE, 
-            AvailableWeapons.FLAMETHROWER);
+            AvailableWeapons.FLAMETHROWER,
+            
+            AvailableWeapons.AIRSTRIKE, 
+            AvailableWeapons.FIRESTRIKE, 
+            AvailableWeapons.HIBARI);
     
     public static EnumSet<AvailableWeapons> SetMarker = EnumSet.of(
             AvailableWeapons.AIRSTRIKE, 
             AvailableWeapons.FIRESTRIKE, 
             AvailableWeapons.HOMINGMISSILE, 
             AvailableWeapons.HIBARI);
+    
+    //ai info
+    //weapon info
+    public static EnumSet<AvailableWeapons> AIDirect = EnumSet.of(
+            AvailableWeapons.ROCKET,
+            AvailableWeapons.MINIGUN, 
+            AvailableWeapons.SHOTGUN, 
+            AvailableWeapons.DOUBLESHOTGUN
+            );
+    
+    public static EnumSet<AvailableWeapons> AIClose = EnumSet.of(
+            AvailableWeapons.BOMB,
+            AvailableWeapons.DOUBLESHOTGUN, 
+            AvailableWeapons.FLAMETHROWER
+            );
         
     static int ChoosenWeapon = 0;
     static int CurrentRow = -1;

@@ -163,7 +163,7 @@ public class Player extends Actor
             {
                 doJumping();
             }
-            if(shoot)
+            if(shoot && isCurrentlySelected && retreatTime <= 0)
             {
                 doShooting(gs);
             }
@@ -210,6 +210,7 @@ public class Player extends Actor
 
     private void doShooting(GSGame gs) 
     {
+        
         double precos = Math.cos(aimangle);
         double presin = Math.sin(aimangle);
         double horizaim = x + precos * 5;
