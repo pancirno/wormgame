@@ -5,6 +5,8 @@
  */
 package gameclasses.game;
 
+import gameclasses.earthworms.Player;
+import gameclasses.earthworms.PlayerAI;
 import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.*;
 import javafx.geometry.*;
@@ -26,7 +28,7 @@ public class Actor
     
     protected Actor parent = null;
 
-    protected int healthPoints;
+    protected int healthPoints = 1;
     
     protected Object[] nearbyobjects = null;
     
@@ -130,6 +132,15 @@ public class Actor
         }
     }
     
+    protected void excludePlayerClassObjects(Object[] obj) 
+    {
+        for(int i = 0; i < obj.length; i++)
+        {
+            if(obj[i].getClass() == Player.class || obj[i].getClass() == PlayerAI.class)
+                obj[i] = new Object();
+        }
+    }
+    
     protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
     {
         //horizontal bounce
@@ -145,6 +156,7 @@ public class Actor
         //vertical bounce
         if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy)) || checkForObjectOverlap(nearbyobjects, 0, vy))
         {
+            if(y >= 5) healthPoints -= 5 * Math.max(0,vy-5);
             vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
         }
         else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1 * vy))  || checkForObjectOverlap(nearbyobjects, 0, -1 * vy))

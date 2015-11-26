@@ -548,7 +548,11 @@ public class Player extends Actor
             wantToJump = false;
             return;
         }
-        else y = y + vy;
+        else 
+        {
+            y = y + vy;
+            if (y >= 3) currentState = PlayerState.RAGDOLL;
+        }
         
         //horizontal
         if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx, 0)))
@@ -576,7 +580,7 @@ public class Player extends Actor
     protected Object[] findNearbyObjects(GSGame gs, double destx, double desty, int radius) 
     {
         Object[] obj = super.findNearbyObjects(gs, destx, desty, radius);
-        excludeOwnClassObjects(obj);
+        excludePlayerClassObjects(obj);
         return obj;
     }
     
