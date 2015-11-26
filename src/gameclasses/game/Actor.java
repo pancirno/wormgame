@@ -32,6 +32,8 @@ public class Actor
     
     protected Object[] nearbyobjects = null;
     
+    protected int fallDamageRatio = 0;
+    
     public void render(MainLoop loop, Camera c)
     {
         
@@ -156,7 +158,7 @@ public class Actor
         //vertical bounce
         if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy)) || checkForObjectOverlap(nearbyobjects, 0, vy))
         {
-            if(y >= 5) healthPoints -= 5 * Math.max(0,vy-5);
+            if(y >= 5) healthPoints -= fallDamageRatio * Math.max(0,vy-5);
             vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
         }
         else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1 * vy))  || checkForObjectOverlap(nearbyobjects, 0, -1 * vy))

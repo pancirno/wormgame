@@ -96,6 +96,7 @@ public class Player extends Actor
         cy = BOX_HEIGHT;
         
         healthPoints = 100;
+        fallDamageRatio = 5;
     }
     
     @Override
