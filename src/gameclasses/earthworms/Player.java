@@ -552,7 +552,7 @@ public class Player extends Actor
         else 
         {
             y = y + vy;
-            if (y >= 3) currentState = PlayerState.RAGDOLL;
+            if (vy >= 7) currentState = PlayerState.RAGDOLL;
         }
         
         //horizontal
