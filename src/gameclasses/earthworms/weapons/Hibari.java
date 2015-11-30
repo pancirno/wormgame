@@ -56,7 +56,7 @@ public class Hibari extends Projectile
     @Override
     public void explode(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeBigExplosion((int)x, (int)y));
+        gs.spawnExplosion(ExplosionFactory.MakeBigExplosion(gs, (int)x, (int)y));
         vy = -1;
     }
 }

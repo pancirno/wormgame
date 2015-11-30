@@ -5,6 +5,7 @@
  */
 package gameclasses.game;
 
+import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
 
 /**
@@ -13,14 +14,27 @@ import gameclasses.loop.MainLoop;
  */
 public class Particle 
 {
-    protected double x = 0;
-    protected double y = 0;
+    public double x, y, vx, vy;
+    public int timer;
     
-    protected double vx = 0;
-    protected double vy = 0;
-
+    public boolean trash = false;
+    
+    public Particle(double ix, double iy, double ivx, double ivy, int t)
+    {
+        x = ix;
+        y = iy;
+        vx = ivx;
+        vy = ivy;
+        timer = t;
+    }
+    
     public void render(MainLoop loop, Camera c)
     {
-        
+        timer--;
+        if(timer <= 0)
+        {
+            trash = true;
+            return;
+        }
     }
 }

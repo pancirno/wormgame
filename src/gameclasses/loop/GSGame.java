@@ -270,7 +270,11 @@ public class GSGame extends GameState
         
         for(Particle pr : particles)
         {
-            pr.render(loop, gameCamera);
+            if(pr.trash)
+            {
+                trashParticle.add(pr);
+            }
+            else pr.render(loop, gameCamera);
         }
         //draw foreground
         //draw ui
@@ -512,6 +516,12 @@ public class GSGame extends GameState
     public void spawnObject(LevelObject e)
     {
         spawnObject.add(e);
+    }
+    
+    public void spawnParticle(Particle p)
+    {
+        if(particles.size() < 256)
+            spawnParticle.add(p);
     }
     
     public void removeObject(Projectile e)

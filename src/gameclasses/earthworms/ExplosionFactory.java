@@ -5,6 +5,8 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.particles.PExplosion;
+import gameclasses.loop.GSGame;
 import javafx.scene.image.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
@@ -77,37 +79,47 @@ public class ExplosionFactory
         return e;
     }
     
-    static public Explosion MakeBulletExplosion(int x, int y)
+    static public Explosion MakeBulletExplosion(GSGame gs, int x, int y)
     {
         Explosion e = new Explosion(BulletI, x, y, 5, 1, -10);
         e.constDamage = true;
+        
+        gs.spawnParticle(new PExplosion(x,y, 10));
+        
         return e;
     }
     
-    static public Explosion MakeSmallExplosion(int x, int y)
+    static public Explosion MakeSmallExplosion(GSGame gs, int x, int y)
     {
         Explosion e = new Explosion(MediumI, x, y, 20, 2, -10);
         e.constDamage = true;
+        
+        gs.spawnParticle(new PExplosion(x,y, 25));
+        
         return e;
     }
     
-    static public Explosion MakeMediumExplosion(int x, int y)
+    static public Explosion MakeMediumExplosion(GSGame gs, int x, int y)
     {
         Explosion e = new Explosion(MediumPlusI, x, y, 35, 2, -10);
         
-        return e;
-    }
-    
-    static public Explosion MakeLargeExplosion(int x, int y)
-    {
-        Explosion e = new Explosion(LargeI, x, y, 50, 6, -10);
+        gs.spawnParticle(new PExplosion(x,y, 35));
         
         return e;
     }
     
-    static public Explosion MakeBigExplosion(int x, int y)
+    static public Explosion MakeLargeExplosion(GSGame gs, int x, int y)
+    {
+        Explosion e = new Explosion(LargeI, x, y, 50, 6, -10);
+        gs.spawnParticle(new PExplosion(x,y, 50));
+        
+        return e;
+    }
+    
+    static public Explosion MakeBigExplosion(GSGame gs, int x, int y)
     {
         Explosion e = new Explosion(ExtraLargeI, x, y, 75, 8, -15);
+        gs.spawnParticle(new PExplosion(x,y, 75));
         
         return e;
     }

@@ -22,6 +22,6 @@ public class Shotgun extends BulletProjectile
     
     @Override protected void hitScanExp(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeSmallExplosion((int)x, (int)y));
+        gs.spawnExplosion(ExplosionFactory.MakeSmallExplosion(gs, (int)x, (int)y));
     }
 }

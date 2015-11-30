@@ -35,7 +35,7 @@ public class UZI extends BulletProjectile
     
     @Override protected void hitScanExp(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeBulletExplosion((int)x, (int)y));
+        gs.spawnExplosion(ExplosionFactory.MakeBulletExplosion(gs, (int)x, (int)y));
     }
     
     @Override

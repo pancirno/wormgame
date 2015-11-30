@@ -53,7 +53,7 @@ public class Bomb extends Grenade
     @Override
     public void explode(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeBigExplosion((int)x, (int)y));
+        gs.spawnExplosion(ExplosionFactory.MakeBigExplosion(gs, (int)x, (int)y));
         gs.removeObject(this);
     }
 }

@@ -42,7 +42,7 @@ public class Mine extends LevelObject
         
         if(healthPoints == 0)
         {
-            gs.spawnExplosion(ExplosionFactory.MakeLargeExplosion((int)x, (int)y));
+            gs.spawnExplosion(ExplosionFactory.MakeLargeExplosion(gs, (int)x, (int)y));
             gs.removeObject(this);
         }
         
