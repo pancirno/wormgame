@@ -8,8 +8,10 @@ package gameclasses.earthworms.weapons;
 import gameclasses.earthworms.BulletProjectile;
 import gameclasses.earthworms.CommonMath;
 import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.earthworms.particles.PRibbon;
 import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -27,6 +29,8 @@ public class UZI extends BulletProjectile
         double presin = Math.sin(angle);
         vx = precos * 10;
         vy = presin * 10;
+        
+        gs.spawnParticle(new PRibbon(x,y,vx*3,vy*3,Color.YELLOW, Color.WHITE));
     }
     
     public UZI(Actor p, double ix, double iy, double ivx, double ivy) {
@@ -35,7 +39,7 @@ public class UZI extends BulletProjectile
     
     @Override protected void hitScanExp(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeBulletExplosion(gs, (int)x, (int)y));
+        ExplosionFactory.MakeBulletExplosion(gs, (int)x, (int)y);
     }
     
     @Override

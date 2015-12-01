@@ -65,62 +65,64 @@ public class ExplosionFactory
         return (Image)wi;
     }
     
-    static public Explosion MakeBlazeExplosion(int x, int y)
+    static public void MakeBlazeExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(BulletI, x, y, 1, 1, -3, 20);
+        Explosion e = new Explosion(BulletI, gs, x, y, 1, 1, -3, 20);
         e.constDamage = true;
-        return e;
+        
+        gs.spawnExplosion(e);
     }
     
-    static public Explosion MakeBlazeNoDigExplosion(int x, int y)
+    static public void MakeBlazeNoDigExplosion(GSGame gs,int x, int y)
     {
-        Explosion e = new Explosion(null, x, y, 1, 1, -3, 20);
+        Explosion e = new Explosion(null, gs, x, y, 1, 1, -3, 20);
         e.constDamage = true;
-        return e;
+        
+        gs.spawnExplosion(e);
     }
     
-    static public Explosion MakeBulletExplosion(GSGame gs, int x, int y)
+    static public void MakeBulletExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(BulletI, x, y, 5, 1, -10);
+        Explosion e = new Explosion(BulletI, gs, x, y, 5, 1, -10);
         e.constDamage = true;
         
         gs.spawnParticle(new PExplosion(x,y, 10));
         
-        return e;
+        gs.spawnExplosion(e);
     }
     
-    static public Explosion MakeSmallExplosion(GSGame gs, int x, int y)
+    static public void MakeSmallExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(MediumI, x, y, 20, 2, -10);
+        Explosion e = new Explosion(MediumI, gs, x, y, 20, 2, -10);
         e.constDamage = true;
         
         gs.spawnParticle(new PExplosion(x,y, 25));
         
-        return e;
+        gs.spawnExplosion(e);
     }
     
-    static public Explosion MakeMediumExplosion(GSGame gs, int x, int y)
+    static public void MakeMediumExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(MediumPlusI, x, y, 35, 2, -10);
+        Explosion e = new Explosion(MediumPlusI, gs, x, y, 35, 2, -10);
         
         gs.spawnParticle(new PExplosion(x,y, 35));
         
-        return e;
+        gs.spawnExplosion(e);
     }
     
-    static public Explosion MakeLargeExplosion(GSGame gs, int x, int y)
+    static public void MakeLargeExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(LargeI, x, y, 50, 6, -10);
+        Explosion e = new Explosion(LargeI, gs, x, y, 50, 6, -10);
         gs.spawnParticle(new PExplosion(x,y, 50));
         
-        return e;
+        gs.spawnExplosion(e);
     }
     
-    static public Explosion MakeBigExplosion(GSGame gs, int x, int y)
+    static public void MakeBigExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(ExtraLargeI, x, y, 75, 8, -15);
+        Explosion e = new Explosion(ExtraLargeI, gs, x, y, 75, 8, -15);
         gs.spawnParticle(new PExplosion(x,y, 75));
         
-        return e;
+        gs.spawnExplosion(e);
     }
 }

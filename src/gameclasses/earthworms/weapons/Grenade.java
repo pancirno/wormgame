@@ -57,7 +57,7 @@ public class Grenade extends Projectile {
     @Override
     public void explode(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeLargeExplosion(gs, (int)x, (int)y));
+        ExplosionFactory.MakeLargeExplosion(gs, (int)x, (int)y);
         gs.removeObject(this);
     }
     

@@ -245,7 +245,7 @@ public class Player extends Actor
             case SHOTGUN:
                 if(!getCanShootAgain())
                     refire = 2;
-                gs.spawnProjectile(new Shotgun(this, horizaim, vertaim, horizthrinst, vertthrinst));
+                gs.spawnProjectile(new Shotgun(this, horizaim, vertaim, horizthrinst, vertthrinst, gs));
                 refire--;
                 retreatTime = 120;
                 break;
@@ -254,7 +254,6 @@ public class Player extends Actor
                     refire = 15;
                 
                 autoshoot = true;
-                
                 gs.spawnProjectile(new UZI(this, horizaim , vertaim, aimangle, gs));
                 refire--;
                 retreatTime = 5;

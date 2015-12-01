@@ -5,6 +5,9 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.particles.PSmoke;
+import gameclasses.game.Particle;
+import gameclasses.loop.GSGame;
 import javafx.scene.image.*;
 
 /**
@@ -28,7 +31,7 @@ public class Explosion
     public double hurtRadius;
     public boolean constDamage;
     
-    public Explosion(Image es, int xi, int yi, int dmg, double pow, int ibias)
+    public Explosion(Image es, GSGame gs, int xi, int yi, int dmg, double pow, int ibias)
     {
         explosionSprite = es;
         
@@ -44,6 +47,11 @@ public class Explosion
             hurtRadius = es.getWidth()*0.75;
             drawx = xi - (int)es.getWidth()/2;
             drawy = yi - (int)es.getHeight()/2;
+            
+            if(explosionSprite.getWidth() >= 25)
+            for(double i = explosionSprite.getWidth()/3; i >= 0; i--)
+                gs.spawnParticle(new PSmoke(x - es.getWidth()*0.5 + Particle.partrandom.nextDouble()*es.getWidth(),y - es.getHeight()*0.5 + Particle.partrandom.nextDouble()*es.getHeight()));
+
         }
         
         damage = dmg;
@@ -51,11 +59,12 @@ public class Explosion
         bias = ibias;
         
         constDamage = false;
+        
     }
     
-    public Explosion(Image es, int xi, int yi, int dmg, double pow, int ibias, double hurtrad)
+    public Explosion(Image es, GSGame gs, int xi, int yi, int dmg, double pow, int ibias, double hurtrad)
     {
-        this(es, xi, yi, dmg, pow, ibias);
+        this(es, gs, xi, yi, dmg, pow, ibias);
         hurtRadius = hurtrad;
     }
     

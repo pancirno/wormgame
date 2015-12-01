@@ -27,7 +27,7 @@ public class AirFireStrikeBomb extends AirStrikeBomb
     @Override
     public void explode(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeMediumExplosion(gs, (int)x, (int)y));
+        ExplosionFactory.MakeMediumExplosion(gs, (int)x, (int)y);
         
         for(int i = 0; i < 8; i++)
         {

@@ -5,6 +5,7 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.particles.PSmoke;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
@@ -60,15 +61,20 @@ public class Fire extends Projectile
             snapToLevelVel(gs, vx + horizdelta, vy, true, true);
         }
         
+        if(fuse % 4 == 0)
+        {
+            gs.spawnParticle(new PSmoke(x,y));
+        }
+        
         if(fuse % 15 == 0)
         {
             if(gs.getRandomNumber() < 0.1)
             {
-                gs.spawnExplosion(ExplosionFactory.MakeBlazeExplosion((int)x, (int)y));
+                ExplosionFactory.MakeBlazeExplosion(gs, (int)x, (int)y);
             }
             else
             {
-                gs.spawnExplosion(ExplosionFactory.MakeBlazeNoDigExplosion((int)x, (int)y));
+                ExplosionFactory.MakeBlazeNoDigExplosion(gs, (int)x, (int)y);
             }
         }
         

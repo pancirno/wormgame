@@ -35,7 +35,7 @@ public class Flamethrower extends Rocket
     @Override
     public void explode(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeBlazeExplosion((int)x, (int)y));
+        ExplosionFactory.MakeBlazeExplosion(gs, (int)x, (int)y);
         gs.spawnProjectile(new Fire(x, y, vx, vy, (int)(gs.getRandomNumber()*50) + 200));
         gs.removeObject(this);
     }

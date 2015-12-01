@@ -16,12 +16,12 @@ import gameclasses.loop.GSGame;
  */
 public class Shotgun extends BulletProjectile
 {
-    public Shotgun(Actor p, double ix, double iy, double ivx, double ivy) {
+    public Shotgun(Actor p, double ix, double iy, double ivx, double ivy, GSGame gs) {
         super(p, ix, iy, ivx, ivy);
     }
     
     @Override protected void hitScanExp(GSGame gs)
     {
-        gs.spawnExplosion(ExplosionFactory.MakeSmallExplosion(gs, (int)x, (int)y));
+        ExplosionFactory.MakeSmallExplosion(gs, (int)x, (int)y);
     }
 }

@@ -7,6 +7,7 @@ package gameclasses.game;
 
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
+import java.util.Random;
 
 /**
  *
@@ -18,6 +19,8 @@ public class Particle
     public int timer;
     
     public boolean trash = false;
+    
+    static public Random partrandom = new Random();
     
     public Particle(double ix, double iy, double ivx, double ivy, int t)
     {
