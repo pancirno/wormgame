@@ -22,6 +22,8 @@ public class PlayerAI extends Player
 {
     boolean thought = false;
     
+    double powerstep = -1;
+    
     public PlayerAI(int ix, int iy, Team it, int id, String name)
     {
         super(ix, iy, it, id, name);
@@ -32,6 +34,7 @@ public class PlayerAI extends Player
     {
         super.SelectPlayer();
         thought = false;
+        powerstep = 0.3;
     }
     
     @Override
@@ -60,25 +63,27 @@ public class PlayerAI extends Player
         
         TracerRocket t;
         
-        for(double i = 0.3; i <= 1; i+=0.1)
-            for(double d = 0; d <= Math.PI*2; d+=0.05)
+        for(double d = 0; d <= Math.PI*2; d+=Math.PI/45)
+        {
+            aimangle = d;
+            aimpower = MAX_SHOOT_POWER * powerstep;
+
+            configureAiming();
+
+            t = new TracerRocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
+            t.runSimulation(gs);
+
+            if(!t.selfHarm && t.getScore() > 0)
             {
-                aimangle = d;
-                aimpower = MAX_SHOOT_POWER * i;
-                
-                configureAiming();
-                
-                t = new TracerRocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
-                t.runSimulation(gs);
-                
-                if(!t.selfHarm && t.getScore() > 0)
-                {
-                    thought = true;
-                    return;
-                }
+                thought = true;
+                return;
             }
+        }
         
-        basicBehaviour(gs);
+        powerstep+=0.1;
+        
+        if(powerstep > 1)
+            basicBehaviour(gs);
     }
 
     private void basicBehaviour(GSGame gs) {
