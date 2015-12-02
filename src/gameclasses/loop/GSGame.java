@@ -96,7 +96,7 @@ public class GSGame extends GameState
     }
 
     private void prepareMatch() {
-        Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false);
+        Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, true);
         Team t2 = new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, true);
         Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0, true);
         Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0, true);

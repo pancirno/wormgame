@@ -39,7 +39,15 @@ public class Fire extends Projectile
     public void step(GSGame gs)
     {
         fuse--;
-        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0,1))) burnout--;
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0,1)))
+        {
+            burnout--;
+            
+            if(fuse % 6 == 0)
+            {
+                gs.spawnParticle(new PSmoke(x,y));
+            }
+        }
         
         double horizdelta = gs.getActualWind()*1.33;
         
@@ -59,11 +67,6 @@ public class Fire extends Projectile
         {
             vy = 2;
             snapToLevelVel(gs, vx + horizdelta, vy, true, true);
-        }
-        
-        if(fuse % 4 == 0)
-        {
-            gs.spawnParticle(new PSmoke(x,y));
         }
         
         if(fuse % 15 == 0)

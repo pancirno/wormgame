@@ -6,6 +6,7 @@
 package gameclasses.earthworms;
 
 import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
+import gameclasses.earthworms.weapons.aitracer.TracerRocket;
 import gameclasses.loop.GSGame;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
@@ -50,16 +51,48 @@ public class PlayerAI extends Player
 
     private void think(GSGame gs)
     {
+        bruteBehaviour(gs);
+    }
+    
+    private void bruteBehaviour(GSGame gs)
+    {        
+        equippedGun = AvailableWeapons.ROCKET;
+        
+        TracerRocket t;
+        
+        for(double i = 0.3; i <= 1; i+=0.1)
+            for(double d = 0; d <= Math.PI*2; d+=0.05)
+            {
+                aimangle = d;
+                aimpower = MAX_SHOOT_POWER * i;
+                
+                configureAiming();
+                
+                t = new TracerRocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
+                t.runSimulation(gs);
+                
+                if(!t.selfHarm && t.getScore() > 0)
+                {
+                    thought = true;
+                    return;
+                }
+            }
+        
+        basicBehaviour(gs);
+    }
+
+    private void basicBehaviour(GSGame gs) {
         //consider players
         List<Player> players = gs.getPlayerList();
-                
         Player selectedtarget = closestPlayer(players);
-        if(selectedtarget == null) return;
-        
+        if (selectedtarget == null) 
+        {
+            thought = true;
+            return;
+        }
         thought = true;
         aimangle = CommonMath.getInvertedDiffAngle(selectedtarget.getX() - x, selectedtarget.getY() - y) * -1;
         aimpower = MAX_SHOOT_POWER;
-        
         //CASE - enemy can be shoot directly
         if(Point2D.distance(x, y, selectedtarget.getX(), selectedtarget.getY()) > 100)
             equippedGun = (AvailableWeapons)WeaponInfo.AIDirect.toArray()[gs.getRandomInt(WeaponInfo.AIDirect.size())];

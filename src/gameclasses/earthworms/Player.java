@@ -72,6 +72,16 @@ public class Player extends Actor
     boolean autoshoot = false;
     int refire = -1;
     
+    //aiming - calculated values
+    double aim_precos;
+    double aim_presin;
+    double aim_horizaim;
+    double aim_vertaim;
+    double aim_horizthr;
+    double aim_vertthr;
+    double aim_horizthrinst;
+    double aim_vertthrinst;
+    
     //marker
     boolean ismarked = false;
     Point2D markerClick;
@@ -208,44 +218,48 @@ public class Player extends Actor
         moveRight = false;
         ismarked = false;
     }
+    
+    protected void configureAiming()
+    {
+        aim_precos = Math.cos(aimangle);
+        aim_presin = Math.sin(aimangle);
+        aim_horizaim = x + aim_precos * 5;
+        aim_vertaim = y - AIM_HEIGHT + aim_presin * 5;
+        aim_horizthr = aim_precos * aimpower;
+        aim_vertthr = aim_presin * aimpower;
+        aim_horizthrinst = aim_precos * MAX_SHOOT_POWER;
+        aim_vertthrinst = aim_presin * MAX_SHOOT_POWER;
+    }
 
     private void doShooting(GSGame gs) 
-    {
-        
-        double precos = Math.cos(aimangle);
-        double presin = Math.sin(aimangle);
-        double horizaim = x + precos * 5;
-        double vertaim = y - AIM_HEIGHT + presin * 5;
-        double horizthr = precos * aimpower;
-        double vertthr = presin * aimpower;
-        double horizthrinst = precos * MAX_SHOOT_POWER;
-        double vertthrinst = presin * MAX_SHOOT_POWER;
+    {        
+        configureAiming();
         
         switch(equippedGun)
         {
             case ROCKET:
-                gs.spawnProjectile(new Rocket(this, horizaim, vertaim, horizthr, vertthr));
+                gs.spawnProjectile(new Rocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr));
                 break;
             case MIRV:
-                gs.spawnProjectile(new MIRV(this, horizaim, vertaim, horizthr, vertthr));
+                gs.spawnProjectile(new MIRV(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr));
                 break;
             case HOMINGMISSILE:
                 if(!ismarked)return;
-                gs.spawnProjectile(new HomingMissile(this, horizaim, vertaim, horizthr, vertthr, (int)targetmarkerX, (int)targetmarkerY));
+                gs.spawnProjectile(new HomingMissile(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, (int)targetmarkerX, (int)targetmarkerY));
                 break;
             case GRENADE:
-                gs.spawnProjectile(new Grenade(this, horizaim, vertaim, horizthr, vertthr, 180));
+                gs.spawnProjectile(new Grenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, 180));
                 break;
             case FIREGRENADE:
-                gs.spawnProjectile(new FireGrenade(this, horizaim, vertaim, horizthr, vertthr, 180));
+                gs.spawnProjectile(new FireGrenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, 180));
                 break;
             case BOMB:
-                gs.spawnProjectile(new Bomb(this, horizaim, vertaim, 1.2 * Math.signum(horizthr), -1.5, -1));
+                gs.spawnProjectile(new Bomb(this, aim_horizaim, aim_vertaim, 1.2 * Math.signum(aim_horizthr), -1.5, -1));
                 break;
             case SHOTGUN:
                 if(!getCanShootAgain())
                     refire = 2;
-                gs.spawnProjectile(new Shotgun(this, horizaim, vertaim, horizthrinst, vertthrinst, gs));
+                gs.spawnProjectile(new Shotgun(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, gs));
                 refire--;
                 retreatTime = 120;
                 break;
@@ -254,7 +268,7 @@ public class Player extends Actor
                     refire = 15;
                 
                 autoshoot = true;
-                gs.spawnProjectile(new UZI(this, horizaim , vertaim, aimangle, gs));
+                gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
                 refire--;
                 retreatTime = 5;
                 break;
@@ -263,7 +277,7 @@ public class Player extends Actor
                     refire = 15;
                 
                 autoshoot = true;
-                gs.spawnProjectile(new Flamethrower(this, horizaim, vertaim, horizthrinst/2.5, vertthrinst/2.5));
+                gs.spawnProjectile(new Flamethrower(this, aim_horizaim, aim_vertaim, aim_horizthrinst/2.5, aim_vertthrinst/2.5));
                 refire--;
                 retreatTime = 8;
                 break;
@@ -272,7 +286,7 @@ public class Player extends Actor
                 
                 if(!gs.ifObjectExists(ropeshoot))
                 {
-                    ropeshoot = new RopeConnector(this, horizaim, vertaim, horizthrinst, vertthrinst, 15);
+                    ropeshoot = new RopeConnector(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, 15);
                     gs.spawnProjectile(ropeshoot);
                 }
                 
@@ -292,7 +306,7 @@ public class Player extends Actor
                 break;
             case DOUBLESHOTGUN:
                 for(int i = 0; i < 15; i++)
-                    gs.spawnProjectile(new UZI(this, horizaim , vertaim, aimangle, gs));
+                    gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
                 break;
         }
         
