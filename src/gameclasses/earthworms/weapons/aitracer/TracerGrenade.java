@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons.aitracer;
 
 import gameclasses.earthworms.Player;
+import gameclasses.earthworms.weapons.Grenade;
 import gameclasses.earthworms.weapons.Rocket;
 import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
@@ -14,15 +15,15 @@ import gameclasses.loop.GSGame;
  *
  * @author pancirno
  */
-public class TracerRocket extends Rocket implements IScoredTracer
+public class TracerGrenade extends Grenade implements IScoredTracer
 {
     public boolean simulationFinished = false;
     
     public int totalDamage = 0;
     
-    public TracerRocket(Actor p, double ix, double iy, double ivx, double ivy) 
+    public TracerGrenade(Actor p, double ix, double iy, double ivx, double ivy) 
     {
-        super(p, ix, iy, ivx, ivy);
+        super(p, ix, iy, ivx, ivy, 180);
     }
     
     @Override

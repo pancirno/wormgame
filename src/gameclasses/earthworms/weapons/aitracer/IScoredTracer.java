@@ -5,6 +5,8 @@
  */
 package gameclasses.earthworms.weapons.aitracer;
 
+import gameclasses.loop.GSGame;
+
 /**
  *
  * @author pancirno
@@ -12,4 +14,6 @@ package gameclasses.earthworms.weapons.aitracer;
 public interface IScoredTracer 
 {
     public double getScore();
+    
+    public void runSimulation(GSGame gs);
 }

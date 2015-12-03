@@ -6,6 +6,8 @@
 package gameclasses.earthworms;
 
 import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
+import gameclasses.earthworms.weapons.aitracer.IScoredTracer;
+import gameclasses.earthworms.weapons.aitracer.TracerGrenade;
 import gameclasses.earthworms.weapons.aitracer.TracerRocket;
 import gameclasses.loop.GSGame;
 import java.awt.geom.Point2D;
@@ -21,8 +23,20 @@ import wormgame.InputEngine;
 public class PlayerAI extends Player
 {
     boolean thought = false;
-    
     double powerstep = -1;
+    double anglestep = -1;
+    
+    AIState currentAIState;
+    
+    enum AIState
+    {
+        TryStraight,
+        TryGrenade,
+        TryRocket,
+        ChangeLocation,
+        AnythingGoes,
+        GiveUp
+    }
     
     public PlayerAI(int ix, int iy, Team it, int id, String name)
     {
@@ -34,7 +48,8 @@ public class PlayerAI extends Player
     {
         super.SelectPlayer();
         thought = false;
-        powerstep = 0.3;
+        currentAIState = AIState.TryRocket;
+        resetAimIteration();
     }
     
     @Override
@@ -43,6 +58,7 @@ public class PlayerAI extends Player
         super.step(gs);
         if(!isCurrentlySelected) return;
         if(!thought)think(gs);
+        
         shoot = thought;
     }
     
@@ -54,14 +70,42 @@ public class PlayerAI extends Player
 
     private void think(GSGame gs)
     {
-        bruteBehaviour(gs);
+        switch(currentAIState)
+        {
+            case TryRocket:
+            case TryGrenade:
+                bruteTryTracer(gs);
+                break;
+            
+            default:
+                basicBehaviour(gs);
+        
+        }
+        
+        if(thought) 
+            switchWeapon();
     }
     
-    private void bruteBehaviour(GSGame gs)
+    private void resetAimIteration()
+    {
+        powerstep = 0.3;
+    }
+    
+    private void switchState()
+    {
+        if(currentAIState == AIState.TryRocket) { currentAIState = AIState.TryGrenade; return; }
+        if(currentAIState == AIState.TryGrenade) { currentAIState = AIState.TryStraight; return; }
+    }
+    
+    private void switchWeapon()
+    {
+        if(currentAIState == AIState.TryGrenade) { equippedGun = AvailableWeapons.GRENADE; return; }
+        if(currentAIState == AIState.TryRocket) { equippedGun = AvailableWeapons.ROCKET; return; }
+    }
+    
+    private void bruteTryTracer(GSGame gs)
     {        
-        equippedGun = AvailableWeapons.ROCKET;
-        
-        TracerRocket t;
+        IScoredTracer tr = null;
         
         for(double d = 0; d <= Math.PI*2; d+=Math.PI/45)
         {
@@ -69,11 +113,22 @@ public class PlayerAI extends Player
             aimpower = MAX_SHOOT_POWER * powerstep;
 
             configureAiming();
-
-            t = new TracerRocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
-            t.runSimulation(gs);
-
-            if(!t.selfHarm && t.getScore() > 0)
+            
+            switch(currentAIState)
+            {
+                case TryGrenade:
+                    tr = new TracerGrenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
+                    tr.runSimulation(gs);
+                    break;
+                case TryRocket:
+                    tr = new TracerRocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
+                    tr.runSimulation(gs);
+                    break;
+            }
+            
+            if(tr == null) return;
+            
+            if(tr.getScore() > 0)
             {
                 thought = true;
                 return;
@@ -83,7 +138,10 @@ public class PlayerAI extends Player
         powerstep+=0.1;
         
         if(powerstep > 1)
-            basicBehaviour(gs);
+        {
+            resetAimIteration();
+            switchState();
+        }
     }
 
     private void basicBehaviour(GSGame gs) {
