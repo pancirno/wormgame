@@ -5,7 +5,10 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
+import gameclasses.loop.GSGame;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 /**
@@ -20,7 +23,10 @@ public class Team {
     public int teamweapon;
     public boolean ai;
     
+    private HashMap<WeaponInfo.AvailableWeapons, Integer> ammo;
+    
     public ArrayList<Player> ingameobjects = new ArrayList<>();
+    
     
     public Team(String iname, String iplay1, String iplay2, String iplay3, String iplay4, Color iteamcolor, int iteamweapon, boolean isai)
     {
@@ -32,6 +38,38 @@ public class Team {
         teamcolor = iteamcolor;
         teamweapon = iteamweapon;
         ai = isai;
+    }
+    
+    public void setAvailableAmmo(GameScheme gs)
+    {
+        if(ammo == null)
+            ammo = gs.getAmmoTable();
+    }
+    
+    public HashMap<WeaponInfo.AvailableWeapons, Integer> getAvailableAmmo()
+    {
+        return ammo;
+    }
+    
+    public int getAmmo(AvailableWeapons aw)
+    {
+        if(!ammo.containsKey(aw)) return 0;
+        else return ammo.get(aw);
+    }
+    
+    public boolean canShootWeapon(GSGame gs, AvailableWeapons aw)
+    {
+        //if(gs.getScheme().getDelay(aw)) return false;
+        if(!ammo.containsKey(aw)) return false;
+        if(ammo.get(aw) <= 0) return false;
+        
+        return true;
+    }
+    
+    public void deductAmmo(AvailableWeapons aw)
+    {
+        if(ammo.containsKey(aw))
+            ammo.compute(aw, (k, v) -> (--v));
     }
     
 }

@@ -20,10 +20,10 @@ public class GameScheme
         sudden_death,
     }
     
-    private HashMap<WeaponInfo.AvailableWeapons, Integer> ammo;
-    private HashMap<WeaponInfo.AvailableWeapons, Integer> delay;
-    private HashMap<WeaponInfo.AvailableWeapons, Integer> power;
-    private HashMap<WeaponInfo.AvailableWeapons, Integer> crate;
+    private final HashMap<WeaponInfo.AvailableWeapons, Integer> ammo = new HashMap<>();
+    private final HashMap<WeaponInfo.AvailableWeapons, Integer> delay = new HashMap<>();;
+    private final HashMap<WeaponInfo.AvailableWeapons, Integer> power = new HashMap<>();;
+    private final HashMap<WeaponInfo.AvailableWeapons, Integer> crate = new HashMap<>();;
     
     public void setAmmo(WeaponInfo.AvailableWeapons w, int i)
     {
@@ -63,5 +63,33 @@ public class GameScheme
     public int getCrate(WeaponInfo.AvailableWeapons w)
     {
         return crate.getOrDefault(w, 0);
+    }
+    
+    public HashMap<WeaponInfo.AvailableWeapons, Integer> getAmmoTable()
+    {
+        return new HashMap<>(ammo);
+    }
+    
+    public static GameScheme defaultIntermediate()
+    {
+        GameScheme gs = new GameScheme();
+        
+        gs.setAmmo(WeaponInfo.AvailableWeapons.ROCKET, 99);
+        gs.setAmmo(WeaponInfo.AvailableWeapons.GRENADE, 99);
+        gs.setAmmo(WeaponInfo.AvailableWeapons.HOMINGMISSILE, 1);
+        gs.setAmmo(WeaponInfo.AvailableWeapons.BOMB, 1);
+        gs.setAmmo(WeaponInfo.AvailableWeapons.SHOTGUN, 99);
+        gs.setAmmo(WeaponInfo.AvailableWeapons.ROPE, 5);
+        
+        gs.setAmmo(WeaponInfo.AvailableWeapons.FIREGRENADE, 1);
+        gs.setDelay(WeaponInfo.AvailableWeapons.FIREGRENADE, 2);
+        
+        gs.setAmmo(WeaponInfo.AvailableWeapons.AIRSTRIKE, 1);
+        gs.setDelay(WeaponInfo.AvailableWeapons.AIRSTRIKE, 5);
+        
+        gs.setAmmo(WeaponInfo.AvailableWeapons.FIRESTRIKE, 1);
+        gs.setDelay(WeaponInfo.AvailableWeapons.FIRESTRIKE, 7);
+        
+        return gs;
     }
 }

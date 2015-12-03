@@ -94,6 +94,8 @@ public class Player extends Actor
     boolean ropepush = false;
     boolean ropepull = false;
     
+    //draw info
+    
     public Player(int ix, int iy, Team it, int id, String name)
     {
         x = ix;
@@ -319,6 +321,35 @@ public class Player extends Actor
         aimpower = 0;
         shoot = false;
     }
+    
+    public void renderGUI(GSGame gs, MainLoop loop, Camera c)
+    {
+        int anchx = c.GetCameraDeltaX((int)x);
+        int anchy = c.GetCameraDeltaY((int)y);
+        
+        //bron
+        int drawAmmoTimer = gs.getScheme().getDelay(equippedGun) - gs.getCurrentTurn();
+        
+        Color ammoStringC = Color.WHITE;
+            
+        String ammoLeft = "";
+        if(playerTeam.getAmmo(equippedGun) > 0)
+        {
+            ammoLeft = " x" + playerTeam.getAmmo(equippedGun);
+        }
+        else
+            ammoStringC = Color.GRAY;
+
+        String timeLeft = "";
+        if(drawAmmoTimer > 0) 
+        {
+            timeLeft = " (" + drawAmmoTimer + ")";
+            ammoStringC = Color.RED;
+        }
+
+        GUIHelper.drawTextCube(loop.GetGraphicsContext(), 20, 50, equippedGun.name() + ammoLeft + timeLeft, ammoStringC, GUIHelper.boxAlignment.left);
+
+    }
 
     @Override
     public void render(MainLoop loop, Camera c)
@@ -340,7 +371,6 @@ public class Player extends Actor
         
         if(isCurrentlySelected)
         {
-            GUIHelper.drawTextCube(loop.GetGraphicsContext(), 20, 50, equippedGun.name(), Color.WHITE, GUIHelper.boxAlignment.left);
             
             //celownik
             int aimx = anchx + (int)(Math.cos(aimangle) * 25);
@@ -377,12 +407,21 @@ public class Player extends Actor
             loop.GetGraphicsContext().strokeLine(anchx, anchy, anchrx, anchry);
 
         }
+    }
+    
+    public void tryShooting(GSGame gs)
+    {
+        if(shoot) return;
         
-        
+        if(playerTeam.canShootWeapon(gs, equippedGun))
+        {
+            shoot = true;
+            playerTeam.deductAmmo(equippedGun);
+        }
     }
 
-    public void move(InputEngine ie)
-    {
+    public void move(GSGame gs, InputEngine ie)
+    {        
         //reset status
         moveLeft = false;
         moveRight = false;
@@ -441,15 +480,19 @@ public class Player extends Actor
             {
                 if(WeaponInfo.InstantShot.contains(equippedGun))
                 {
-                    shoot = true;
+                    tryShooting(gs);
+                }
+                else
+                {
+                    aimpower += 0.2;
+                    if(aimpower > MAX_SHOOT_POWER) tryShooting(gs);
                 }
 
-                aimpower += 0.2;
-                if(aimpower > MAX_SHOOT_POWER) shoot = true;
+                
             }
             if(ie.checkPressed(KeyCode.SPACE) == false && aimpower > 0)
             {
-                shoot = true;
+                tryShooting(gs);
             }
 
             if(ie.checkPulse(KeyCode.F1) == true)

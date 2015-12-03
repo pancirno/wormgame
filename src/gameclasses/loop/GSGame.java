@@ -32,6 +32,8 @@ public class GSGame extends GameState
     HashMap<Team, Integer> teamIterator;
     int nextTeam = 0;
     
+    GameScheme currentScheme;
+    
     //game objects
     ArrayList<Explosion> explosions;
     ArrayList<Projectile> projectiles;
@@ -57,8 +59,10 @@ public class GSGame extends GameState
     Player activePlayer;
     
     //turn data
+    int currentTurn = 0;
     boolean pickNextPlayer = false;
     double windPower = 0.0;
+    Team firstSelectedTeam = null;
     
     //debug
     boolean debug = true;
@@ -68,6 +72,8 @@ public class GSGame extends GameState
         gameCamera = new Camera(0, 0, 800, 600);
         randomizer = new Random();
         currentStage = new Level(randomizer.nextInt());
+        
+        currentScheme = GameScheme.defaultIntermediate();
         
         teamList = new ArrayList<>();
         teamPlayerList = new HashMap<>();
@@ -96,23 +102,26 @@ public class GSGame extends GameState
     }
 
     private void prepareMatch() {
-        Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, true);
+        Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false);
         Team t2 = new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, true);
-        Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0, true);
-        Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0, true);
+        //Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0, true);
+        //Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0, true);
         
         teamList.add(t1);
         teamPlayerList.put(t1, new ArrayList<>());
         teamIterator.put(t1, 0);
+        t1.setAvailableAmmo(currentScheme);
+        
         teamList.add(t2);
         teamPlayerList.put(t2, new ArrayList<>());
         teamIterator.put(t2, 0);
-        teamList.add(t3);
-        teamPlayerList.put(t3, new ArrayList<>());
-        teamIterator.put(t3, 0);
-        teamList.add(t4);
-        teamPlayerList.put(t4, new ArrayList<>());
-        teamIterator.put(t4, 0);
+        t2.setAvailableAmmo(currentScheme);
+//        teamList.add(t3);
+//        teamPlayerList.put(t3, new ArrayList<>());
+//        teamIterator.put(t3, 0);
+//        teamList.add(t4);
+//        teamPlayerList.put(t4, new ArrayList<>());
+//        teamIterator.put(t4, 0);
         
         ArrayList<Point2D> availablePlaces = currentStage.findAvailablePointsForPlayers();
                 
@@ -171,6 +180,13 @@ public class GSGame extends GameState
         }
         
         Team t = teamList.get(nextTeam);
+        
+        if(firstSelectedTeam == null) firstSelectedTeam = t;
+        else
+        {
+            if(t == firstSelectedTeam) currentTurn++;
+        }
+        
         if(teamPlayerList.get(t).isEmpty())
         {
             nextTeam++;
@@ -226,7 +242,7 @@ public class GSGame extends GameState
         //collect inputs
         gameCamera.move(loop.GetInputEngine());
         if(activePlayer != null)
-            activePlayer.move(loop.GetInputEngine());
+            activePlayer.move(this, loop.GetInputEngine());
         
         executeSpawnObjects();
         
@@ -256,6 +272,7 @@ public class GSGame extends GameState
         for(Player p : players)
         {
             p.render(loop, gameCamera);
+            if(p == activePlayer) p.renderGUI(this, loop, gameCamera);
         }
         
         for(Projectile pro : projectiles)
@@ -574,6 +591,16 @@ public class GSGame extends GameState
     public int getRandomInt(int limit)
     {
         return randomizer.nextInt(limit);
+    }
+    
+    public GameScheme getScheme()
+    {
+        return currentScheme;
+    }
+    
+    public int getCurrentTurn()
+    {
+        return currentTurn;
     }
     
     public boolean arePlayersMoving()

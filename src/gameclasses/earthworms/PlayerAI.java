@@ -59,11 +59,10 @@ public class PlayerAI extends Player
         if(!isCurrentlySelected) return;
         if(!thought)think(gs);
         
-        shoot = thought;
     }
     
     @Override
-    public void move(InputEngine ie)
+    public void move(GSGame gs, InputEngine ie)
     {
         
     }
@@ -83,7 +82,10 @@ public class PlayerAI extends Player
         }
         
         if(thought) 
+        {
             switchWeapon();
+            tryShooting(gs);
+        }
     }
     
     private void resetAimIteration()
@@ -158,9 +160,9 @@ public class PlayerAI extends Player
         aimpower = MAX_SHOOT_POWER;
         //CASE - enemy can be shoot directly
         if(Point2D.distance(x, y, selectedtarget.getX(), selectedtarget.getY()) > 100)
-            equippedGun = (AvailableWeapons)WeaponInfo.AIDirect.toArray()[gs.getRandomInt(WeaponInfo.AIDirect.size())];
+            equippedGun = AvailableWeapons.ROCKET;
         else
-            equippedGun = (AvailableWeapons)WeaponInfo.AIClose.toArray()[gs.getRandomInt(WeaponInfo.AIClose.size())];
+            equippedGun = AvailableWeapons.SHOTGUN;
     }
 
     private Player closestPlayer(List<Player> players)

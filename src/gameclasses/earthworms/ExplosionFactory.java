@@ -93,7 +93,7 @@ public class ExplosionFactory
     
     static public void MakeSmallExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(MediumI, gs, x, y, 20, 2, -10);
+        Explosion e = new Explosion(MediumI, gs, x, y, 20, 3, -10);
         e.constDamage = true;
         
         gs.spawnParticle(new PExplosion(x,y, 25));
@@ -103,7 +103,7 @@ public class ExplosionFactory
     
     static public void MakeMediumExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(MediumPlusI, gs, x, y, 35, 2, -10);
+        Explosion e = new Explosion(MediumPlusI, gs, x, y, 35, 3, -10);
         
         gs.spawnParticle(new PExplosion(x,y, 35));
         
