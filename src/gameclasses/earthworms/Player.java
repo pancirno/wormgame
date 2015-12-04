@@ -300,15 +300,7 @@ public class Player extends Actor
                 retreatTime = 8;
                 break;
             case ROPE:
-                refire = 9999;
-                
-                if(!gs.ifObjectExists(ropeshoot))
-                {
-                    ropeshoot = new RopeConnector(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, 15);
-                    gs.spawnProjectile(ropeshoot);
-                }
-                
-                retreatTime = 120;
+                shootRopeTracer(gs);
                 break;
             case AIRSTRIKE:
                 if(!ismarked)return;
@@ -336,6 +328,19 @@ public class Player extends Actor
         
         aimpower = 0;
         shoot = false;
+    }
+
+    private void shootRopeTracer(GSGame gs)
+    {
+        refire = 9999;
+        
+        if(!gs.ifObjectExists(ropeshoot))
+        {
+            ropeshoot = new RopeConnector(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, 15);
+            gs.spawnProjectile(ropeshoot);
+        }
+        
+        retreatTime = 120;
     }
     
     public void renderGUI(GSGame gs, MainLoop loop, Camera c)
@@ -498,7 +503,7 @@ public class Player extends Actor
         }
         
         //shoot sequence, increase power on press and shot on release
-        if(!getIsRetreading())
+        if(!getIsRetreading() && currentState == PlayerState.ACTIVE)
         {
             if(ie.checkPressed(KeyCode.SPACE) == true)
             {
@@ -511,8 +516,6 @@ public class Player extends Actor
                     aimpower += 0.2;
                     if(aimpower > MAX_SHOOT_POWER) tryShooting(gs);
                 }
-
-                
             }
             if(ie.checkPressed(KeyCode.SPACE) == false && aimpower > 0)
             {
@@ -727,18 +730,6 @@ public class Player extends Actor
     @Override
     public void push(GSGame gs, double ivx, double ivy)
     {
-//        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, 0)) && ivx != 0) 
-//        {
-//            ivx *= -0.9;
-//            if(Math.abs(ivx) <= 0.05) ivx = 0;
-//        }
-//        
-//        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy + ivy)) && ivy != 0) 
-//        {
-//            ivy *= -0.9;
-//            if(Math.abs(ivy) <= 0.05) ivy = 0;
-//        }
-        
         while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, vy + ivy)) && ivx != 0 && ivy != 0) 
         {
             ivx *= -0.9;
