@@ -5,6 +5,7 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
 import gameclasses.earthworms.weapons.*;
 import gameclasses.game.*;
 import gameclasses.loop.*;
@@ -71,6 +72,7 @@ public class Player extends Actor
     boolean shoot = false;
     boolean autoshoot = false;
     int refire = -1;
+    boolean lockswitch = false;
     
     //aiming - calculated values
     double aim_precos;
@@ -148,8 +150,9 @@ public class Player extends Actor
         {
             if(ropeshoot.impact == true)
             {
-                Point2D dstp = new Point2D(x,y);
-                double dst = dstp.distance(ropeshoot.getX(), ropeshoot.getY());
+                playerTeam.deductAmmo(AvailableWeapons.ROPE);
+                
+                double dst = CommonMath.distance(x,y,ropeshoot.getX(), ropeshoot.getY());
                 
                 ropestring = new Rope(300,dst,ropeshoot.getX(), ropeshoot.getY(), this);
                 currentState = PlayerState.ROPING;
@@ -219,6 +222,7 @@ public class Player extends Actor
         moveLeft = false;
         moveRight = false;
         ismarked = false;
+        lockswitch = false;
     }
     
     protected void configureAiming()
@@ -231,6 +235,12 @@ public class Player extends Actor
         aim_vertthr = aim_presin * aimpower;
         aim_horizthrinst = aim_precos * MAX_SHOOT_POWER;
         aim_vertthrinst = aim_presin * MAX_SHOOT_POWER;
+    }
+    
+    private void setEquippedGun(AvailableWeapons aw)
+    {
+        if(!lockswitch)
+            equippedGun = aw;
     }
 
     private void doShooting(GSGame gs) 
@@ -259,6 +269,8 @@ public class Player extends Actor
                 gs.spawnProjectile(new Bomb(this, aim_horizaim, aim_vertaim, 1.2 * Math.signum(aim_horizthr), -1.5, -1));
                 break;
             case SHOTGUN:
+                lockswitch = true;
+                
                 if(!getCanShootAgain())
                     refire = 2;
                 gs.spawnProjectile(new Shotgun(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, gs));
@@ -266,6 +278,8 @@ public class Player extends Actor
                 retreatTime = 120;
                 break;
             case MINIGUN:
+                lockswitch = true;
+                
                 if(!getCanShootAgain())
                     refire = 15;
                 
@@ -275,6 +289,8 @@ public class Player extends Actor
                 retreatTime = 5;
                 break;
             case FLAMETHROWER:
+                lockswitch = true;
+                
                 if(!getCanShootAgain())
                     refire = 15;
                 
@@ -416,7 +432,15 @@ public class Player extends Actor
         if(playerTeam.canShootWeapon(gs, equippedGun))
         {
             shoot = true;
-            playerTeam.deductAmmo(equippedGun);
+            
+            switch(equippedGun)
+            {
+                case ROPE:
+                    break;
+                default:
+                    playerTeam.deductAmmo(equippedGun);
+            }
+            
         }
     }
 
@@ -497,33 +521,33 @@ public class Player extends Actor
 
             if(ie.checkPulse(KeyCode.F1) == true)
             {
-                refire = 0;
-                equippedGun = WeaponInfo.pickWeapon(0);
+                if(!lockswitch)refire = 0;
+                setEquippedGun(WeaponInfo.pickWeapon(0));
             }
             if(ie.checkPulse(KeyCode.F2) == true)
             {
-                refire = 0;
-                equippedGun = WeaponInfo.pickWeapon(1);
+                if(!lockswitch)refire = 0;
+                setEquippedGun(WeaponInfo.pickWeapon(1));
             }
             if(ie.checkPulse(KeyCode.F3) == true)
             {
-                refire = 0;
-                equippedGun = WeaponInfo.pickWeapon(2);
+                if(!lockswitch)refire = 0;
+                setEquippedGun(WeaponInfo.pickWeapon(2));
             }
             if(ie.checkPulse(KeyCode.F4) == true)
             {
-                refire = 0;
-                equippedGun = WeaponInfo.pickWeapon(3);
+                if(!lockswitch)refire = 0;
+                setEquippedGun(WeaponInfo.pickWeapon(3));
             }
             if(ie.checkPulse(KeyCode.F5) == true)
             {
-                refire = 0;
-                equippedGun = WeaponInfo.pickWeapon(4);
+                if(!lockswitch)refire = 0;
+                setEquippedGun(WeaponInfo.pickWeapon(4));
             }
             if(ie.checkPulse(KeyCode.F6) == true)
             {
-                refire = 0;
-                equippedGun = WeaponInfo.pickWeapon(5);
+                if(!lockswitch)refire = 0;
+                setEquippedGun(WeaponInfo.pickWeapon(5));
             }
         }
     }

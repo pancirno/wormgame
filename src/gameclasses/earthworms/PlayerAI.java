@@ -10,7 +10,6 @@ import gameclasses.earthworms.weapons.aitracer.IScoredTracer;
 import gameclasses.earthworms.weapons.aitracer.TracerGrenade;
 import gameclasses.earthworms.weapons.aitracer.TracerRocket;
 import gameclasses.loop.GSGame;
-import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -159,7 +158,7 @@ public class PlayerAI extends Player
         aimangle = CommonMath.getInvertedDiffAngle(selectedtarget.getX() - x, selectedtarget.getY() - y) * -1;
         aimpower = MAX_SHOOT_POWER;
         //CASE - enemy can be shoot directly
-        if(Point2D.distance(x, y, selectedtarget.getX(), selectedtarget.getY()) > 100)
+        if(CommonMath.distance(x, y, selectedtarget.getX(), selectedtarget.getY()) > 100)
             equippedGun = AvailableWeapons.ROCKET;
         else
             equippedGun = AvailableWeapons.SHOTGUN;
@@ -175,7 +174,7 @@ public class PlayerAI extends Player
         {
             if(p.playerTeam == this.playerTeam) continue;
             
-            distances.put(p, Point2D.distance(x, y, p.getX(), p.getY()));
+            distances.put(p, CommonMath.distance(x, y, p.getX(), p.getY()));
         }
         
         Entry<Player, Double> min = null;

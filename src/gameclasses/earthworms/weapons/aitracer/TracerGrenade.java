@@ -5,6 +5,7 @@
  */
 package gameclasses.earthworms.weapons.aitracer;
 
+import gameclasses.earthworms.CommonMath;
 import gameclasses.earthworms.Player;
 import gameclasses.earthworms.weapons.Grenade;
 import gameclasses.earthworms.weapons.Rocket;
@@ -45,7 +46,10 @@ public class TracerGrenade extends Grenade implements IScoredTracer
             if(p instanceof Player)
             {
                 if(p == parent || ((Player)p).getPlayerTeam() == ((Player)parent).getPlayerTeam()) totalDamage = -9999;
-                else totalDamage++;
+                else 
+                {
+                    totalDamage += 200 - CommonMath.distance(x, y, ((Player)p).getX() , ((Player)p).getY());
+                }
             }
         }
         

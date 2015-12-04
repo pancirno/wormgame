@@ -201,6 +201,11 @@ public class Actor
         return y;
     }
     
+    public Point2D getPoint2D()
+    {
+        return new Point2D(x,y);
+    }
+    
     public Rectangle2D getCollisionArea()
     {
         return new Rectangle2D(x - cx/2, y - cy/2, cx, cy);
