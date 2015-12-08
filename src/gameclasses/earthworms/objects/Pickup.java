@@ -8,6 +8,7 @@ package gameclasses.earthworms.objects;
 import gameclasses.earthworms.ExplosionFactory;
 import gameclasses.earthworms.LevelObject;
 import gameclasses.earthworms.Player;
+import gameclasses.earthworms.PlayerAI;
 import gameclasses.loop.GSGame;
 
 /**
@@ -30,12 +31,18 @@ public class Pickup extends LevelObject
         snapToLevelVel(gs, vx, vy, true, false);
         grenadeBounce(gs, 0.25, 0.25, 0.25);
         
-        Object[] playercol = gs.findObjectsInCollisionTree((int)x-4, (int)y-4, (int)x+4, (int)y+4);
+        Object[] playercol = gs.findObjectsInCollisionTree((int)x-8, (int)y-8, (int)x+8, (int)y+8);
         for(Object o : playercol)
         {
             if(o instanceof Player)
             {
                 onPickup((Player)o);
+                gs.removeObject(this);
+                return;
+            }
+            else if(o instanceof PlayerAI)
+            {
+                onPickup((PlayerAI)o);
                 gs.removeObject(this);
                 return;
             }
