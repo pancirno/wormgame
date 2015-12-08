@@ -272,7 +272,11 @@ public class Player extends Actor
                 lockswitch = true;
                 
                 if(!getCanShootAgain())
+                {
+                    playerTeam.deductAmmo(equippedGun);
                     refire = 2;
+                }
+                
                 gs.spawnProjectile(new Shotgun(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, gs));
                 refire--;
                 retreatTime = 120;
@@ -281,7 +285,10 @@ public class Player extends Actor
                 lockswitch = true;
                 
                 if(!getCanShootAgain())
+                {
+                    playerTeam.deductAmmo(equippedGun);
                     refire = 15;
+                }
                 
                 autoshoot = true;
                 gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
@@ -292,7 +299,10 @@ public class Player extends Actor
                 lockswitch = true;
                 
                 if(!getCanShootAgain())
+                {
+                    playerTeam.deductAmmo(equippedGun);
                     refire = 15;
+                }
                 
                 autoshoot = true;
                 gs.spawnProjectile(new Flamethrower(this, aim_horizaim, aim_vertaim, aim_horizthrinst/2.5, aim_vertthrinst/2.5));
@@ -441,7 +451,11 @@ public class Player extends Actor
             switch(equippedGun)
             {
                 case ROPE:
+                case SHOTGUN:
+                case MINIGUN:
+                case FLAMETHROWER:
                     break;
+                    
                 default:
                     playerTeam.deductAmmo(equippedGun);
             }

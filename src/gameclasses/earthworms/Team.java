@@ -72,4 +72,10 @@ public class Team {
             ammo.compute(aw, (k, v) -> (--v));
     }
     
+    public void grantAmmo(AvailableWeapons aw)
+    {
+        if(!ammo.containsKey(aw)) ammo.put(aw, 0);
+        ammo.compute(aw, (k, v) -> (++v));
+    }
+    
 }

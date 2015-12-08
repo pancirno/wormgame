@@ -8,6 +8,7 @@ package gameclasses.loop;
 import gameclasses.game.*;
 import gameclasses.earthworms.*;
 import gameclasses.earthworms.GUIHelper.*;
+import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
 import gameclasses.earthworms.objects.*;
 import java.util.*;
 import javafx.geometry.*;
@@ -52,6 +53,9 @@ public class GSGame extends GameState
     ArrayList<LevelObject> spawnObject;
     ArrayList<Particle> spawnParticle;
     
+    //loot table
+    ArrayList<AvailableWeapons> lootTable;
+    
     //check for collisions
     QuadTree collisionTree;
     
@@ -95,6 +99,8 @@ public class GSGame extends GameState
         spawnParticle = new ArrayList<>();
         
         trashPlayer = new ArrayList<>();
+        
+        lootTable = new ArrayList<>();
         
         collisionTree = new QuadTree(currentStage.GameArea.getMinX(), currentStage.GameArea.getMinY(), currentStage.GameArea.getMaxX(), currentStage.GameArea.getMaxY());
         
@@ -209,6 +215,8 @@ public class GSGame extends GameState
         pickNextPlayer = false;
         
         changeWind();
+        
+        dropPickup();
     }
     
     public double getWind()
@@ -629,6 +637,28 @@ public class GSGame extends GameState
     {
         players.remove(p);
         teamPlayerList.get(p.getPlayerTeam()).remove(p);
+    }
+
+    private void dropPickup() 
+    {
+        if(this.getRandomNumber() < 0.25)
+            spawnObject((currentTurn % 2 == 0) ? new AmmoPickup(this, this.getRandomInt(2000), -50) : new HealthPickup(this.getRandomInt(2000), -50));
+    }
+    
+    public AvailableWeapons getLoot()
+    {
+        if(lootTable.isEmpty())
+        {
+            for(AvailableWeapons aw : AvailableWeapons.values())
+                for(int i = 0; i < currentScheme.getCrate(aw); i++)
+                {
+                    lootTable.add(aw);
+                }
+        }
+        int tableNum = getRandomInt(lootTable.size());
+        AvailableWeapons ar = lootTable.get(tableNum);
+        lootTable.remove(tableNum);
+        return ar;
     }
 
 }

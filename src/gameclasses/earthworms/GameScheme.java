@@ -76,19 +76,35 @@ public class GameScheme
         
         gs.setAmmo(WeaponInfo.AvailableWeapons.ROCKET, 99);
         gs.setAmmo(WeaponInfo.AvailableWeapons.GRENADE, 99);
+        
         gs.setAmmo(WeaponInfo.AvailableWeapons.HOMINGMISSILE, 1);
+        gs.setCrate(WeaponInfo.AvailableWeapons.HOMINGMISSILE, 2);
+        
         gs.setAmmo(WeaponInfo.AvailableWeapons.BOMB, 1);
+        gs.setCrate(WeaponInfo.AvailableWeapons.BOMB, 2);
+        
         gs.setAmmo(WeaponInfo.AvailableWeapons.SHOTGUN, 99);
+        
         gs.setAmmo(WeaponInfo.AvailableWeapons.ROPE, 5);
+        gs.setCrate(WeaponInfo.AvailableWeapons.ROPE, 4);
         
         gs.setAmmo(WeaponInfo.AvailableWeapons.FIREGRENADE, 1);
         gs.setDelay(WeaponInfo.AvailableWeapons.FIREGRENADE, 2);
+        gs.setCrate(WeaponInfo.AvailableWeapons.FIREGRENADE, 2);
         
         gs.setAmmo(WeaponInfo.AvailableWeapons.AIRSTRIKE, 1);
         gs.setDelay(WeaponInfo.AvailableWeapons.AIRSTRIKE, 5);
+        gs.setCrate(WeaponInfo.AvailableWeapons.AIRSTRIKE, 2);
         
         gs.setAmmo(WeaponInfo.AvailableWeapons.FIRESTRIKE, 1);
         gs.setDelay(WeaponInfo.AvailableWeapons.FIRESTRIKE, 7);
+        gs.setCrate(WeaponInfo.AvailableWeapons.FIRESTRIKE, 1);
+        
+        gs.setCrate(WeaponInfo.AvailableWeapons.MINIGUN, 5);
+        gs.setCrate(WeaponInfo.AvailableWeapons.DOUBLESHOTGUN, 2);
+        gs.setCrate(WeaponInfo.AvailableWeapons.FLAMETHROWER, 2);
+        gs.setCrate(WeaponInfo.AvailableWeapons.MIRV, 1);
+        gs.setCrate(WeaponInfo.AvailableWeapons.HIBARI, 1);
         
         return gs;
     }
