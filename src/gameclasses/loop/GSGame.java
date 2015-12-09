@@ -64,6 +64,7 @@ public class GSGame extends GameState
     
     //turn data
     int currentTurn = 0;
+    int turnTimer = -1;
     boolean pickNextPlayer = false;
     double windPower = 0.0;
     Team firstSelectedTeam = null;
@@ -107,27 +108,22 @@ public class GSGame extends GameState
         prepareMatch();
     }
 
-    private void prepareMatch() {
-        Team t1 = new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false);
-        Team t2 = new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, true);
-        //Team t3 = new Team("yryr", "Yui","Kyoko","Chinatsu","Akarin",Color.GREEN, 0, true);
-        //Team t4 = new Team("murzyny", ";p","xD",":^)",";_;",Color.YELLOW, 0, true);
-        
-        teamList.add(t1);
-        teamPlayerList.put(t1, new ArrayList<>());
-        teamIterator.put(t1, 0);
-        t1.setAvailableAmmo(currentScheme);
-        
-        teamList.add(t2);
-        teamPlayerList.put(t2, new ArrayList<>());
-        teamIterator.put(t2, 0);
-        t2.setAvailableAmmo(currentScheme);
-//        teamList.add(t3);
-//        teamPlayerList.put(t3, new ArrayList<>());
-//        teamIterator.put(t3, 0);
-//        teamList.add(t4);
-//        teamPlayerList.put(t4, new ArrayList<>());
-//        teamIterator.put(t4, 0);
+    private void prepareMatch() 
+    {
+        addTeam(new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false));
+        addTeam(new Team("dupa1", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, true));
+        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
         
         ArrayList<Point2D> availablePlaces = currentStage.findAvailablePointsForPlayers();
                 
@@ -157,6 +153,14 @@ public class GSGame extends GameState
         }
         
         selectNextPlayer();
+    }
+
+    private void addTeam(Team t1) 
+    {
+        teamList.add(t1);
+        teamPlayerList.put(t1, new ArrayList<>());
+        teamIterator.put(t1, 0);
+        t1.setAvailableAmmo(currentScheme);
     }
     
     private Point2D pickRandomPointElement(ArrayList<Point2D> l)
@@ -215,8 +219,9 @@ public class GSGame extends GameState
         pickNextPlayer = false;
         
         changeWind();
-        
         dropPickup();
+        
+        turnTimer = currentScheme.turntime * 60;
     }
     
     public double getWind()
@@ -240,6 +245,12 @@ public class GSGame extends GameState
     @Override
     protected void execute(MainLoop loop)
     {
+        //if turn ends
+        if(--turnTimer <= 0)
+        {
+            pickNextPlayer = true;
+        }
+        
         //check if player needs to be switched
         if(pickNextPlayer)
             if(explosions.isEmpty() && projectiles.isEmpty() && !arePlayersMoving() && !areObjectsMoving())
@@ -311,20 +322,9 @@ public class GSGame extends GameState
             //gc.fillText(String.valueOf(), 10, 22);
             
             GUIHelper.drawTextCube(gc, 20, 20, String.valueOf(MainLoop.executionrate), Color.WHITE, boxAlignment.left);
+            GUIHelper.drawTextCube(gc, 20, (int)gc.getCanvas().getHeight() - 80, String.valueOf((turnTimer/60)+1), Color.WHITE, boxAlignment.left);
             GUIHelper.drawWindMeter(gc, (int)gc.getCanvas().getWidth() - 120, (int)gc.getCanvas().getHeight() - 80, windPower);
-//            GUIHelper.drawTextCube(gc, 20, 100, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 20, 150, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 20, 200, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 20, 250, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 20, 300, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 20, 350, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 120, 50, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 120, 100, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 120, 150, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 120, 200, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 120, 250, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 120, 300, "TEXTBOX", Color.WHITE);
-//            GUIHelper.drawTextCube(gc, 120, 350, "TEXTBOX", Color.WHITE);
+
         }
     }
 

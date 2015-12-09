@@ -13,17 +13,12 @@ import java.util.HashMap;
  */
 public class GameScheme 
 {
-    public enum GameSchemeProperty
-    {
-        turn_time,
-        round_length,
-        sudden_death,
-    }
+    public int turntime;
     
     private final HashMap<WeaponInfo.AvailableWeapons, Integer> ammo = new HashMap<>();
-    private final HashMap<WeaponInfo.AvailableWeapons, Integer> delay = new HashMap<>();;
-    private final HashMap<WeaponInfo.AvailableWeapons, Integer> power = new HashMap<>();;
-    private final HashMap<WeaponInfo.AvailableWeapons, Integer> crate = new HashMap<>();;
+    private final HashMap<WeaponInfo.AvailableWeapons, Integer> delay = new HashMap<>();
+    private final HashMap<WeaponInfo.AvailableWeapons, Integer> power = new HashMap<>();
+    private final HashMap<WeaponInfo.AvailableWeapons, Integer> crate = new HashMap<>();
     
     public void setAmmo(WeaponInfo.AvailableWeapons w, int i)
     {
@@ -73,6 +68,8 @@ public class GameScheme
     public static GameScheme defaultIntermediate()
     {
         GameScheme gs = new GameScheme();
+        
+        gs.turntime = 45;
         
         gs.setAmmo(WeaponInfo.AvailableWeapons.ROCKET, 99);
         gs.setAmmo(WeaponInfo.AvailableWeapons.GRENADE, 99);
