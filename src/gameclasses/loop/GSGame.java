@@ -111,20 +111,20 @@ public class GSGame extends GameState
     private void prepareMatch() 
     {
         addTeam(new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false));
-        addTeam(new Team("dupa1", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, true));
-        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-        
+        addTeam(new Team("dupa1", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, false));
+//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
+
         ArrayList<Point2D> availablePlaces = currentStage.findAvailablePointsForPlayers();
                 
         teamList.stream().forEach((_item) ->

@@ -17,10 +17,9 @@ public class Wormgame extends Application
     
     @Override
     public void start(Stage primaryStage)
-    {
+    {        
         primaryStage.setTitle("wormgame");
         primaryStage.setScene(MainWindow.Instance.getSceneContainer());
-        //primaryStage.setResizable(false);
         primaryStage.initStyle(StageStyle.UTILITY);
         
         MainWindow.Instance.setCanvasScalable(primaryStage);
