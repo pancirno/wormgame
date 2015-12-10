@@ -276,7 +276,7 @@ public class Player extends Actor
                     playerTeam.deductAmmo(equippedGun);
                     refire = 2;
                 }
-                
+                gs.playSound("sfx/shot1.wav");
                 gs.spawnProjectile(new Shotgun(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, gs));
                 refire--;
                 retreatTime = 120;
@@ -288,12 +288,13 @@ public class Player extends Actor
                 {
                     playerTeam.deductAmmo(equippedGun);
                     refire = 15;
+                    gs.playSound("sfx/minigun1.wav");
                 }
                 
                 autoshoot = true;
                 gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
                 refire--;
-                retreatTime = 5;
+                retreatTime = 4;
                 break;
             case FLAMETHROWER:
                 lockswitch = true;
@@ -325,6 +326,7 @@ public class Player extends Actor
                 gs.spawnProjectile(new Hibari(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0, 1));
                 break;
             case DOUBLESHOTGUN:
+                gs.playSound("sfx/doubleshot1.wav");
                 for(int i = 0; i < 15; i++)
                     gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
                 break;

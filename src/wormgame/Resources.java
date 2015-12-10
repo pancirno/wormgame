@@ -8,6 +8,7 @@ package wormgame;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +40,8 @@ public class Resources
     
     private HashMap<String, Image> gfx = new HashMap<>();
     private HashMap<String, AudioClip> sfx = new HashMap<>();
+    
+    private ArrayList<AudioClip> playList = new ArrayList<>();
 
     private void loadResources() 
     {
@@ -66,5 +69,24 @@ public class Resources
             for (File f : directoryListing) 
                     sfx.put("sfx/" + f.getName(), new AudioClip(f.toURI().toString()));
         }
+    }
+    
+    public void playSounds()
+    {
+        for (AudioClip au : playList)
+        {
+            au.play();
+        }
+        playList.clear();
+    }
+    
+    public void registerSound(String s)
+    {
+        AudioClip au = sfx.getOrDefault(s, null);
+        if(au != null)
+        {
+            playList.add(au);
+        }
+        
     }
 }

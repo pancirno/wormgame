@@ -113,8 +113,8 @@ public class ExplosionFactory
     static public void MakeLargeExplosion(GSGame gs, int x, int y)
     {
         Explosion e = new Explosion(LargeI, gs, x, y, 50, 6, -10);
+        gs.playSound("sfx/boom1.wav");
         gs.spawnParticle(new PExplosion(x,y, 50));
-        
         gs.spawnExplosion(e);
     }
     

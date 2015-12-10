@@ -65,6 +65,20 @@ public class GameScheme
         return new HashMap<>(ammo);
     }
     
+    public static GameScheme testScheme()
+    {
+        GameScheme gs = new GameScheme();
+        
+        gs.turntime = 99;
+        
+        for(WeaponInfo.AvailableWeapons aw : WeaponInfo.AvailableWeapons.values())
+        {
+            gs.setAmmo(aw, 9999);
+        }
+        
+        return gs;
+    }
+    
     public static GameScheme defaultIntermediate()
     {
         GameScheme gs = new GameScheme();

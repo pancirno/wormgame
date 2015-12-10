@@ -15,6 +15,7 @@ import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import varunpant.*;
+import wormgame.Resources;
 
 /**
  *
@@ -78,7 +79,7 @@ public class GSGame extends GameState
         randomizer = new Random();
         currentStage = new Level(randomizer.nextInt());
         
-        currentScheme = GameScheme.defaultIntermediate();
+        currentScheme = GameScheme.testScheme();
         
         teamList = new ArrayList<>();
         teamPlayerList = new HashMap<>();
@@ -274,6 +275,9 @@ public class GSGame extends GameState
         executeRemoveObjects();
         
         executeDraw(loop);
+        
+        executeSounds();
+        
     }
 
     private void executeDraw(MainLoop loop) 
@@ -326,6 +330,16 @@ public class GSGame extends GameState
             GUIHelper.drawWindMeter(gc, (int)gc.getCanvas().getWidth() - 120, (int)gc.getCanvas().getHeight() - 80, windPower);
 
         }
+    }
+    
+    private void executeSounds()
+    {
+        Resources.getInstance().playSounds();
+    }
+    
+    public void playSound(String soundname)
+    {
+        Resources.getInstance().registerSound(soundname);
     }
 
     private void executeRemoveObjects() {
@@ -413,6 +427,7 @@ public class GSGame extends GameState
         }
         
     }
+    
     
     public Object[] findObjectsInCollisionTree(int x, int y, int mx, int my)
     {
