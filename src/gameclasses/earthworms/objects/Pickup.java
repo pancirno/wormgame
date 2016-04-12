@@ -29,7 +29,7 @@ public class Pickup extends LevelObject
     public void step(GSGame gs)
     {
         snapToLevelVel(gs, vx, vy, true, false);
-        grenadeBounce(gs, 0.25, 0.25, 0.25);
+        grenadeBounce(gs, 0.25, 0.25, 0.25, true);
         
         Object[] playercol = gs.findObjectsInCollisionTree((int)x-8, (int)y-8, (int)x+8, (int)y+8);
         for(Object o : playercol)

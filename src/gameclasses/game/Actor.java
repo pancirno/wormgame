@@ -143,25 +143,25 @@ public class Actor
         }
     }
     
-    protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered)
+    protected void grenadeBounce(GSGame gs, double impactred, double rollred, double bouncered, boolean ignoreobjects)
     {
         //horizontal bounce
-        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(-1 * vx, 0)) || checkForObjectOverlap(nearbyobjects, -1 * vx, 0))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(-1 * vx, 0)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, -1 * vx, 0)) )
         {
             vx = vx * StaticPhysics.TORQUE * rollred; //0.9
         }
-        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx, 0)) || checkForObjectOverlap(nearbyobjects, vx, 0))
+        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx, 0)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, vx, 0)) )
         {
             vx = vx * StaticPhysics.TORQUE * -1 * impactred;
         }
             
         //vertical bounce
-        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy)) || checkForObjectOverlap(nearbyobjects, 0, vy))
+        if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, 0, vy)) )
         {
             if(y >= 5) healthPoints -= fallDamageRatio * Math.max(0,vy-5);
             vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
         }
-        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1 * vy))  || checkForObjectOverlap(nearbyobjects, 0, -1 * vy))
+        else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1 * vy)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, 0, -1 * vy)) )
         {
             vy = Math.abs(vy + StaticPhysics.GRAVITY);
         }

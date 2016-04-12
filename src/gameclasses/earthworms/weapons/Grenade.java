@@ -44,7 +44,7 @@ public class Grenade extends Projectile {
         checkCollide(gs);
         
         snapToLevelVel(gs, vx, vy, true, false);
-        grenadeBounce(gs, 0.9, 0.9, 0.5);
+        grenadeBounce(gs, 0.9, 0.9, 0.5, false);
         
         if(fuse <= 0)
         {

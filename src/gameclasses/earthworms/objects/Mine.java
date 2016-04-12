@@ -35,7 +35,7 @@ public class Mine extends LevelObject
             detonateMine();
         
         snapToLevelVel(gs, vx, vy, true, false);
-        grenadeBounce(gs, 0.9, 0.9, 0.5);
+        grenadeBounce(gs, 0.9, 0.9, 0.5, false);
         
         if(healthPoints != maxfuse)
             healthPoints--;
