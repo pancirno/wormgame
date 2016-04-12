@@ -84,6 +84,12 @@ public class PlayerAI extends Player
         {
             switchWeapon();
             tryShooting(gs);
+            
+            if(WeaponInfo.AIRepeat.contains(this.equippedGun))
+            {
+                thought = false;
+                resetAimIteration();
+            }
         }
     }
     
@@ -95,13 +101,13 @@ public class PlayerAI extends Player
     private void switchState()
     {
         if(currentAIState == AIState.TryRocket) { currentAIState = AIState.TryGrenade; return; }
-        if(currentAIState == AIState.TryGrenade) { currentAIState = AIState.TryStraight; return; }
+        if(currentAIState == AIState.TryGrenade) { currentAIState = AIState.TryStraight; }
     }
     
     private void switchWeapon()
     {
         if(currentAIState == AIState.TryGrenade) { equippedGun = AvailableWeapons.GRENADE; return; }
-        if(currentAIState == AIState.TryRocket) { equippedGun = AvailableWeapons.ROCKET; return; }
+        if(currentAIState == AIState.TryRocket) { equippedGun = AvailableWeapons.ROCKET; }
     }
     
     private void bruteTryTracer(GSGame gs)

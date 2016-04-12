@@ -70,6 +70,11 @@ public class WeaponInfo {
             AvailableWeapons.DOUBLESHOTGUN, 
             AvailableWeapons.FLAMETHROWER
             );
+    
+    public static EnumSet<AvailableWeapons> AIRepeat = EnumSet.of
+            (
+            AvailableWeapons.SHOTGUN
+            );
         
     static int ChoosenWeapon = 0;
     static int CurrentRow = -1;
