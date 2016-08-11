@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.earthworms.StaticPhysics;
 import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
@@ -41,8 +42,9 @@ public class Bomb extends Grenade
         
         checkCollide(gs);
         
-        snapToLevelVel(gs, vx, vy, true, false);
+        vy = vy + StaticPhysics.GRAVITY;
         grenadeBounce(gs, 0.7, 1.1, 0.25, false);
+        snapToLevelVel(gs, vx, vy, true, false);
 
         if(fuse <= 0)
         {

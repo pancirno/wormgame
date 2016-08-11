@@ -161,6 +161,7 @@ public class Actor
             if(Math.abs(vy) >= 5) healthPoints -= fallDamageRatio * Math.max(0,vy-5);
             if(vy > 0) vy -= StaticPhysics.GRAVITY; //if we sit on ground we compensate for gravity
             vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
+            vx = (vx * 0.75) + (vx * StaticPhysics.TORQUE * rollred * 0.25);
         }
         else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1 * vy)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, 0, -1 * vy)) )
         {

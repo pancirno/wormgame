@@ -9,6 +9,7 @@ import gameclasses.earthworms.ExplosionFactory;
 import gameclasses.earthworms.LevelObject;
 import gameclasses.earthworms.Player;
 import gameclasses.earthworms.PlayerAI;
+import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.GSGame;
 
 /**
@@ -28,8 +29,9 @@ public class Pickup extends LevelObject
     @Override
     public void step(GSGame gs)
     {
-        snapToLevelVel(gs, vx, vy, true, false);
+        vy += StaticPhysics.GRAVITY;
         grenadeBounce(gs, 0.25, 0.25, 0.25, true);
+        snapToLevelVel(gs, vx, vy, true, false);
         
         Object[] playercol = gs.findObjectsInCollisionTree((int)x-8, (int)y-8, (int)x+8, (int)y+8);
         for(Object o : playercol)
