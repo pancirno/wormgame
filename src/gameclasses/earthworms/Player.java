@@ -160,50 +160,41 @@ public class Player extends Actor
             }
         }
             
-        if(currentState == PlayerState.ACTIVE) //handle by player movement
+        switch (currentState) 
         {
-            vx = 0;//clear any velocities
-            vy = 0;
-            
-            doFalling(gs);
-                        
-            if(moveLeft)
-            {
-                doWalking(gs, 1);
-            }
-            if(moveRight)
-            {
-                doWalking(gs, 1);
-            }
-            if(wantToJump)
-            {
-                doJumping();
-            }
-            if(shoot && isCurrentlySelected && retreatTime <= 0)
-            {
-                doShooting(gs);
-            }
-            if(markerClick != null)
-            {
-                ismarked = true;
-                targetmarkerX = gs.gameCamera.GetBoundary().getMinX() + markerClick.getX();
-                targetmarkerY = gs.gameCamera.GetBoundary().getMinY() + markerClick.getY();
-                markerClick = null;
-            }
-        }
-        else if(currentState == PlayerState.FREEFALL) //free fall
-        {
-            doFreeFall(gs);
-            
-            wantToJump = false;//lock jumping to not jump around
-        }
-        else if(currentState == PlayerState.RAGDOLL)
-        {
-            doBounce(gs);
-        }
-        else if(currentState == PlayerState.ROPING)
-        {
-            doRope(gs);
+        //handle by player movement
+            case ACTIVE:
+                vx = 0;//clear any velocities
+                vy = 0;
+                doFalling(gs);
+                if(moveLeft)
+                    doWalking(gs, 1);
+                if(moveRight)
+                    doWalking(gs, 1);
+                if(wantToJump)
+                    doJumping();
+                if(shoot && isCurrentlySelected && retreatTime <= 0)
+                    doShooting(gs);
+                if(markerClick != null)
+                {
+                    ismarked = true;
+                    targetmarkerX = gs.gameCamera.GetBoundary().getMinX() + markerClick.getX();
+                    targetmarkerY = gs.gameCamera.GetBoundary().getMinY() + markerClick.getY();
+                    markerClick = null;
+                }   break;
+        //free fall
+            case FREEFALL:
+                doFreeFall(gs);
+                wantToJump = false;//lock jumping to not jump around
+                break;
+            case RAGDOLL:
+                doBounce(gs);
+                break;
+            case ROPING:
+                doRope(gs);
+                break;
+            default:
+                break;
         }
     }
 
@@ -665,6 +656,7 @@ public class Player extends Actor
     
     void doBounce(GSGame gs)
     {
+        vy = vy + StaticPhysics.GRAVITY;
         this.snapToLevelVel(gs, vx, vy, true, false);
         this.grenadeBounce(gs, 0.7, 0.7, 0.3, false);
         

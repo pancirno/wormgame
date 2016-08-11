@@ -9,16 +9,41 @@ import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
+import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
+import java.util.List;
 
 /**
  *
  * @author lukasz
  */
-public class Projectile extends Actor {
-        
-    protected double weight = 1;
+public class Projectile extends Actor 
+{
     protected int fuse = 600;
+    protected int burnout = 0;
     
+    protected boolean hitScan = false;
+    protected boolean goThroughObjects = false;
+    
+    protected boolean explodes = true;
+    protected boolean explodesOnHit = true;
+    protected ExplosionSize explodeSize = ExplosionSize.None;
+    protected int expDamage = 0;
+    protected double expPower = 0;
+    protected int expBias = 0;
+    protected double expHurtRadius = -1;
+    
+    protected boolean windAffected = false;
+    protected double weight = 1;
+    
+    protected boolean spawnChildrenOnExplosion = false;
+    protected boolean spawnChildrenOnTravel = false;
+    protected List<Projectile> children = null; 
+    
+    protected boolean bouncesOnHit = false;
+    protected double bounceReductionOnImpact = 0;
+    protected double bounceReductionOnRolling = 0;
+    protected double bounceReductionOnBounce = 0;
+            
     public Projectile(Actor p, double ix, double iy, double ivx, double ivy)
     {
         parent = p;
@@ -31,10 +56,29 @@ public class Projectile extends Actor {
     @Override
     public void step(GSGame gs)
     {
+        fuse--;
+        burnout--;
+        
+        if(windAffected) vx = vx + gs.getWind();
+        vy = vy + StaticPhysics.GRAVITY;
+        
+        checkCollide(gs);
+                
         if(this.isOutsideAreaOfPlay(gs))
         {
             gs.removeObject(this);
+            return;
         }
+        
+        if(bouncesOnHit)
+            grenadeBounce(gs, bounceReductionOnImpact, bounceReductionOnRolling, bounceReductionOnBounce, goThroughObjects);
+        
+        if((snapToLevelVel(gs, vx, vy, bouncesOnHit, false) && explodesOnHit) || fuse <= 0)
+        {
+            explode(gs);
+            return;
+        }
+        
     }
     
     @Override
@@ -53,6 +97,7 @@ public class Projectile extends Actor {
     
     public void explode(GSGame gs)
     {
-        
+        if(explodes) ExplosionFactory.MakeCustomExplosion(gs, (int)x, (int)y, explodeSize, expDamage, expPower, expBias, expHurtRadius);
+        gs.removeObject(this);
     }
 }

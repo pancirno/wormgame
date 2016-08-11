@@ -19,6 +19,7 @@ public class ExplosionFactory
 {
     public enum ExplosionSize
     {
+        None,
         Bullet,
         Small,
         Medium,
@@ -28,21 +29,21 @@ public class ExplosionFactory
         Gigantic
     }
     
-    static final Image BulletI;
+    static final Image SmallI;
     static final Image MediumI;
-    static final Image MediumPlusI;
     static final Image LargeI;
     static final Image ExtraLargeI;
     static final Image HugeI;
+    static final Image GiganticI;
     
     static
     {
-        BulletI = GenerateHoleSprite(19,19);
+        SmallI = GenerateHoleSprite(19,19);
         MediumI = GenerateHoleSprite(49,49);
-        MediumPlusI = GenerateHoleSprite(69,69);
-        LargeI = GenerateHoleSprite(99,99);
-        ExtraLargeI = GenerateHoleSprite(149,149);
-        HugeI = GenerateHoleSprite(255,255);
+        LargeI = GenerateHoleSprite(69,69);
+        ExtraLargeI = GenerateHoleSprite(99,99);
+        HugeI = GenerateHoleSprite(149,149);
+        GiganticI = GenerateHoleSprite(255,255);
     }
     
     //red color means level should ignore drawing red
@@ -65,15 +66,50 @@ public class ExplosionFactory
         return (Image)wi;
     }
     
+    static public void MakeCustomExplosion(GSGame gs, int x, int y, ExplosionSize sprite, int damage, double power, int bias, double damageradius)
+    {
+        Image eImg = null;
+        
+        switch(sprite)
+        {
+            case Small:
+                eImg = SmallI;
+                break;
+            case Medium:
+                eImg = MediumI;
+                break;
+            case Large:
+                eImg = LargeI;
+                break;
+            case ExtraLarge:
+                eImg = ExtraLargeI;
+                break;
+            case Huge:
+                eImg = HugeI;
+                break;
+            case Gigantic:
+                eImg = GiganticI;
+                break;
+            case None:
+            default:
+            
+        }
+        
+        Explosion e = new Explosion(eImg, gs, x, y, damage, power, bias, damageradius);
+        //e.constDamage = true;
+        
+        gs.spawnExplosion(e);
+    }
+    
     static public void MakeBlazeExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(BulletI, gs, x, y, 1, 1, -3, 20);
+        Explosion e = new Explosion(SmallI, gs, x, y, 1, 1, -3, 20);
         e.constDamage = true;
         
         gs.spawnExplosion(e);
     }
     
-    static public void MakeBlazeNoDigExplosion(GSGame gs,int x, int y)
+    static public void MakeBlazeNoDigExplosion(GSGame gs, int x, int y)
     {
         Explosion e = new Explosion(null, gs, x, y, 1, 1, -3, 20);
         e.constDamage = true;
@@ -83,36 +119,33 @@ public class ExplosionFactory
     
     static public void MakeBulletExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(BulletI, gs, x, y, 5, 1, -10);
+        Explosion e = new Explosion(SmallI, gs, x, y, 5, 1, -10, -1);
         e.constDamage = true;
         
         gs.spawnParticle(new PExplosion(x,y, 10));
-        
         gs.spawnExplosion(e);
     }
     
     static public void MakeSmallExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(MediumI, gs, x, y, 20, 3, -10);
+        Explosion e = new Explosion(MediumI, gs, x, y, 20, 3, -10, -1);
         e.constDamage = true;
         
         gs.spawnParticle(new PExplosion(x,y, 25));
-        
         gs.spawnExplosion(e);
     }
     
     static public void MakeMediumExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(MediumPlusI, gs, x, y, 35, 3, -10);
+        Explosion e = new Explosion(LargeI, gs, x, y, 35, 3, -10, -1);
         
         gs.spawnParticle(new PExplosion(x,y, 35));
-        
         gs.spawnExplosion(e);
     }
     
     static public void MakeLargeExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(LargeI, gs, x, y, 50, 6, -10);
+        Explosion e = new Explosion(ExtraLargeI, gs, x, y, 50, 6, -10, -1);
         gs.playSound("sfx/boom1.wav");
         gs.spawnParticle(new PExplosion(x,y, 50));
         gs.spawnExplosion(e);
@@ -120,7 +153,7 @@ public class ExplosionFactory
     
     static public void MakeBigExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(ExtraLargeI, gs, x, y, 75, 8, -15);
+        Explosion e = new Explosion(HugeI, gs, x, y, 75, 8, -15, -1);
         gs.spawnParticle(new PExplosion(x,y, 75));
         
         gs.spawnExplosion(e);

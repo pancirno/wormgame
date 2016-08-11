@@ -5,9 +5,8 @@
  */
 package gameclasses.earthworms.weapons;
 
-import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
 import gameclasses.earthworms.Projectile;
-import gameclasses.earthworms.StaticPhysics;
 import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
@@ -19,9 +18,7 @@ import javafx.scene.paint.Color;
  * @author lukasz
  */
 public class Rocket extends Projectile 
-{
-    boolean windAffected = true;
-    
+{    
     public Rocket(Actor p, double ix, double iy, double ivx, double ivy) 
     {
         super(p, ix, iy, ivx, ivy);
@@ -29,6 +26,15 @@ public class Rocket extends Projectile
         
         cx = 5;
         cy = 5;
+        
+        windAffected = true;
+        
+        explodesOnHit = true;
+        explodeSize = ExplosionSize.ExtraLarge;
+        expDamage = 50;
+        expPower = 6;
+        expBias = -10;
+        
     }
     
     @Override
@@ -38,30 +44,18 @@ public class Rocket extends Projectile
         int anchy = c.GetCameraDeltaY((int)y);
                 
         loop.GetGraphicsContext().setFill(Color.RED);
-            
         loop.GetGraphicsContext().fillOval(anchx-6, anchy-6, 12, 12);
     }
     
     @Override
     public void step(GSGame gs)
-    {
-        fuse--;
-        
-        if(windAffected) vx = vx + gs.getWind();
-        vy = vy + StaticPhysics.GRAVITY;
-        
-        if(snapToLevelVel(gs, vx, vy, false, false) || fuse <= 0)
-        {
-            explode(gs);
-        }
-        
+    {    
         super.step(gs);
     }
     
-    @Override
+    @Override 
     public void explode(GSGame gs)
     {
-        ExplosionFactory.MakeLargeExplosion(gs, (int)x, (int)y);
-        gs.removeObject(this);
+        super.explode(gs);
     }
 }

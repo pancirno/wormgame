@@ -24,6 +24,19 @@ public class Grenade extends Projectile {
         
         cx = 4;
         cy = 4;
+        
+        explodesOnHit = false;
+        bouncesOnHit = true;
+        
+        expDamage = 50;
+        expPower = 6;
+        expBias = -10;
+        
+        bounceReductionOnImpact = 0.9;
+        bounceReductionOnRolling = 0.9;
+        bounceReductionOnBounce = 0.5;
+        
+        explodeSize = ExplosionFactory.ExplosionSize.ExtraLarge;
     }
     
     @Override
@@ -38,27 +51,15 @@ public class Grenade extends Projectile {
     
     @Override
     public void step(GSGame gs)
-    {
-        fuse--;
-        
-        checkCollide(gs);
-        
-        snapToLevelVel(gs, vx, vy, true, false);
-        grenadeBounce(gs, 0.9, 0.9, 0.5, false);
-        
-        if(fuse <= 0)
-        {
-            explode(gs);
-        }
-        
+    {                
         super.step(gs);
     }
     
-    @Override
+    @Override 
     public void explode(GSGame gs)
     {
-        ExplosionFactory.MakeLargeExplosion(gs, (int)x, (int)y);
-        gs.removeObject(this);
+        super.explode(gs);
     }
+    
     
 }

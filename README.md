@@ -1,4 +1,5 @@
 # wormgame
-There was an attempt at writing a videogame in JavaFX.
 
-Try to do a better job at it than me
+A project that aims for recreating Worms Armageddon game in JavaFX.
+
+It's alive!

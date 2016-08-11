@@ -31,7 +31,7 @@ public class Explosion
     public double hurtRadius;
     public boolean constDamage;
     
-    public Explosion(Image es, GSGame gs, int xi, int yi, int dmg, double pow, int ibias)
+    public Explosion(Image es, GSGame gs, int xi, int yi, int dmg, double pow, int ibias, double hurtrad)
     {
         explosionSprite = es;
         
@@ -44,7 +44,7 @@ public class Explosion
         
         if(explosionSprite != null)
         {
-            hurtRadius = es.getWidth()*0.75;
+            hurtRadius = (hurtrad < 0) ? es.getWidth()*0.75 : hurtrad;
             drawx = xi - (int)es.getWidth()/2;
             drawy = yi - (int)es.getHeight()/2;
             
@@ -59,13 +59,6 @@ public class Explosion
         bias = ibias;
         
         constDamage = false;
-        
-    }
-    
-    public Explosion(Image es, GSGame gs, int xi, int yi, int dmg, double pow, int ibias, double hurtrad)
-    {
-        this(es, gs, xi, yi, dmg, pow, ibias);
-        hurtRadius = hurtrad;
     }
     
 }

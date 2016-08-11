@@ -75,13 +75,11 @@ public class GUIHelper
             double width = 36 * Math.abs(wind);
             gc.fillRect(x+40-width, y+2, width, 12);
         }
-            
-        
     }
     
     static int renderedTextWidth(String s)
     {
-        if(textWidthCache.size() > 512) 
+        if(textWidthCache.size() > 1024) 
         {
             textWidthCache.clear();
         }

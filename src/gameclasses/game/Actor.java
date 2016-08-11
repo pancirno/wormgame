@@ -88,8 +88,8 @@ public class Actor
             {
                 ifcollided = true;
                                 
-                destx = x + pcheckx;
-                desty = y + pchecky;
+                destx = x + ((snaptype) ? checkx : pcheckx);
+                desty = y + ((snaptype) ? checky : pchecky);
                 
                 break;
             }
@@ -158,18 +158,16 @@ public class Actor
         //vertical bounce
         if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, vy)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, 0, vy)) )
         {
-            if(y >= 5) healthPoints -= fallDamageRatio * Math.max(0,vy-5);
+            if(Math.abs(vy) >= 5) healthPoints -= fallDamageRatio * Math.max(0,vy-5);
+            if(vy > 0) vy -= StaticPhysics.GRAVITY; //if we sit on ground we compensate for gravity
             vy = vy * StaticPhysics.TORQUE * -1 * bouncered; //0.5
         }
         else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(0, -1 * vy)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, 0, -1 * vy)) )
         {
-            vy = Math.abs(vy + StaticPhysics.GRAVITY);
         }
         else
         {
-            vy = vy + StaticPhysics.GRAVITY;
         }
-        
         
         //stop if speed is too small
         if(Math.abs(vx) < 0.001) vx = 0;

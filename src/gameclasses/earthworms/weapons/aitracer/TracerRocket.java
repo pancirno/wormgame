@@ -18,12 +18,12 @@ import gameclasses.loop.GSGame;
 public class TracerRocket extends Rocket implements IScoredTracer
 {
     public boolean simulationFinished = false;
-    
     public int totalDamage = 0;
     
     public TracerRocket(Actor p, double ix, double iy, double ivx, double ivy) 
     {
         super(p, ix, iy, ivx, ivy);
+        explodes = false;
     }
     
     @Override

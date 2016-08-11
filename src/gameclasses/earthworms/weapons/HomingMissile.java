@@ -18,13 +18,12 @@ public class HomingMissile extends Rocket
 {
     Point2D target;
     
-    int burnout = 45;
-    
     public HomingMissile(Actor p, double ix, double iy, double ivx, double ivy, int tx, int ty)
     {
         super(p, ix, iy, ivx, ivy);
         
         target = new Point2D(tx,ty);
+        burnout = 45;
     }
     
     @Override

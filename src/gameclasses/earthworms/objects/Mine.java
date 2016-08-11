@@ -34,8 +34,10 @@ public class Mine extends LevelObject
         if(healthPoints == maxfuse)
             detonateMine();
         
-        snapToLevelVel(gs, vx, vy, true, false);
+        vy = vy + StaticPhysics.GRAVITY;
+        
         grenadeBounce(gs, 0.9, 0.9, 0.5, false);
+        snapToLevelVel(gs, vx, vy, true, false);
         
         if(healthPoints != maxfuse)
             healthPoints--;
