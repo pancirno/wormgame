@@ -25,6 +25,8 @@ public class Grenade extends Projectile {
         cx = 4;
         cy = 4;
         
+        gravityAffected = true;
+        
         explodesOnHit = false;
         bouncesOnHit = true;
         

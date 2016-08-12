@@ -5,8 +5,9 @@
  */
 package gameclasses.earthworms.weapons;
 
-import gameclasses.earthworms.BulletProjectile;
+import gameclasses.earthworms.Projectile;
 import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
 import gameclasses.game.Actor;
 import gameclasses.loop.GSGame;
 
@@ -14,14 +15,17 @@ import gameclasses.loop.GSGame;
  *
  * @author lukasz
  */
-public class Shotgun extends BulletProjectile
+public class Shotgun extends Projectile
 {
-    public Shotgun(Actor p, double ix, double iy, double ivx, double ivy, GSGame gs) {
-        super(p, ix, iy, ivx, ivy);
-    }
-    
-    @Override protected void hitScanExp(GSGame gs)
+    public Shotgun(Actor p, double ix, double iy, double ivx, double ivy, GSGame gs) 
     {
-        ExplosionFactory.MakeSmallExplosion(gs, (int)x, (int)y);
+        super(p, ix, iy, ivx, ivy);
+        
+        hitScan = true;
+        explodeSize = ExplosionSize.Medium;
+        expConstDamage = true;
+        expDamage = 20;
+        expPower = 3;
+        expBias = -10;
     }
 }

@@ -28,6 +28,7 @@ public class Rocket extends Projectile
         cy = 5;
         
         windAffected = true;
+        gravityAffected = true;
         
         explodesOnHit = true;
         explodeSize = ExplosionSize.ExtraLarge;

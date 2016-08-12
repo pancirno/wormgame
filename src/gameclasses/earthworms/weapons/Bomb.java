@@ -20,7 +20,8 @@ import javafx.scene.paint.Color;
 public class Bomb extends Grenade 
 {
 
-    public Bomb(Actor p, double ix, double iy, double ivx, double ivy, int ifuse) {
+    public Bomb(Actor p, double ix, double iy, double ivx, double ivy, int ifuse) 
+    {
         super(p, ix, iy, ivx, ivy, 300);
         weight = 2;
     }
