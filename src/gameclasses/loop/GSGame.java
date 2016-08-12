@@ -10,6 +10,7 @@ import gameclasses.earthworms.*;
 import gameclasses.earthworms.GUIHelper.*;
 import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
 import gameclasses.earthworms.objects.*;
+import gameclasses.game.SynchronizedArrayList;
 import java.util.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
@@ -37,22 +38,22 @@ public class GSGame extends GameState
     GameScheme currentScheme;
     
     //game objects
+    SynchronizedArrayList<Player> players;
+    SynchronizedArrayList<Projectile> projectiles;
+    SynchronizedArrayList<LevelObject> objects;
+    SynchronizedArrayList<Particle> particles;
     ArrayList<Explosion> explosions;
-    ArrayList<Projectile> projectiles;
-    ArrayList<Player> players;
-    ArrayList<LevelObject> objects;
-    ArrayList<Particle> particles;
     
     //trashbins
-    ArrayList<Projectile> trashProj;
-    ArrayList<Player> trashPlayer;
-    ArrayList<LevelObject> trashObject;
-    ArrayList<Particle> trashParticle;
+    //ArrayList<Projectile> trashProj;
+    //ArrayList<Player> trashPlayer;
+    //ArrayList<LevelObject> trashObject;
+    //ArrayList<Particle> trashParticle;
     
     //spawners
-    ArrayList<Projectile> spawnProj;
-    ArrayList<LevelObject> spawnObject;
-    ArrayList<Particle> spawnParticle;
+    //ArrayList<Projectile> spawnProj;
+    //ArrayList<LevelObject> spawnObject;
+    //ArrayList<Particle> spawnParticle;
     
     //loot table
     ArrayList<AvailableWeapons> lootTable;
@@ -85,22 +86,11 @@ public class GSGame extends GameState
         teamPlayerList = new HashMap<>();
         teamIterator = new HashMap<>();
         
+        players = new SynchronizedArrayList<>();
+        projectiles = new SynchronizedArrayList<>();
+        objects = new SynchronizedArrayList<>();
+        particles = new SynchronizedArrayList<>();
         explosions = new ArrayList<>();
-        projectiles = new ArrayList<>();
-        players = new ArrayList<>();
-        objects = new ArrayList<>();
-        particles = new ArrayList<>();
-        
-        trashObject = new ArrayList<>();
-        spawnObject = new ArrayList<>();
-        
-        trashProj = new ArrayList<>();
-        spawnProj = new ArrayList<>();
-        
-        trashParticle = new ArrayList<>();
-        spawnParticle = new ArrayList<>();
-        
-        trashPlayer = new ArrayList<>();
         
         lootTable = new ArrayList<>();
         
@@ -113,8 +103,8 @@ public class GSGame extends GameState
     {
         addTeam(new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false));
         addTeam(new Team("dupa1", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, false));
-        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, false));
-        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, false));
+//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, false));
+//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, false));
 //        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
 //        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
 //        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
@@ -173,7 +163,7 @@ public class GSGame extends GameState
     
     private void insertPlayer(Player p)
     {
-        players.add(p);
+        players.InsertObject(p);
         teamPlayerList.get(p.getPlayerTeam()).add(p);
     }
     
@@ -254,7 +244,7 @@ public class GSGame extends GameState
         
         //check if player needs to be switched
         if(pickNextPlayer)
-            if(explosions.isEmpty() && projectiles.isEmpty() && !arePlayersMoving() && !areObjectsMoving())
+            if(explosions.isEmpty() && projectiles.size() == 0 && !arePlayersMoving() && !areObjectsMoving())
             {
             selectNextPlayer();
             }
@@ -263,8 +253,6 @@ public class GSGame extends GameState
         gameCamera.move(loop.GetInputEngine());
         if(activePlayer != null)
             activePlayer.move(this, loop.GetInputEngine());
-        
-        executeSpawnObjects();
         
         executeHandleExplosions();
         
@@ -292,30 +280,32 @@ public class GSGame extends GameState
         //draw terrain
         currentStage.render(gc, gameCamera);
         //draw sprites
-        for(Player p : players)
+        
+        players.GetIterator().forEachRemaining(p -> 
         {
             p.render(loop, gameCamera);
             if(p == activePlayer) p.renderGUI(this, loop, gameCamera);
-        }
+        });
         
-        for(Projectile pro : projectiles)
+        projectiles.GetIterator().forEachRemaining(pro ->
         {
             pro.render(loop, gameCamera);
-        }
+        });
         
-        for(LevelObject lo : objects)
+        objects.GetIterator().forEachRemaining(lo ->
         {
             lo.render(loop, gameCamera);
-        }
+        });
         
-        for(Particle pr : particles)
+        particles.GetIterator().forEachRemaining(pr ->
         {
             if(pr.trash)
             {
-                trashParticle.add(pr);
+                particles.RemoveObject(pr);
             }
             else pr.render(loop, gameCamera);
-        }
+        });
+        
         //draw foreground
         //draw ui
         
@@ -344,52 +334,37 @@ public class GSGame extends GameState
 
     private void executeRemoveObjects() {
         //clean up objects
-        for(Projectile tpro : trashProj)
-        {
-            projectiles.remove(tpro);
-        }
-        trashProj.clear();
+        projectiles.Sync();
         
-        for(LevelObject tlo : trashObject)
-        {
-            objects.remove(tlo);
-        }
-        trashObject.clear();
+        objects.Sync();
         
-        for(Particle pr : trashParticle)
-        {
-            particles.remove(pr);
-        }
-        trashParticle.clear();
+        particles.Sync();
         
-        //kill dead players
-        for(Player p : trashPlayer)
+        players.GetIteratorToDel().forEachRemaining(p -> 
         {
             if(p == activePlayer)
                 endTheTurn();
-            
-            deletePlayer(p);
-        }
-        trashPlayer.clear();
+        });
+        players.Sync();
     }
 
     private void executeStep() {
         //run object logic
         //p.step(this);
-        for(Player p : players)
+        players.GetIterator().forEachRemaining(p -> 
         {
             p.step(this);
-        }
+        });
         
-        for(Projectile pro : projectiles)
+        projectiles.GetIterator().forEachRemaining(pro ->
         {
             pro.step(this);
-        }
+        });
         
-        for(LevelObject lo : objects)
+        objects.GetIterator().forEachRemaining(lo ->
         {
             lo.step(this);
-        }
+        });
     }
 
     private void executeHandleExplosions() {
@@ -407,24 +382,23 @@ public class GSGame extends GameState
     {
         collisionTree.clear();
         
-        //set points
-        for(Actor ac : players)
+        players.GetIterator().forEachRemaining(ac -> 
         {
             if(ac.checkCollidable() && !ac.isOutsideAreaOfPlay(this))
                 collisionTree.set(ac.getX(), ac.getY(), ac);
-        }
+        });
         
-        for(Actor ac : projectiles)
+        projectiles.GetIterator().forEachRemaining(ac ->
         {
             if(ac.checkCollidable() && !ac.isOutsideAreaOfPlay(this))
                 collisionTree.set(ac.getX(), ac.getY(), ac);
-        }
+        });
         
-        for(Actor ac : objects)
+        objects.GetIterator().forEachRemaining(ac ->
         {
             if(ac.checkCollidable() && !ac.isOutsideAreaOfPlay(this))
                 collisionTree.set(ac.getX(), ac.getY(), ac);
-        }
+        });
         
     }
     
@@ -458,46 +432,34 @@ public class GSGame extends GameState
         return ob.toArray();
     }
 
-    private void executeSpawnObjects() {
-        //create new objects
-        projectiles.addAll(spawnProj);
-        spawnProj.clear();
-        
-        objects.addAll(spawnObject);
-        spawnObject.clear();
-        
-        particles.addAll(spawnParticle);
-        spawnParticle.clear();
-    }
-
     private void executePushObjects(Explosion exp)
     {
         Point2D exppoint = new Point2D(exp.x, exp.y);
         //push all nearby projectiles
-        for(Projectile pro : projectiles)
+        projectiles.GetIterator().forEachRemaining(pro ->
         {
             double dist = exppoint.distance(pro.getX(), pro.getY());
             if(dist <= exp.hurtRadius)
             {
                 PushObject(pro, exppoint.getX(), exppoint.getY(), exp, dist);
             }
-        }
+        });
         
-        for(LevelObject lo : objects)
+        objects.GetIterator().forEachRemaining(lo ->
         {
             double dist = exppoint.distance(lo.getX(), lo.getY());
             if(dist <= exp.hurtRadius)
             {
                 PushObject(lo, exppoint.getX(), exppoint.getY(), exp, dist);
             }
-        }
+        });
     }
     
     private void executeHurtPlayers(Explosion exp) 
     {
         Point2D exppoint = new Point2D(exp.x, exp.y);
         //push all nearby projectiles
-        for(Player plr : players)
+        players.GetIterator().forEachRemaining(plr -> 
         {
             Rectangle2D plrrec = plr.getCollisionArea();
             double dist = exppoint.distance(plrrec.getMinX() + plrrec.getWidth()/2, plrrec.getMinY() + plrrec.getHeight()/2);
@@ -516,7 +478,7 @@ public class GSGame extends GameState
                 plr.dealDamage((int) damage);
                 plr.push(this, CommonMath.getDirectionVector(pushangle).multiply(epower));
             }
-        }
+        });
     }
     
     private void PushObject(Actor pro, double expx, double expy,  Explosion exp, double dist)
@@ -550,35 +512,34 @@ public class GSGame extends GameState
     public void spawnProjectile(Projectile e)
     {
         if(projectiles.size() < 256)
-            spawnProj.add(e);
+            projectiles.InsertObject(e);
     }
     
     public void spawnObject(LevelObject e)
     {
-        spawnObject.add(e);
+        objects.InsertObject(e);
     }
     
     public void spawnParticle(Particle p)
     {
         if(particles.size() < 256)
-            spawnParticle.add(p);
+            particles.InsertObject(p);
     }
     
     public void removeObject(Projectile e)
     {
-        if(projectiles.contains(e))
-            trashProj.add(e);
+        projectiles.RemoveObject(e);
     }
     
     public void removeObject(LevelObject e)
     {
-        if(objects.contains(e))
-            trashObject.add(e);
+        objects.RemoveObject(e);
     }
     
     public void removePlayer(Player p)
     {
-        trashPlayer.add(p);
+        players.RemoveObject(p);
+        teamPlayerList.get(p.getPlayerTeam()).remove(p);
     }
     
     public boolean ifObjectExists(Projectile e)
@@ -591,9 +552,9 @@ public class GSGame extends GameState
         return activePlayer;
     }
     
-    public List<Player> getPlayerList()
+    public Player[] getPlayerList() //TODO change
     {
-        return players;
+        return (Player[])players.GetStream().toArray();
     }
     
     public double getRandomNumber()
@@ -628,32 +589,14 @@ public class GSGame extends GameState
     
     public boolean arePlayersMoving()
     {
-        for(Player p : players)
-            if(p.isMoving())
-            {
-                return true;
-            }
-        
-        return false;
+        return players.GetStream().anyMatch(x -> x.isMoving());
     }
     
     public boolean areObjectsMoving()
     {
-        for(LevelObject lo : objects)
-            if(lo.isMoving())
-            {
-                return true;
-            }
-        
-        return false;
+        return objects.GetStream().anyMatch(x -> x.isMoving());
     }
     
-    private void deletePlayer(Player p)
-    {
-        players.remove(p);
-        teamPlayerList.get(p.getPlayerTeam()).remove(p);
-    }
-
     private void dropPickup() 
     {
         if(this.getRandomNumber() < 0.25)

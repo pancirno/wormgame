@@ -153,8 +153,7 @@ public class PlayerAI extends Player
 
     private void basicBehaviour(GSGame gs) {
         //consider players
-        List<Player> players = gs.getPlayerList();
-        Player selectedtarget = closestPlayer(players);
+        Player selectedtarget = closestPlayer(gs.getPlayerList());
         if (selectedtarget == null) 
         {
             thought = true;
@@ -170,7 +169,7 @@ public class PlayerAI extends Player
             equippedGun = AvailableWeapons.SHOTGUN;
     }
 
-    private Player closestPlayer(List<Player> players)
+    private Player closestPlayer(Player[] players)
     {
         //find closest enemy
         Player selectedtarget = null;
