@@ -22,7 +22,7 @@ public class Hibari extends Projectile
 {
     public Hibari(Actor p, double ix, double iy, double ivx, double ivy)
     {
-        super(p, ix, iy, ivx, ivy);
+        initProjectile(p, ix, iy, ivx, ivy);
         cx = 96;
         cy = 2;
         weight = 10;

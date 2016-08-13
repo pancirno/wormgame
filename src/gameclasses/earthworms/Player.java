@@ -5,7 +5,6 @@
  */
 package gameclasses.earthworms;
 
-import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
 import gameclasses.earthworms.weapons.*;
 import gameclasses.game.*;
 import gameclasses.loop.*;
@@ -66,7 +65,8 @@ public class Player extends Actor
     Jump directionToJump = Jump.FORWARD;
     
     //shooting
-    WeaponInfo.AvailableWeapons equippedGun = WeaponInfo.AvailableWeapons.ROCKET;
+    Weapon equippedGunData = null;
+    
     double aimangle = 0;
     double aimpower = 0; //max 15
     boolean shoot = false;
@@ -112,6 +112,27 @@ public class Player extends Actor
         healthPoints = 100;
         fallDamageRatio = 5;
     }
+   
+    
+    
+    public void SelectPlayer()
+    {
+        restartPlayer();
+    }
+    
+    void restartPlayer()
+    {
+        refire = -1;
+        retreatTime = -1;
+        autoshoot = false;
+        shoot = false;
+        wantToJump = false;
+        moveLeft = false;
+        moveRight = false;
+        ismarked = false;
+        lockswitch = false;
+    }
+    
     
     @Override
     public void step(GSGame gs)
@@ -150,7 +171,7 @@ public class Player extends Actor
         {
             if(ropeshoot.impact == true)
             {
-                playerTeam.deductAmmo(AvailableWeapons.ROPE);
+                //playerTeam.deductAmmo(AvailableWeapons.ROPE);
                 
                 double dst = CommonMath.distance(x,y,ropeshoot.getX(), ropeshoot.getY());
                 
@@ -197,154 +218,31 @@ public class Player extends Actor
                 break;
         }
     }
-
-    public void SelectPlayer()
-    {
-        restartPlayer();
-    }
-    
-    void restartPlayer()
-    {
-        refire = -1;
-        retreatTime = -1;
-        autoshoot = false;
-        shoot = false;
-        wantToJump = false;
-        moveLeft = false;
-        moveRight = false;
-        ismarked = false;
-        lockswitch = false;
-    }
-    
-    protected void configureAiming()
-    {
-        aim_precos = Math.cos(aimangle);
-        aim_presin = Math.sin(aimangle);
-        aim_horizaim = x + aim_precos * 5;
-        aim_vertaim = y - AIM_HEIGHT + aim_presin * 5;
-        aim_horizthr = aim_precos * aimpower;
-        aim_vertthr = aim_presin * aimpower;
-        aim_horizthrinst = aim_precos * MAX_SHOOT_POWER;
-        aim_vertthrinst = aim_presin * MAX_SHOOT_POWER;
-    }
-    
-    private void setEquippedGun(AvailableWeapons aw)
-    {
-        if(!lockswitch)
-            equippedGun = aw;
-    }
-
-    private void doShooting(GSGame gs) 
-    {        
-        configureAiming();
         
-        switch(equippedGun)
+    @Override
+    public void push(GSGame gs, double ivx, double ivy)
+    {
+        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, vy + ivy)) && ivx != 0 && ivy != 0) 
         {
-            case ROCKET:
-                gs.spawnProjectile(new Rocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr));
-                break;
-            case MIRV:
-                gs.spawnProjectile(new MIRV(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr));
-                break;
-            case HOMINGMISSILE:
-                if(!ismarked)return;
-                gs.spawnProjectile(new HomingMissile(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, (int)targetmarkerX, (int)targetmarkerY));
-                break;
-            case GRENADE:
-                gs.spawnProjectile(new Grenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, 180));
-                break;
-            case FIREGRENADE:
-                gs.spawnProjectile(new FireGrenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, 180));
-                break;
-            case BOMB:
-                gs.spawnProjectile(new Bomb(this, aim_horizaim, aim_vertaim, 1.2 * Math.signum(aim_horizthr), -1.5, -1));
-                break;
-            case SHOTGUN:
-                lockswitch = true;
-                
-                if(!getCanShootAgain())
-                {
-                    playerTeam.deductAmmo(equippedGun);
-                    refire = 2;
-                }
-                gs.playSound("sfx/shot1.wav");
-                gs.spawnProjectile(new Shotgun(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, gs));
-                refire--;
-                retreatTime = 120;
-                break;
-            case MINIGUN:
-                lockswitch = true;
-                
-                if(!getCanShootAgain())
-                {
-                    playerTeam.deductAmmo(equippedGun);
-                    refire = 15;
-                    gs.playSound("sfx/minigun1.wav");
-                }
-                
-                autoshoot = true;
-                gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
-                refire--;
-                retreatTime = 4;
-                break;
-            case FLAMETHROWER:
-                lockswitch = true;
-                
-                if(!getCanShootAgain())
-                {
-                    playerTeam.deductAmmo(equippedGun);
-                    refire = 15;
-                }
-                
-                autoshoot = true;
-                gs.spawnProjectile(new Flamethrower(this, aim_horizaim, aim_vertaim, aim_horizthrinst/2.5, aim_vertthrinst/2.5));
-                refire--;
-                retreatTime = 8;
-                break;
-            case ROPE:
-                shootRopeTracer(gs);
-                break;
-            case AIRSTRIKE:
-                if(!ismarked)return;
-                gs.spawnProjectile(new AirStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
-                break;
-            case FIRESTRIKE:
-                if(!ismarked)return;
-                gs.spawnProjectile(new AirFireStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
-                break;
-            case HIBARI:
-                if(!ismarked)return;
-                gs.spawnProjectile(new Hibari(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0, 1));
-                break;
-            case DOUBLESHOTGUN:
-                gs.playSound("sfx/doubleshot1.wav");
-                for(int i = 0; i < 15; i++)
-                    gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
-                break;
+            ivx *= -0.9;
+            if(Math.abs(ivx) <= 0.05) ivx = 0;
+            ivy *= -0.9;
+            if(Math.abs(ivy) <= 0.05) ivy = 0;
         }
         
-        if(!getCanShootAgain())
-        {
-            retreatTime = 180;
-            autoshoot = false;
-        }
-        
-        aimpower = 0;
-        shoot = false;
+        vx += ivx;
+        vy += ivy;
+        currentState = PlayerState.RAGDOLL;
     }
-
-    private void shootRopeTracer(GSGame gs)
+    
+    @Override
+    protected Object[] findNearbyObjects(GSGame gs, double destx, double desty, int radius) 
     {
-        refire = 9999;
-        
-        if(!gs.ifObjectExists(ropeshoot))
-        {
-            ropeshoot = new RopeConnector(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, 15);
-            gs.spawnProjectile(ropeshoot);
-        }
-        
-        retreatTime = 120;
+        Object[] obj = super.findNearbyObjects(gs, destx, desty, radius);
+        excludePlayerClassObjects(obj);
+        return obj;
     }
+    
     
     public void renderGUI(GSGame gs, MainLoop loop, Camera c)
     {
@@ -352,27 +250,30 @@ public class Player extends Actor
         int anchy = c.GetCameraDeltaY((int)y);
         
         //bron
-        int drawAmmoTimer = gs.getScheme().getDelay(equippedGun) - gs.getCurrentTurn();
         
-        Color ammoStringC = Color.WHITE;
-            
-        String ammoLeft = "";
-        if(playerTeam.getAmmo(equippedGun) > 0)
+        if(equippedGunData != null)
         {
-            ammoLeft = " x" + playerTeam.getAmmo(equippedGun);
+            int drawAmmoTimer = gs.getScheme().getDelay(equippedGunData.WeaponTag) - gs.getCurrentTurn();
+
+            Color ammoStringC = Color.WHITE;
+
+            String ammoLeft = "";
+            if(playerTeam.getAmmo(equippedGunData.WeaponTag) > 0)
+            {
+                ammoLeft = " x" + playerTeam.getAmmo(equippedGunData.WeaponTag);
+            }
+            else
+                ammoStringC = Color.GRAY;
+
+            String timeLeft = "";
+            if(drawAmmoTimer > 0) 
+            {
+                timeLeft = " (" + drawAmmoTimer + ")";
+                ammoStringC = Color.RED;
+            }
+
+            GUIHelper.drawTextCube(loop.GetGraphicsContext(), 20, 50, equippedGunData.WeaponName + ammoLeft + timeLeft, ammoStringC, GUIHelper.boxAlignment.left);
         }
-        else
-            ammoStringC = Color.GRAY;
-
-        String timeLeft = "";
-        if(drawAmmoTimer > 0) 
-        {
-            timeLeft = " (" + drawAmmoTimer + ")";
-            ammoStringC = Color.RED;
-        }
-
-        GUIHelper.drawTextCube(loop.GetGraphicsContext(), 20, 50, equippedGun.name() + ammoLeft + timeLeft, ammoStringC, GUIHelper.boxAlignment.left);
-
     }
 
     @Override
@@ -433,29 +334,18 @@ public class Player extends Actor
         }
     }
     
-    public void tryShooting(GSGame gs)
+    @Override
+    public Rectangle2D getCollisionArea()
     {
-        if(shoot) return;
-        
-        if(playerTeam.canShootWeapon(gs, equippedGun))
-        {
-            shoot = true;
-            
-            switch(equippedGun)
-            {
-                case ROPE:
-                case SHOTGUN:
-                case MINIGUN:
-                case FLAMETHROWER:
-                    break;
-                    
-                default:
-                    playerTeam.deductAmmo(equippedGun);
-            }
-            
-        }
+        return new Rectangle2D(x - cx/2, y - cy, cx, cy);
     }
-
+    
+    @Override
+    public Rectangle2D getCollisionAreaDelta(double dx, double dy)
+    {
+        return new Rectangle2D((x + dx) - cx/2, (y + dy) - cy, cx, cy);
+    }
+    
     public void move(GSGame gs, InputEngine ie)
     {        
         //reset status
@@ -464,7 +354,7 @@ public class Player extends Actor
         ropepull = false;
         ropepush = false;
         
-        if(ie.isClicked() && WeaponInfo.SetMarker.contains(equippedGun));
+        if(ie.isClicked());
         {
             markerClick = ie.getClicked();
         }
@@ -509,64 +399,66 @@ public class Player extends Actor
             }
         }
         
-        //shoot sequence, increase power on press and shot on release
+        //pick weapon
         if(!getIsRetreading() && currentState == PlayerState.ACTIVE)
         {
-            if(ie.checkPressed(KeyCode.SPACE) == true)
-            {
-                if(WeaponInfo.InstantShot.contains(equippedGun))
-                {
-                    tryShooting(gs);
-                }
-                else
-                {
-                    aimpower += 0.2;
-                    if(aimpower > MAX_SHOOT_POWER) tryShooting(gs);
-                }
-            }
-            if(ie.checkPressed(KeyCode.SPACE) == false && aimpower > 0)
-            {
-                tryShooting(gs);
-            }
-
             if(ie.checkPulse(KeyCode.F1) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(WeaponInfo.pickWeapon(0));
+                setEquippedGun(gs.getWeaponInfo("rocket"));
             }
             if(ie.checkPulse(KeyCode.F2) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(WeaponInfo.pickWeapon(1));
+                //setEquippedGun(WeaponInfo.pickWeapon(1));
             }
             if(ie.checkPulse(KeyCode.F3) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(WeaponInfo.pickWeapon(2));
+                //setEquippedGun(WeaponInfo.pickWeapon(2));
             }
             if(ie.checkPulse(KeyCode.F4) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(WeaponInfo.pickWeapon(3));
+                //setEquippedGun(WeaponInfo.pickWeapon(3));
             }
             if(ie.checkPulse(KeyCode.F5) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(WeaponInfo.pickWeapon(4));
+                //setEquippedGun(WeaponInfo.pickWeapon(4));
             }
             if(ie.checkPulse(KeyCode.F6) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(WeaponInfo.pickWeapon(5));
+                //setEquippedGun(WeaponInfo.pickWeapon(5));
             }
         }
-    }
-
-    private void detachRope() 
-    {
-        currentState = PlayerState.RAGDOLL;
-        ropeshoot = null;
-        ropestring = null;
+        
+        //shoot sequence, increase power on press and shot on release
+        if(equippedGunData != null)
+            if(!getIsRetreading() && currentState == PlayerState.ACTIVE)
+            {
+                if(ie.checkPressed(KeyCode.SPACE) == true)
+                {
+                    if(equippedGunData.instantShot)
+                    {
+                        tryShooting(gs);
+                    }
+                    else
+                    {
+                        aimpower += 0.2;
+                        if(aimpower > MAX_SHOOT_POWER) 
+                        {
+                            aimpower = MAX_SHOOT_POWER;
+                            tryShooting(gs);
+                        }
+                    }
+                }
+                if(ie.checkPressed(KeyCode.SPACE) == false && aimpower > 0)
+                {
+                    tryShooting(gs);
+                }
+            }
     }
     
     void doWalking(GSGame gs, int speed)
@@ -604,7 +496,7 @@ public class Player extends Actor
                     }
                 }
             }
-    }
+}
 
     void doFalling(GSGame gs)
     {
@@ -668,14 +560,6 @@ public class Player extends Actor
         }
     }
     
-    @Override
-    protected Object[] findNearbyObjects(GSGame gs, double destx, double desty, int radius) 
-    {
-        Object[] obj = super.findNearbyObjects(gs, destx, desty, radius);
-        excludePlayerClassObjects(obj);
-        return obj;
-    }
-    
     void doJumping()
     {
         int sign = 1;
@@ -730,25 +614,161 @@ public class Player extends Actor
         }
     }
     
+    protected void configureAiming()
+    {
+        aim_precos = Math.cos(aimangle);
+        aim_presin = Math.sin(aimangle);
+        aim_horizaim = x + aim_precos * 5;
+        aim_vertaim = y - AIM_HEIGHT + aim_presin * 5;
+        aim_horizthr = aim_precos * aimpower;
+        aim_vertthr = aim_presin * aimpower;
+        aim_horizthrinst = aim_precos * MAX_SHOOT_POWER;
+        aim_vertthrinst = aim_presin * MAX_SHOOT_POWER;
+    }
+    
+    private void setEquippedGun(Weapon w)
+    {
+        if(!lockswitch)
+        {
+            equippedGunData = w;
+        }
+    }
+        
+    public void tryShooting(GSGame gs)
+    {
+        if(equippedGunData == null) return;
+        if(shoot) return;
+        
+        if(playerTeam.canShootWeapon(gs, equippedGunData.WeaponTag))
+        {
+            doShooting(gs);
+        }
+    }
+
+    private void doShooting(GSGame gs) 
+    {        
+        configureAiming();
+        
+        equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
+        
+//        switch(equippedGun)
+//        {
+//            case ROCKET:
+//                gs.spawnProjectile(new Rocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr));
+//                break;
+//            case MIRV:
+//                gs.spawnProjectile(new MIRV(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr));
+//                break;
+//            case HOMINGMISSILE:
+//                if(!ismarked)return;
+//                gs.spawnProjectile(new HomingMissile(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, (int)targetmarkerX, (int)targetmarkerY));
+//                break;
+//            case GRENADE:
+//                gs.spawnProjectile(new Grenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, 180));
+//                break;
+//            case FIREGRENADE:
+//                gs.spawnProjectile(new FireGrenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, 180));
+//                break;
+//            case BOMB:
+//                gs.spawnProjectile(new Bomb(this, aim_horizaim, aim_vertaim, 1.2 * Math.signum(aim_horizthr), -1.5, -1));
+//                break;
+//            case SHOTGUN:
+//                lockswitch = true;
+//                
+//                if(!getCanShootAgain())
+//                {
+//                    playerTeam.deductAmmo(equippedGun);
+//                    refire = 2;
+//                }
+//                gs.playSound("sfx/shot1.wav");
+//                gs.spawnProjectile(new Shotgun(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, gs));
+//                refire--;
+//                retreatTime = 120;
+//                break;
+//            case MINIGUN:
+//                lockswitch = true;
+//                
+//                if(!getCanShootAgain())
+//                {
+//                    playerTeam.deductAmmo(equippedGun);
+//                    refire = 15;
+//                    gs.playSound("sfx/minigun1.wav");
+//                }
+//                
+//                autoshoot = true;
+//                gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
+//                refire--;
+//                retreatTime = 4;
+//                break;
+//            case FLAMETHROWER:
+//                lockswitch = true;
+//                
+//                if(!getCanShootAgain())
+//                {
+//                    playerTeam.deductAmmo(equippedGun);
+//                    refire = 15;
+//                }
+//                
+//                autoshoot = true;
+//                gs.spawnProjectile(new Flamethrower(this, aim_horizaim, aim_vertaim, aim_horizthrinst/2.5, aim_vertthrinst/2.5));
+//                refire--;
+//                retreatTime = 8;
+//                break;
+//            case ROPE:
+//                shootRopeTracer(gs);
+//                break;
+//            case AIRSTRIKE:
+//                if(!ismarked)return;
+//                gs.spawnProjectile(new AirStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
+//                break;
+//            case FIRESTRIKE:
+//                if(!ismarked)return;
+//                gs.spawnProjectile(new AirFireStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
+//                break;
+//            case HIBARI:
+//                if(!ismarked)return;
+//                gs.spawnProjectile(new Hibari(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0, 1));
+//                break;
+//            case DOUBLESHOTGUN:
+//                gs.playSound("sfx/doubleshot1.wav");
+//                for(int i = 0; i < 15; i++)
+//                    gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
+//                break;
+//        }
+        
+        if(!getCanShootAgain())
+        {
+            retreatTime = 180;
+            autoshoot = false;
+        }
+        
+        aimpower = 0;
+        shoot = false;
+    }
+
+    private void shootRopeTracer(GSGame gs)
+    {
+        refire = 9999;
+        
+        if(!gs.ifObjectExists(ropeshoot))
+        {
+            ropeshoot = new RopeConnector(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, 15);
+            gs.spawnProjectile(ropeshoot);
+        }
+        
+        retreatTime = 120;
+    }
+    
+    private void detachRope() 
+    {
+        currentState = PlayerState.RAGDOLL;
+        ropeshoot = null;
+        ropestring = null;
+    }
+    
     public void dealDamage(int dmg)
     {
         healthPoints -= dmg;
-    }
-    
-    @Override
-    public void push(GSGame gs, double ivx, double ivy)
-    {
-        while (gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx + ivx, vy + ivy)) && ivx != 0 && ivy != 0) 
-        {
-            ivx *= -0.9;
-            if(Math.abs(ivx) <= 0.05) ivx = 0;
-            ivy *= -0.9;
-            if(Math.abs(ivy) <= 0.05) ivy = 0;
-        }
-        
-        vx += ivx;
-        vy += ivy;
-        currentState = PlayerState.RAGDOLL;
     }
         
     boolean getIsRetreading()
@@ -776,15 +796,4 @@ public class Player extends Actor
         return (this.isOutsideAreaOfPlay(gs) || this.healthPoints <= 0);
     }
     
-    @Override
-    public Rectangle2D getCollisionArea()
-    {
-        return new Rectangle2D(x - cx/2, y - cy, cx, cy);
-    }
-    
-    @Override
-    public Rectangle2D getCollisionAreaDelta(double dx, double dy)
-    {
-        return new Rectangle2D((x + dx) - cx/2, (y + dy) - cy, cx, cy);
-    }
 }

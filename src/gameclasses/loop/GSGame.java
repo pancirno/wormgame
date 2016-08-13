@@ -8,7 +8,6 @@ package gameclasses.loop;
 import gameclasses.game.*;
 import gameclasses.earthworms.*;
 import gameclasses.earthworms.GUIHelper.*;
-import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
 import gameclasses.earthworms.objects.*;
 import gameclasses.game.SynchronizedArrayList;
 import java.util.*;
@@ -56,7 +55,7 @@ public class GSGame extends GameState
     //ArrayList<Particle> spawnParticle;
     
     //loot table
-    ArrayList<AvailableWeapons> lootTable;
+    ArrayList<String> lootTable;
     
     //check for collisions
     QuadTree collisionTree;
@@ -103,18 +102,6 @@ public class GSGame extends GameState
     {
         addTeam(new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false));
         addTeam(new Team("dupa1", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, false));
-//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, false));
-//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, false));
-//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa2", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
-//        addTeam(new Team("dupa3", "CPU 1","CPU 2","CPU 3","CPU 4",Color.hsb(this.getRandomNumber()*360, 1, 1), 0, true));
 
         ArrayList<Point2D> availablePlaces = currentStage.findAvailablePointsForPlayers();
                 
@@ -255,15 +242,10 @@ public class GSGame extends GameState
             activePlayer.move(this, loop.GetInputEngine());
         
         executeHandleExplosions();
-        
         executeHandleCollisions();
-        
         executeStep();
-        
         executeRemoveObjects();
-        
         executeDraw(loop);
-        
         executeSounds();
         
     }
@@ -582,6 +564,11 @@ public class GSGame extends GameState
         return currentScheme;
     }
     
+    public Weapon getWeaponInfo(String w)
+    {
+        return currentScheme.getWeapon(w);
+    }
+    
     public int getCurrentTurn()
     {
         return currentTurn;
@@ -603,18 +590,20 @@ public class GSGame extends GameState
             spawnObject((currentTurn % 2 == 0) ? new AmmoPickup(this, this.getRandomInt(2000), -50) : new HealthPickup(this.getRandomInt(2000), -50));
     }
     
-    public AvailableWeapons getLoot()
+    public String getLoot()
     {
         if(lootTable.isEmpty())
         {
-            for(AvailableWeapons aw : AvailableWeapons.values())
+            currentScheme.getAvailableWeaponNames().stream().forEach((aw) -> {
                 for(int i = 0; i < currentScheme.getCrate(aw); i++)
                 {
                     lootTable.add(aw);
                 }
+            });
         }
+        
         int tableNum = getRandomInt(lootTable.size());
-        AvailableWeapons ar = lootTable.get(tableNum);
+        String ar = lootTable.get(tableNum);
         lootTable.remove(tableNum);
         return ar;
     }

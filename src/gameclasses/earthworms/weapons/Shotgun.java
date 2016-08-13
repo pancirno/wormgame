@@ -19,7 +19,7 @@ public class Shotgun extends Projectile
 {
     public Shotgun(Actor p, double ix, double iy, double ivx, double ivy, GSGame gs) 
     {
-        super(p, ix, iy, ivx, ivy);
+        initProjectile(p, ix, iy, ivx, ivy);
         
         hitScan = true;
         explodeSize = ExplosionSize.Medium;

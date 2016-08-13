@@ -5,7 +5,6 @@
  */
 package gameclasses.earthworms;
 
-import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
 import gameclasses.loop.GSGame;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +22,7 @@ public class Team {
     public int teamweapon;
     public boolean ai;
     
-    private HashMap<WeaponInfo.AvailableWeapons, Integer> ammo;
+    private HashMap<String, Integer> ammo;
     
     public ArrayList<Player> ingameobjects = new ArrayList<>();
     
@@ -46,18 +45,18 @@ public class Team {
             ammo = gs.getAmmoTable();
     }
     
-    public HashMap<WeaponInfo.AvailableWeapons, Integer> getAvailableAmmo()
+    public HashMap<String, Integer> getAvailableAmmo()
     {
         return ammo;
     }
     
-    public int getAmmo(AvailableWeapons aw)
+    public int getAmmo(String aw)
     {
         if(!ammo.containsKey(aw)) return 0;
         else return ammo.get(aw);
     }
     
-    public boolean canShootWeapon(GSGame gs, AvailableWeapons aw)
+    public boolean canShootWeapon(GSGame gs, String aw)
     {
         //if(gs.getScheme().getDelay(aw)) return false;
         if(!ammo.containsKey(aw)) return false;
@@ -66,13 +65,13 @@ public class Team {
         return true;
     }
     
-    public void deductAmmo(AvailableWeapons aw)
+    public void deductAmmo(String aw)
     {
         if(ammo.containsKey(aw))
             ammo.compute(aw, (k, v) -> (--v));
     }
     
-    public void grantAmmo(AvailableWeapons aw)
+    public void grantAmmo(String aw)
     {
         if(!ammo.containsKey(aw)) ammo.put(aw, 0);
         ammo.compute(aw, (k, v) -> (++v));

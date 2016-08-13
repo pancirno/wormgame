@@ -21,7 +21,7 @@ public class Rocket extends Projectile
 {    
     public Rocket(Actor p, double ix, double iy, double ivx, double ivy) 
     {
-        super(p, ix, iy, ivx, ivy);
+        initProjectile(p, ix, iy, ivx, ivy);
         weight = 10;
         
         cx = 5;

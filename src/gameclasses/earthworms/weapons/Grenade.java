@@ -19,7 +19,7 @@ public class Grenade extends Projectile {
     
     public Grenade(Actor p, double ix, double iy, double ivx, double ivy, int ifuse) 
     {
-        super(p, ix, iy, ivx, ivy);
+        initProjectile(p, ix, iy, ivx, ivy);
         fuse = ifuse;
         
         cx = 4;

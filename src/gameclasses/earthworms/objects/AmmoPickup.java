@@ -6,7 +6,6 @@
 package gameclasses.earthworms.objects;
 
 import gameclasses.earthworms.Player;
-import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
@@ -18,7 +17,7 @@ import javafx.scene.paint.Color;
  */
 public class AmmoPickup extends Pickup
 {
-    AvailableWeapons containsWeapon;
+    String containsWeapon;
     
     public AmmoPickup(GSGame gs, double ix, double iy) {
         super(ix, iy);

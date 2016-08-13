@@ -21,7 +21,7 @@ public class RopeConnector extends Projectile
     public boolean impact = false;
     
     public RopeConnector(Actor p, double ix, double iy, double ivx, double ivy, int traveltime) {
-        super(p, ix, iy, ivx, ivy);
+        initProjectile(p, ix, iy, ivx, ivy);
         fuse = traveltime;
         
         cx = 4;

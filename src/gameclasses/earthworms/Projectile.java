@@ -10,7 +10,8 @@ import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
 import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
-import java.util.List;
+import java.util.ArrayList;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -18,41 +19,89 @@ import java.util.List;
  */
 public class Projectile extends Actor 
 {
-    protected int fuse = 600;
-    protected int burnout = 0;
+    public int fuse = 600;
+    public int burnout = 0;
     
-    protected boolean hitScan = false;
-    protected boolean goThroughObjects = false;
+    public boolean hitScan = false;
+    public boolean goThroughObjects = false;
     
-    protected boolean explodes = true;
-    protected boolean explodesOnHit = true;
-    protected ExplosionSize explodeSize = ExplosionSize.None;
-    protected boolean expConstDamage = false;
-    protected int expDamage = 0;
-    protected double expPower = 0;
-    protected int expBias = 0;
-    protected double expHurtRadius = -1;
+    public boolean explodes = true;
+    public boolean explodesOnHit = true;
+    public ExplosionSize explodeSize = ExplosionSize.None;
+    public boolean expConstDamage = false;
+    public int expDamage = 0;
+    public double expPower = 0;
+    public int expBias = 0;
+    public double expHurtRadius = -1;
     
-    protected boolean windAffected = false;
-    protected boolean gravityAffected = false;
-    protected double weight = 1;
+    public boolean windAffected = false;
+    public boolean gravityAffected = false;
+    public double weight = 1;
     
-    protected boolean spawnChildrenOnExplosion = false;
-    protected boolean spawnChildrenOnTravel = false;
-    protected List<Projectile> children = null; 
+    public boolean spawnChildrenOnExplosion = false;
+    public boolean spawnChildrenOnTravel = false;
+    public ArrayList<Projectile> children = null; 
     
-    protected boolean bouncesOnHit = false;
-    protected double bounceReductionOnImpact = 0;
-    protected double bounceReductionOnRolling = 0;
-    protected double bounceReductionOnBounce = 0;
+    public boolean bouncesOnHit = false;
+    public double bounceReductionOnImpact = 0;
+    public double bounceReductionOnRolling = 0;
+    public double bounceReductionOnBounce = 0;
             
-    public Projectile(Actor p, double ix, double iy, double ivx, double ivy)
+    
+    public Projectile()
+    {
+        
+    }
+    
+    public Projectile(Projectile cp)
+    {
+        fuse = cp.fuse;
+        burnout = cp.burnout;
+
+        hitScan = cp.hitScan;
+        goThroughObjects = cp.goThroughObjects;
+
+        explodes = cp.explodes;
+        explodesOnHit = cp.explodesOnHit;
+        explodeSize = cp.explodeSize;
+        expConstDamage = cp.expConstDamage;
+        expDamage = cp.expDamage;
+        expPower = cp.expPower;
+        expBias = cp.expBias;
+        expHurtRadius = cp.expHurtRadius;
+
+        windAffected = cp.windAffected;
+        gravityAffected = cp.gravityAffected;
+        weight = cp.weight;
+
+        spawnChildrenOnExplosion = cp.spawnChildrenOnExplosion;
+        spawnChildrenOnTravel = cp.spawnChildrenOnTravel;
+
+        bouncesOnHit = cp.bouncesOnHit;
+        bounceReductionOnImpact = cp.bounceReductionOnImpact;
+        bounceReductionOnRolling = cp.bounceReductionOnRolling;
+        bounceReductionOnBounce = cp.bounceReductionOnBounce;
+    
+        if(cp.children != null)
+        {
+            children = new ArrayList<>();
+            cp.children.stream().forEach((childp) -> {
+                children.add(new Projectile(childp));
+            });
+        }
+    
+    }
+            
+    public void initProjectile(Actor p, double ix, double iy, double ivx, double ivy)
     {
         parent = p;
         x = ix;
         y = iy;
         vx = ivx;
         vy = ivy;
+        
+        cx = 4;
+        cy = 4;
     }
     
     @Override
@@ -89,7 +138,11 @@ public class Projectile extends Actor
     @Override
     public void render(MainLoop loop, Camera c)
     {
-        
+        int anchx = c.GetCameraDeltaX((int)x);
+        int anchy = c.GetCameraDeltaY((int)y);
+                
+        loop.GetGraphicsContext().setFill(Color.RED);
+        loop.GetGraphicsContext().fillOval(anchx-6, anchy-6, 12, 12);
     }
     
     @Override

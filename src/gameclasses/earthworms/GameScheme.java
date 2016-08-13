@@ -6,6 +6,7 @@
 package gameclasses.earthworms;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  *
@@ -15,52 +16,69 @@ public class GameScheme
 {
     public int turntime;
     
-    private final HashMap<WeaponInfo.AvailableWeapons, Integer> ammo = new HashMap<>();
-    private final HashMap<WeaponInfo.AvailableWeapons, Integer> delay = new HashMap<>();
-    private final HashMap<WeaponInfo.AvailableWeapons, Integer> power = new HashMap<>();
-    private final HashMap<WeaponInfo.AvailableWeapons, Integer> crate = new HashMap<>();
+    private final HashMap<String, Weapon> weapondata = new HashMap<>();
     
-    public void setAmmo(WeaponInfo.AvailableWeapons w, int i)
+    private final HashMap<String, Integer> ammo = new HashMap<>();
+    private final HashMap<String, Integer> delay = new HashMap<>();
+    private final HashMap<String, Integer> power = new HashMap<>();
+    private final HashMap<String, Integer> crate = new HashMap<>();
+    
+    public Weapon getWeapon(String w)
+    {
+        return weapondata.getOrDefault(w, null);
+    }
+    
+    public void insertWeaponData(HashMap<String, Weapon> wd)
+    {
+        weapondata.putAll(wd);
+    }
+    
+    public Set<String> getAvailableWeaponNames()
+    {
+        return weapondata.keySet();
+    }
+    
+    public void setAmmo(String w, int i)
     {
         ammo.putIfAbsent(w, i);
     }
     
-    public void setDelay(WeaponInfo.AvailableWeapons w, int i)
+    public void setDelay(String w, int i)
     {
         delay.putIfAbsent(w, i);
     }
     
-    public void setPower(WeaponInfo.AvailableWeapons w, int i)
+    public void setPower(String w, int i)
     {
         power.putIfAbsent(w, i);
     }
     
-    public void setCrate(WeaponInfo.AvailableWeapons w, int i)
+    public void setCrate(String w, int i)
     {
         crate.putIfAbsent(w, i);
     }
     
-    public int getAmmo(WeaponInfo.AvailableWeapons w)
+    public int getAmmo(String w)
     {
         return ammo.getOrDefault(w, 0);
     }
     
-    public int getDelay(WeaponInfo.AvailableWeapons w)
+    public int getDelay(String w)
     {
         return delay.getOrDefault(w, 0);
     }
     
-    public int getPower(WeaponInfo.AvailableWeapons w)
+    public int getPower(String w)
     {
         return power.getOrDefault(w, 2);
     }
     
-    public int getCrate(WeaponInfo.AvailableWeapons w)
+    public int getCrate(String w)
     {
         return crate.getOrDefault(w, 0);
     }
     
-    public HashMap<WeaponInfo.AvailableWeapons, Integer> getAmmoTable()
+    public HashMap<String, Integer> getAmmoTable()
     {
         return new HashMap<>(ammo);
     }
@@ -69,12 +87,12 @@ public class GameScheme
     {
         GameScheme gs = new GameScheme();
         
-        gs.turntime = 99;
-        
-        for(WeaponInfo.AvailableWeapons aw : WeaponInfo.AvailableWeapons.values())
-        {
-            gs.setAmmo(aw, 9999);
-        }
+//        gs.turntime = 99;
+//
+//        for(WeaponInfo.AvailableWeapons aw : WeaponInfo.AvailableWeapons.values())
+//        {
+//            gs.setAmmo(aw, 9999);
+//        }
         
         return gs;
     }
@@ -83,39 +101,41 @@ public class GameScheme
     {
         GameScheme gs = new GameScheme();
         
+        gs.insertWeaponData(WeaponFactory.GetDefaultWeaponList());
+        
         gs.turntime = 45;
         
-        gs.setAmmo(WeaponInfo.AvailableWeapons.ROCKET, 99);
-        gs.setAmmo(WeaponInfo.AvailableWeapons.GRENADE, 99);
+        gs.setAmmo("rocket", 99);
+        gs.setAmmo("grenade", 99);
         
-        gs.setAmmo(WeaponInfo.AvailableWeapons.HOMINGMISSILE, 1);
-        gs.setCrate(WeaponInfo.AvailableWeapons.HOMINGMISSILE, 2);
+        gs.setAmmo("homing", 1);
+        gs.setCrate("homing", 2);
         
-        gs.setAmmo(WeaponInfo.AvailableWeapons.BOMB, 1);
-        gs.setCrate(WeaponInfo.AvailableWeapons.BOMB, 2);
+        gs.setAmmo("bomb", 1);
+        gs.setCrate("bomb", 2);
         
-        gs.setAmmo(WeaponInfo.AvailableWeapons.SHOTGUN, 99);
+        gs.setAmmo("shotgun", 99);
         
-        gs.setAmmo(WeaponInfo.AvailableWeapons.ROPE, 5);
-        gs.setCrate(WeaponInfo.AvailableWeapons.ROPE, 4);
+        gs.setAmmo("rope", 5);
+        gs.setCrate("rope", 4);
         
-        gs.setAmmo(WeaponInfo.AvailableWeapons.FIREGRENADE, 1);
-        gs.setDelay(WeaponInfo.AvailableWeapons.FIREGRENADE, 2);
-        gs.setCrate(WeaponInfo.AvailableWeapons.FIREGRENADE, 2);
+        gs.setAmmo("firegrenade", 1);
+        gs.setDelay("firegrenade", 2);
+        gs.setCrate("firegrenade", 2);
         
-        gs.setAmmo(WeaponInfo.AvailableWeapons.AIRSTRIKE, 1);
-        gs.setDelay(WeaponInfo.AvailableWeapons.AIRSTRIKE, 5);
-        gs.setCrate(WeaponInfo.AvailableWeapons.AIRSTRIKE, 2);
+        gs.setAmmo("airstrike", 1);
+        gs.setDelay("airstrike", 5);
+        gs.setCrate("airstrike", 2);
         
-        gs.setAmmo(WeaponInfo.AvailableWeapons.FIRESTRIKE, 1);
-        gs.setDelay(WeaponInfo.AvailableWeapons.FIRESTRIKE, 7);
-        gs.setCrate(WeaponInfo.AvailableWeapons.FIRESTRIKE, 1);
+        gs.setAmmo("firestrike", 1);
+        gs.setDelay("firestrike", 7);
+        gs.setCrate("firestrike", 1);
         
-        gs.setCrate(WeaponInfo.AvailableWeapons.MINIGUN, 5);
-        gs.setCrate(WeaponInfo.AvailableWeapons.DOUBLESHOTGUN, 2);
-        gs.setCrate(WeaponInfo.AvailableWeapons.FLAMETHROWER, 2);
-        gs.setCrate(WeaponInfo.AvailableWeapons.MIRV, 1);
-        gs.setCrate(WeaponInfo.AvailableWeapons.HIBARI, 1);
+        gs.setCrate("minigun", 5);
+        gs.setCrate("doublegun", 2);
+        gs.setCrate("flamethrower", 2);
+        gs.setCrate("mirv", 1);
+        gs.setCrate("hibari", 1);
         
         return gs;
     }

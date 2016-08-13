@@ -5,13 +5,11 @@
  */
 package gameclasses.earthworms;
 
-import gameclasses.earthworms.WeaponInfo.AvailableWeapons;
 import gameclasses.earthworms.weapons.aitracer.IScoredTracer;
 import gameclasses.earthworms.weapons.aitracer.TracerGrenade;
 import gameclasses.earthworms.weapons.aitracer.TracerRocket;
 import gameclasses.loop.GSGame;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
 import wormgame.InputEngine;
 
@@ -85,7 +83,7 @@ public class PlayerAI extends Player
             switchWeapon();
             tryShooting(gs);
             
-            if(WeaponInfo.AIRepeat.contains(this.equippedGun))
+            if(equippedGunData.AIHints.contains(Weapon.AIWeaponFlags.AIRepeatable))
             {
                 thought = false;
                 resetAimIteration();
@@ -106,8 +104,8 @@ public class PlayerAI extends Player
     
     private void switchWeapon()
     {
-        if(currentAIState == AIState.TryGrenade) { equippedGun = AvailableWeapons.GRENADE; return; }
-        if(currentAIState == AIState.TryRocket) { equippedGun = AvailableWeapons.ROCKET; }
+//        if(currentAIState == AIState.TryGrenade) { equippedGun = AvailableWeapons.GRENADE; return; }
+//        if(currentAIState == AIState.TryRocket) { equippedGun = AvailableWeapons.ROCKET; }
     }
     
     private void bruteTryTracer(GSGame gs)
@@ -164,9 +162,15 @@ public class PlayerAI extends Player
         aimpower = MAX_SHOOT_POWER;
         //CASE - enemy can be shoot directly
         if(CommonMath.distance(x, y, selectedtarget.getX(), selectedtarget.getY()) > 100)
-            equippedGun = AvailableWeapons.ROCKET;
+        {
+            
+        }
+//            equippedGun = AvailableWeapons.ROCKET;
         else
-            equippedGun = AvailableWeapons.SHOTGUN;
+        {
+            
+        }
+//            equippedGun = AvailableWeapons.SHOTGUN;
     }
 
     private Player closestPlayer(Player[] players)

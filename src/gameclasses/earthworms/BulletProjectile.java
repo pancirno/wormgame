@@ -15,7 +15,7 @@ import gameclasses.loop.GSGame;
 public class BulletProjectile extends Projectile
 {
     public BulletProjectile(Actor p, double ix, double iy, double ivx, double ivy) {
-        super(p, ix, iy, ivx, ivy);
+        initProjectile(p, ix, iy, ivx, ivy);
     }
     
     @Override
