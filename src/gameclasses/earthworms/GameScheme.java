@@ -33,11 +33,6 @@ public class GameScheme
         weapondata.putAll(wd);
     }
     
-    public Set<String> getAvailableWeaponNames()
-    {
-        return weapondata.keySet();
-    }
-    
     public void setAmmo(String w, int i)
     {
         ammo.putIfAbsent(w, i);
@@ -81,6 +76,11 @@ public class GameScheme
     public HashMap<String, Integer> getAmmoTable()
     {
         return new HashMap<>(ammo);
+    }
+    
+    public HashMap<String, Integer> getCrateTable()
+    {
+        return new HashMap<>(crate);
     }
     
     public static GameScheme testScheme()

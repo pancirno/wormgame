@@ -410,7 +410,7 @@ public class Player extends Actor
             if(ie.checkPulse(KeyCode.F2) == true)
             {
                 if(!lockswitch)refire = 0;
-                //setEquippedGun(WeaponInfo.pickWeapon(1));
+                setEquippedGun(gs.getWeaponInfo("grenade"));
             }
             if(ie.checkPulse(KeyCode.F3) == true)
             {

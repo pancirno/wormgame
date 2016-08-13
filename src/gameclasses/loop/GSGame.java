@@ -587,19 +587,19 @@ public class GSGame extends GameState
     private void dropPickup() 
     {
         if(this.getRandomNumber() < 0.25)
-            spawnObject((currentTurn % 2 == 0) ? new AmmoPickup(this, this.getRandomInt(2000), -50) : new HealthPickup(this.getRandomInt(2000), -50));
+            spawnObject((currentTurn % 2 == 0) ? new AmmoPickup(this, this.getRandomInt((int)currentStage.GameArea.getMaxX()), -50) : new HealthPickup(this.getRandomInt((int)currentStage.GameArea.getMaxX()), -50));
     }
     
     public String getLoot()
     {
         if(lootTable.isEmpty())
         {
-            currentScheme.getAvailableWeaponNames().stream().forEach((aw) -> {
-                for(int i = 0; i < currentScheme.getCrate(aw); i++)
-                {
-                    lootTable.add(aw);
-                }
-            });
+            currentScheme.getCrateTable().forEach((k,v) -> 
+            {
+                for(int i = 0; i < v; i++)
+                    lootTable.add(k);
+            }    
+            );
         }
         
         int tableNum = getRandomInt(lootTable.size());
