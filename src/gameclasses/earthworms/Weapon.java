@@ -41,6 +41,7 @@ public class Weapon
     public double shootSpread = 0;
     
     public boolean instantShot = false;
+    public double defaultShootPower = 0;
     
     public boolean markTheSpot = false;
     public boolean airStrike = false;
@@ -50,12 +51,19 @@ public class Weapon
     
     public int special = 0;
     
-    public void DoShooting(Player plr, GSGame gs, double shootx, double shooty, double shootvx, double shootvy)
+    public void DoShooting(Player plr, GSGame gs, double shootx, double shooty, double angle, double power)
     {
+        power = (defaultShootPower == 0) ? power : defaultShootPower;
+        
+        double aim_precos = Math.cos(angle);
+        double aim_presin = Math.sin(angle);
+        double aim_horizthr = aim_precos * power;
+        double aim_vertthr = aim_presin * power;
+        
         for(Projectile p : projectilesToShoot)
         {
             Projectile np = new Projectile(p);
-            np.initProjectile(plr, shootx, shooty, shootvx, shootvy);
+            np.initProjectile(plr, shootx, shooty, aim_horizthr, aim_vertthr);
             gs.spawnProjectile(np);
         }
     }

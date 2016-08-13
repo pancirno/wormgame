@@ -65,6 +65,58 @@ public class WeaponFactory
         
         outWeapons.put(gtemp.WeaponTag, gtemp);
         
+        //Shotgun
+        Weapon shtemp = new Weapon();
+        shtemp.WeaponName = "Shotgun";
+        shtemp.WeaponTag = "shotgun";
+        shtemp.WeaponGroup = 3;
+        shtemp.WeaponPriority = 1;
+        shtemp.instantShot = true;
+        shtemp.defaultShootPower = 15;
+        shtemp.shootsAmount = 2;
+        shtemp.consecutiveShoots = false;
+        shtemp.framesBetweenShoots = 120;
+        
+        //Shotgun Projectile
+        Projectile shotgunproj = new Projectile();
+        
+        shotgunproj.hitScan = true;
+        shotgunproj.explodeSize = ExplosionFactory.ExplosionSize.Medium;
+        shotgunproj.expConstDamage = true;
+        shotgunproj.expDamage = 20;
+        shotgunproj.expPower = 3;
+        shotgunproj.expBias = -10;
+        
+        shtemp.projectilesToShoot.add(shotgunproj);
+        
+        outWeapons.put(shtemp.WeaponTag, shtemp);
+                
+        //Generic bullet Projectile
+        Projectile hitproj = new Projectile();
+        
+        hitproj.hitScan = true;
+        hitproj.explodeSize = ExplosionFactory.ExplosionSize.Small;
+        hitproj.expConstDamage = true;
+        hitproj.expDamage = 5;
+        hitproj.expPower = 1;
+        hitproj.expBias = -10;
+        
+        //Minigun
+        Weapon minitemp = new Weapon();
+        minitemp.WeaponName = "Minigun";
+        minitemp.WeaponTag = "minigun";
+        minitemp.WeaponGroup = 3;
+        minitemp.WeaponPriority = 2;
+        minitemp.instantShot = true;
+        minitemp.defaultShootPower = 15;
+        minitemp.shootsAmount = 15;
+        minitemp.consecutiveShoots = true;
+        minitemp.framesBetweenShoots = 4;
+        
+        minitemp.projectilesToShoot.add(hitproj);
+        
+        outWeapons.put(minitemp.WeaponTag, minitemp);
+        
         return outWeapons;
     }
 }

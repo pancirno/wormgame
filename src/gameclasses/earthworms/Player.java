@@ -79,10 +79,6 @@ public class Player extends Actor
     double aim_presin;
     double aim_horizaim;
     double aim_vertaim;
-    double aim_horizthr;
-    double aim_vertthr;
-    double aim_horizthrinst;
-    double aim_vertthrinst;
     
     //marker
     boolean ismarked = false;
@@ -113,8 +109,6 @@ public class Player extends Actor
         fallDamageRatio = 5;
     }
    
-    
-    
     public void SelectPlayer()
     {
         restartPlayer();
@@ -415,12 +409,12 @@ public class Player extends Actor
             if(ie.checkPulse(KeyCode.F3) == true)
             {
                 if(!lockswitch)refire = 0;
-                //setEquippedGun(WeaponInfo.pickWeapon(2));
+                setEquippedGun(gs.getWeaponInfo("shotgun"));
             }
             if(ie.checkPulse(KeyCode.F4) == true)
             {
                 if(!lockswitch)refire = 0;
-                //setEquippedGun(WeaponInfo.pickWeapon(3));
+                setEquippedGun(gs.getWeaponInfo("minigun"));
             }
             if(ie.checkPulse(KeyCode.F5) == true)
             {
@@ -442,6 +436,7 @@ public class Player extends Actor
                 {
                     if(equippedGunData.instantShot)
                     {
+                        aimpower = MAX_SHOOT_POWER;
                         tryShooting(gs);
                     }
                     else
@@ -614,18 +609,6 @@ public class Player extends Actor
         }
     }
     
-    protected void configureAiming()
-    {
-        aim_precos = Math.cos(aimangle);
-        aim_presin = Math.sin(aimangle);
-        aim_horizaim = x + aim_precos * 5;
-        aim_vertaim = y - AIM_HEIGHT + aim_presin * 5;
-        aim_horizthr = aim_precos * aimpower;
-        aim_vertthr = aim_presin * aimpower;
-        aim_horizthrinst = aim_precos * MAX_SHOOT_POWER;
-        aim_vertthrinst = aim_presin * MAX_SHOOT_POWER;
-    }
-    
     private void setEquippedGun(Weapon w)
     {
         if(!lockswitch)
@@ -647,9 +630,23 @@ public class Player extends Actor
 
     private void doShooting(GSGame gs) 
     {        
-        configureAiming();
+
+        aim_horizaim = x + aim_precos * 5;
+        aim_vertaim = y - AIM_HEIGHT + aim_presin * 5;
         
-        equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
+        if(equippedGunData.shootsAmount > 1)
+        {
+            lockswitch = true;
+            autoshoot = equippedGunData.consecutiveShoots;
+            if(!getCanShootAgain())
+                {
+                    refire = equippedGunData.shootsAmount;
+                }
+            refire--;
+            retreatTime = equippedGunData.framesBetweenShoots;
+        }
+        
+        equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aimangle, aimpower);
         
 //        switch(equippedGun)
 //        {
@@ -750,11 +747,11 @@ public class Player extends Actor
     {
         refire = 9999;
         
-        if(!gs.ifObjectExists(ropeshoot))
-        {
-            ropeshoot = new RopeConnector(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, 15);
-            gs.spawnProjectile(ropeshoot);
-        }
+//        if(!gs.ifObjectExists(ropeshoot))
+//        {
+//            ropeshoot = new RopeConnector(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, 15);
+//            gs.spawnProjectile(ropeshoot);
+//        }
         
         retreatTime = 120;
     }

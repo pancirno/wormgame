@@ -117,17 +117,17 @@ public class PlayerAI extends Player
             aimangle = d;
             aimpower = MAX_SHOOT_POWER * powerstep;
 
-            configureAiming();
+            //configureAiming();
             
             switch(currentAIState)
             {
                 case TryGrenade:
-                    tr = new TracerGrenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
-                    tr.runSimulation(gs);
+                    //tr = new TracerGrenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
+                    //tr.runSimulation(gs);
                     break;
                 case TryRocket:
-                    tr = new TracerRocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
-                    tr.runSimulation(gs);
+                    //tr = new TracerRocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr);
+                    //tr.runSimulation(gs);
                     break;
             }
             

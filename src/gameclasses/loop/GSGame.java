@@ -79,7 +79,7 @@ public class GSGame extends GameState
         randomizer = new Random();
         currentStage = new Level(randomizer.nextInt());
         
-        currentScheme = GameScheme.defaultIntermediate();
+        currentScheme = GameScheme.testScheme();
         
         teamList = new ArrayList<>();
         teamPlayerList = new HashMap<>();

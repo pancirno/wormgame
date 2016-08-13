@@ -86,13 +86,30 @@ public class GameScheme
     public static GameScheme testScheme()
     {
         GameScheme gs = new GameScheme();
+        gs.insertWeaponData(WeaponFactory.GetDefaultWeaponList());
         
-//        gs.turntime = 99;
-//
-//        for(WeaponInfo.AvailableWeapons aw : WeaponInfo.AvailableWeapons.values())
-//        {
-//            gs.setAmmo(aw, 9999);
-//        }
+        gs.turntime = 99;
+
+        gs.setAmmo("rocket", 99);
+        gs.setAmmo("grenade", 99);
+        gs.setAmmo("homing", 99);
+        gs.setCrate("homing", 99);
+        gs.setAmmo("bomb", 99);
+        gs.setCrate("bomb", 99);
+        gs.setAmmo("shotgun", 99);
+        gs.setAmmo("rope", 99);
+        gs.setCrate("rope", 99);
+        gs.setAmmo("firegrenade", 99);
+        gs.setCrate("firegrenade", 99);
+        gs.setAmmo("airstrike", 99);
+        gs.setCrate("airstrike", 99);
+        gs.setAmmo("firestrike", 99);
+        gs.setCrate("firestrike", 99);
+        gs.setAmmo("minigun", 99);
+        gs.setAmmo("doublegun", 99);
+        gs.setAmmo("flamethrower", 99);
+        gs.setAmmo("mirv", 99);
+        gs.setAmmo("hibari", 99);
         
         return gs;
     }
