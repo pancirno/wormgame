@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.earthworms;
+package gameclasses.earthworms.weapons;
 
+import gameclasses.earthworms.ExplosionFactory;
 import java.util.HashMap;
 
 /**

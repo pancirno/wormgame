@@ -5,6 +5,8 @@
  */
 package gameclasses.loop;
 
+import gameclasses.earthworms.weapons.Projectile;
+import gameclasses.earthworms.weapons.Weapon;
 import gameclasses.game.*;
 import gameclasses.earthworms.*;
 import gameclasses.earthworms.GUIHelper.*;

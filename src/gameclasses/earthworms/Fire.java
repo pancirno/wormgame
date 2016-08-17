@@ -5,6 +5,7 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.weapons.Projectile;
 import gameclasses.earthworms.particles.PSmoke;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;

@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameclasses.earthworms;
+package gameclasses.earthworms.weapons;
 
+import gameclasses.earthworms.ExplosionFactory;
 import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
 import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
+import gameclasses.earthworms.StaticPhysics;
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
 
@@ -19,33 +21,33 @@ import javafx.scene.paint.Color;
  */
 public class Projectile extends Actor 
 {
-    public int fuse = 600;
-    public int burnout = 0;
+    protected int fuse = 600;
+    protected int burnout = 0;
     
-    public boolean hitScan = false;
-    public boolean goThroughObjects = false;
+    protected boolean hitScan = false;
+    protected boolean goThroughObjects = false;
     
-    public boolean explodes = true;
-    public boolean explodesOnHit = true;
-    public ExplosionSize explodeSize = ExplosionSize.None;
-    public boolean expConstDamage = false;
-    public int expDamage = 0;
-    public double expPower = 0;
-    public int expBias = 0;
-    public double expHurtRadius = -1;
+    protected boolean explodes = true;
+    protected boolean explodesOnHit = true;
+    protected ExplosionSize explodeSize = ExplosionSize.None;
+    protected boolean expConstDamage = false;
+    protected int expDamage = 0;
+    protected double expPower = 0;
+    protected int expBias = 0;
+    protected double expHurtRadius = -1;
     
-    public boolean windAffected = false;
-    public boolean gravityAffected = false;
-    public double weight = 1;
+    protected boolean windAffected = false;
+    protected boolean gravityAffected = false;
+    protected double weight = 1;
     
-    public boolean spawnChildrenOnExplosion = false;
-    public boolean spawnChildrenOnTravel = false;
-    public ArrayList<Projectile> children = null; 
+    protected boolean spawnChildrenOnExplosion = false;
+    protected boolean spawnChildrenOnTravel = false;
+    protected ArrayList<Projectile> children = null; 
     
-    public boolean bouncesOnHit = false;
-    public double bounceReductionOnImpact = 0;
-    public double bounceReductionOnRolling = 0;
-    public double bounceReductionOnBounce = 0;
+    protected boolean bouncesOnHit = false;
+    protected double bounceReductionOnImpact = 0;
+    protected double bounceReductionOnRolling = 0;
+    protected double bounceReductionOnBounce = 0;
             
     
     public Projectile()

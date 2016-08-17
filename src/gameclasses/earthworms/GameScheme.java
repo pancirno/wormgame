@@ -5,6 +5,8 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.weapons.WeaponFactory;
+import gameclasses.earthworms.weapons.Weapon;
 import java.util.HashMap;
 import java.util.Set;
 

@@ -5,7 +5,8 @@
  */
 package gameclasses.earthworms;
 
-import gameclasses.earthworms.weapons.*;
+import gameclasses.earthworms.weapons.RopeConnector;
+import gameclasses.earthworms.weapons.Weapon;
 import gameclasses.game.*;
 import gameclasses.loop.*;
 import javafx.geometry.*;
@@ -163,7 +164,7 @@ public class Player extends Actor
         //toggle rope
         if(ropeshoot != null)
         {
-            if(ropeshoot.impact == true)
+            if(ropeshoot.ifImpacted() == true)
             {
                 //playerTeam.deductAmmo(AvailableWeapons.ROPE);
                 
@@ -247,14 +248,14 @@ public class Player extends Actor
         
         if(equippedGunData != null)
         {
-            int drawAmmoTimer = gs.getScheme().getDelay(equippedGunData.WeaponTag) - gs.getCurrentTurn();
+            int drawAmmoTimer = gs.getScheme().getDelay(equippedGunData.getTag()) - gs.getCurrentTurn();
 
             Color ammoStringC = Color.WHITE;
 
             String ammoLeft = "";
-            if(playerTeam.getAmmo(equippedGunData.WeaponTag) > 0)
+            if(playerTeam.getAmmo(equippedGunData.getTag()) > 0)
             {
-                ammoLeft = " x" + playerTeam.getAmmo(equippedGunData.WeaponTag);
+                ammoLeft = " x" + playerTeam.getAmmo(equippedGunData.getTag());
             }
             else
                 ammoStringC = Color.GRAY;
@@ -266,7 +267,7 @@ public class Player extends Actor
                 ammoStringC = Color.RED;
             }
 
-            GUIHelper.drawTextCube(loop.GetGraphicsContext(), 20, 50, equippedGunData.WeaponName + ammoLeft + timeLeft, ammoStringC, GUIHelper.boxAlignment.left);
+            GUIHelper.drawTextCube(loop.GetGraphicsContext(), 20, 50, equippedGunData.getName() + ammoLeft + timeLeft, ammoStringC, GUIHelper.boxAlignment.left);
         }
     }
 
@@ -434,7 +435,7 @@ public class Player extends Actor
             {
                 if(ie.checkPressed(KeyCode.SPACE) == true)
                 {
-                    if(equippedGunData.instantShot)
+                    if(equippedGunData.ifInstantShot())
                     {
                         aimpower = MAX_SHOOT_POWER;
                         tryShooting(gs);
@@ -622,7 +623,7 @@ public class Player extends Actor
         if(equippedGunData == null) return;
         if(shoot) return;
         
-        if(playerTeam.canShootWeapon(gs, equippedGunData.WeaponTag))
+        if(playerTeam.canShootWeapon(gs, equippedGunData.getTag()))
         {
             doShooting(gs);
         }
@@ -634,16 +635,16 @@ public class Player extends Actor
         aim_horizaim = x + aim_precos * 5;
         aim_vertaim = y - AIM_HEIGHT + aim_presin * 5;
         
-        if(equippedGunData.shootsAmount > 1)
+        if(equippedGunData.getShootsAmount() > 1)
         {
             lockswitch = true;
-            autoshoot = equippedGunData.consecutiveShoots;
+            autoshoot = equippedGunData.ifConsecutiveShoots();
             if(!getCanShootAgain())
-                {
-                    refire = equippedGunData.shootsAmount;
-                }
+            {
+                refire = equippedGunData.getShootsAmount();
+            }
             refire--;
-            retreatTime = equippedGunData.framesBetweenShoots;
+            retreatTime = equippedGunData.getFramesBetweenShoots();
         }
         
         equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aimangle, aimpower);

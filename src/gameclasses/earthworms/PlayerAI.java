@@ -5,9 +5,8 @@
  */
 package gameclasses.earthworms;
 
+import gameclasses.earthworms.weapons.Weapon;
 import gameclasses.earthworms.weapons.aitracer.IScoredTracer;
-import gameclasses.earthworms.weapons.aitracer.TracerGrenade;
-import gameclasses.earthworms.weapons.aitracer.TracerRocket;
 import gameclasses.loop.GSGame;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -83,7 +82,7 @@ public class PlayerAI extends Player
             switchWeapon();
             tryShooting(gs);
             
-            if(equippedGunData.AIHints.contains(Weapon.AIWeaponFlags.AIRepeatable))
+            if(equippedGunData.getAIFlags().contains(Weapon.AIWeaponFlags.AIRepeatable))
             {
                 thought = false;
                 resetAimIteration();
