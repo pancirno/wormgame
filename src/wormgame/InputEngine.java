@@ -85,9 +85,7 @@ public class InputEngine
     
     public Point2D getClicked()
     {
-        Point2D tmp = mousePos;
-        mousePos = null;
-        return tmp;
+        return mousePos;
     }
     
     

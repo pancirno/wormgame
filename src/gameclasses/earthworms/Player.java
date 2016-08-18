@@ -83,9 +83,7 @@ public class Player extends Actor
     
     //marker
     boolean ismarked = false;
-    Point2D markerClick;
-    double targetmarkerX = 0;
-    double targetmarkerY = 0;
+    Point2D markerClick = null;
     
     //rope
     RopeConnector ropeshoot = null;
@@ -191,13 +189,6 @@ public class Player extends Actor
                     doJumping();
                 if(shoot && isCurrentlySelected && retreatTime <= 0)
                     doShooting(gs);
-                if(markerClick != null)
-                {
-                    ismarked = true;
-                    targetmarkerX = gs.gameCamera.GetBoundary().getMinX() + markerClick.getX();
-                    targetmarkerY = gs.gameCamera.GetBoundary().getMinY() + markerClick.getY();
-                    markerClick = null;
-                }   break;
         //free fall
             case FREEFALL:
                 doFreeFall(gs);
@@ -241,8 +232,8 @@ public class Player extends Actor
     
     public void renderGUI(GSGame gs, MainLoop loop, Camera c)
     {
-        int anchx = c.GetCameraDeltaX((int)x);
-        int anchy = c.GetCameraDeltaY((int)y);
+        //int anchx = c.GetCameraDeltaX((int)x);
+        //int anchy = c.GetCameraDeltaY((int)y);
         
         //bron
         
@@ -303,8 +294,8 @@ public class Player extends Actor
             if(ismarked)
             {
                 loop.GetGraphicsContext().setFill(Color.YELLOW);
-                int mx = c.GetCameraDeltaX((int)targetmarkerX);
-                int my = c.GetCameraDeltaY((int)targetmarkerY);
+                int mx = c.GetCameraDeltaX((int)markerClick.getX());
+                int my = c.GetCameraDeltaY((int)markerClick.getY());
                 loop.GetGraphicsContext().strokeLine(mx - 8, my - 8, mx + 8, my + 8);
                 loop.GetGraphicsContext().strokeLine(mx - 8, my + 8, mx + 8, my - 8);
             }
@@ -351,7 +342,12 @@ public class Player extends Actor
         
         if(ie.isClicked());
         {
-            markerClick = ie.getClicked();
+            if(equippedGunData != null)
+            if(equippedGunData.ifNeedsMarker())
+            {
+                ismarked = true;
+                markerClick = ie.getClicked().add(gs.gameCamera.GetBoundary().getMinX(), gs.gameCamera.GetBoundary().getMinY());
+            }
         }
         
         if(ie.checkPressed(KeyCode.LEFT) == true)
@@ -420,7 +416,7 @@ public class Player extends Actor
             if(ie.checkPulse(KeyCode.F5) == true)
             {
                 if(!lockswitch)refire = 0;
-                //setEquippedGun(WeaponInfo.pickWeapon(4));
+                setEquippedGun(gs.getWeaponInfo("airstrike"));
             }
             if(ie.checkPulse(KeyCode.F6) == true)
             {
@@ -631,6 +627,10 @@ public class Player extends Actor
 
     private void doShooting(GSGame gs) 
     {        
+        if(equippedGunData.ifNeedsMarker())
+        {
+            if(!ismarked || markerClick == null) return;
+        }
 
         aim_horizaim = x + aim_precos * 5;
         aim_vertaim = y - AIM_HEIGHT + aim_presin * 5;
@@ -647,7 +647,7 @@ public class Player extends Actor
             retreatTime = equippedGunData.getFramesBetweenShoots();
         }
         
-        equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aimangle, aimpower);
+        equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aimangle, aimpower, markerClick);
         
 //        switch(equippedGun)
 //        {

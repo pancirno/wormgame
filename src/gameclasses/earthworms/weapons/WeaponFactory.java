@@ -118,6 +118,35 @@ public class WeaponFactory
         
         outWeapons.put(minitemp.WeaponTag, minitemp);
         
+        //Airstrike
+        Weapon airtemp = new Weapon();
+        airtemp.WeaponName = "Airstrike";
+        airtemp.WeaponTag = "airstrike";
+        airtemp.WeaponGroup = 4;
+        airtemp.WeaponPriority = 1;
+        airtemp.instantShot = true;
+        airtemp.markTheSpot = true;
+        airtemp.special = 10;
+        
+        //Airstrike Projectile
+        Projectile airproj = new Projectile();
+        airproj.weight = 10;
+        
+        airproj.windAffected = false;
+        airproj.gravityAffected = true;
+        airproj.explodesOnHit = true;
+        airproj.explodeSize = ExplosionFactory.ExplosionSize.Large;
+        airproj.expDamage = 30;
+        airproj.expPower = 3;
+        airproj.expBias = -5;
+        airtemp.projectilesToShoot.add(airproj);
+        airtemp.projectilesToShoot.add(airproj);
+        airtemp.projectilesToShoot.add(airproj);
+        airtemp.projectilesToShoot.add(airproj);
+        airtemp.projectilesToShoot.add(airproj);
+        
+        outWeapons.put(airtemp.WeaponTag, airtemp);
+        
         return outWeapons;
     }
 }

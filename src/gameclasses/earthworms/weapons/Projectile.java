@@ -13,6 +13,7 @@ import gameclasses.loop.MainLoop;
 import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
 import gameclasses.earthworms.StaticPhysics;
 import java.util.ArrayList;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
 /**
@@ -49,6 +50,8 @@ public class Projectile extends Actor
     protected double bounceReductionOnRolling = 0;
     protected double bounceReductionOnBounce = 0;
             
+    protected Point2D markerPoint = null;
+    protected double homingAccuracy = 0;
     
     public Projectile()
     {
@@ -83,6 +86,9 @@ public class Projectile extends Actor
         bounceReductionOnImpact = cp.bounceReductionOnImpact;
         bounceReductionOnRolling = cp.bounceReductionOnRolling;
         bounceReductionOnBounce = cp.bounceReductionOnBounce;
+        
+        markerPoint = null;
+        homingAccuracy = cp.homingAccuracy;
     
         if(cp.children != null)
         {
@@ -104,6 +110,11 @@ public class Projectile extends Actor
         
         cx = 4;
         cy = 4;
+    }
+    
+    public void setTarget(Point2D tgt)
+    {
+        markerPoint = tgt;
     }
     
     @Override
