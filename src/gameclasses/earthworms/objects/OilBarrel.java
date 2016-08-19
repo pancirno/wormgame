@@ -34,13 +34,12 @@ public class OilBarrel extends LevelObject
         
         if(healthPoints == 0)
         {
-            ExplosionFactory.MakeLargeExplosion(gs, (int)x, (int)y);
-            gs.removeObject(this);
-            
+            ExplosionFactory.MakeCustomExplosion(gs, (int)x, (int)y, ExplosionFactory.ExplosionSize.ExtraLarge, 50, 6, -10, -1, false);
             for(int i = 0; i < 16; i++)
             {
-                gs.spawnProjectile(new Fire(x, y, (i-8)/2, 0, (int)(gs.getRandomNumber()*50) + 300));
+                gs.spawnProjectile(new Fire(x, y, i-(8/2), 0, (int)(gs.getRandomNumber()*50) + 300));
             }
+            gs.removeObject(this);
         }
         
         super.step(gs);

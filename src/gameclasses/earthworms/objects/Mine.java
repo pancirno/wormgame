@@ -6,6 +6,7 @@
 package gameclasses.earthworms.objects;
 
 import gameclasses.earthworms.*;
+import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
 import gameclasses.game.*;
 import gameclasses.loop.*;
 import java.awt.geom.*;
@@ -44,7 +45,7 @@ public class Mine extends LevelObject
         
         if(healthPoints == 0)
         {
-            ExplosionFactory.MakeLargeExplosion(gs, (int)x, (int)y);
+            ExplosionFactory.MakeCustomExplosion(gs, (int)x, (int)y, ExplosionSize.ExtraLarge, 50, 6, -10, -1, false);
             gs.removeObject(this);
         }
         

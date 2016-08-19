@@ -175,6 +175,7 @@ public class Actor
         if(Math.abs(vy) < 0.001) vy = 0;
     }
     
+    
     public boolean isMoving()
     {
         return (vx != 0) && (vy != 0);
@@ -189,7 +190,7 @@ public class Actor
     {
         return (cx > 0 && cy > 0);
     }
-    
+        
     public double getX()
     {
         return x;

@@ -88,6 +88,11 @@ public class InputEngine
         return mousePos;
     }
     
-    
+    public Point2D getClickedThenNull()
+    {
+        Point2D ret = mousePos;
+        mousePos = null;
+        return ret;
+    }
 }
 

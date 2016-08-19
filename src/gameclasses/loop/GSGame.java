@@ -374,7 +374,7 @@ public class GSGame extends GameState
         
         projectiles.GetIterator().forEachRemaining(ac ->
         {
-            if(ac.checkCollidable() && !ac.isOutsideAreaOfPlay(this))
+            if(ac.checkCollidable() && !ac.isHitscan() && !ac.isOutsideAreaOfPlay(this))
                 collisionTree.set(ac.getX(), ac.getY(), ac);
         });
         
@@ -385,7 +385,6 @@ public class GSGame extends GameState
         });
         
     }
-    
     
     public Object[] findObjectsInCollisionTree(int x, int y, int mx, int my)
     {

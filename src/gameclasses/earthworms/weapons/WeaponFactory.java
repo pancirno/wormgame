@@ -46,6 +46,7 @@ public class WeaponFactory
         gtemp.WeaponTag = "grenade";
         gtemp.WeaponGroup = 2;
         gtemp.WeaponPriority = 1;
+        gtemp.configureFuse = true;
         
         //Grenade Projectile
         Projectile grenadeproj = new Projectile();
@@ -65,6 +66,34 @@ public class WeaponFactory
         gtemp.projectilesToShoot.add(grenadeproj);
         
         outWeapons.put(gtemp.WeaponTag, gtemp);
+        
+        //Grenade
+        Weapon fgtemp = new Weapon();
+        fgtemp.WeaponName = "Fire Grenade";
+        fgtemp.WeaponTag = "fgrenade";
+        fgtemp.WeaponGroup = 2;
+        fgtemp.WeaponPriority = 2;
+        fgtemp.configureFuse = true;
+        
+        //Grenade Projectile
+        Projectile fgrenadeproj = new Projectile();
+        
+        fgrenadeproj.fuse = 180;
+        fgrenadeproj.gravityAffected = true;
+        fgrenadeproj.explodesOnHit = false;
+        fgrenadeproj.bouncesOnHit = true;
+        fgrenadeproj.explodeSize = ExplosionFactory.ExplosionSize.ExtraLarge;
+        fgrenadeproj.expDamage = 50;
+        fgrenadeproj.expPower = 6;
+        fgrenadeproj.expBias = -10;
+        fgrenadeproj.bounceReductionOnImpact = 0.9;
+        fgrenadeproj.bounceReductionOnRolling = 0.9;
+        fgrenadeproj.bounceReductionOnBounce = 0.5;
+        fgrenadeproj.expFireParticles = 16;
+        
+        fgtemp.projectilesToShoot.add(fgrenadeproj);
+        
+        outWeapons.put(fgtemp.WeaponTag, fgtemp);
         
         //Shotgun
         Weapon shtemp = new Weapon();
@@ -113,10 +142,39 @@ public class WeaponFactory
         minitemp.shootsAmount = 15;
         minitemp.consecutiveShoots = true;
         minitemp.framesBetweenShoots = 4;
+        minitemp.shootSpread = 1;
         
         minitemp.projectilesToShoot.add(hitproj);
         
         outWeapons.put(minitemp.WeaponTag, minitemp);
+        
+        //Minigun
+        Weapon ssgtemp = new Weapon();
+        ssgtemp.WeaponName = "Double Barreled Shotgun";
+        ssgtemp.WeaponTag = "ssgun";
+        ssgtemp.WeaponGroup = 3;
+        ssgtemp.WeaponPriority = 3;
+        ssgtemp.instantShot = true;
+        ssgtemp.defaultShootPower = 15;
+        ssgtemp.shootSpread = 1;
+        
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        ssgtemp.projectilesToShoot.add(hitproj);
+        
+        outWeapons.put(ssgtemp.WeaponTag, ssgtemp);
         
         //Airstrike
         Weapon airtemp = new Weapon();

@@ -45,9 +45,11 @@ public class Weapon
     protected boolean consecutiveShoots = true;
     protected boolean endTurnAfterShoot = true;
     protected double shootSpread = 0;
+    protected double shootPowerMod = 1;
     
     protected boolean instantShot = false;
     protected double defaultShootPower = 0;
+    protected boolean configureFuse = false;
     
     protected boolean markTheSpot = false;
     
@@ -66,26 +68,36 @@ public class Weapon
      * @param power shooting power
      * @param target can be null
      */
-    public void DoShooting(Player plr, GSGame gs, double shootx, double shooty, double angle, double power, Point2D target)
+    public void DoShooting(Player plr, GSGame gs, double shootx, double shooty, double angle, double power, Point2D target, int fuse)
     {
         if(special != 0)
-            if(DoSpecial(plr, gs, shootx, shooty, angle, power, target)) return;
+            if(DoSpecial(plr, gs, shootx, shooty, angle, power, target, fuse)) return;
         
         power = (defaultShootPower == 0) ? power : defaultShootPower;
         
         double aim_horizthr = Math.cos(angle) * power;
         double aim_vertthr = Math.sin(angle) * power;
         
-        DoLaunchProjectiles(plr, gs, shootx, shooty, aim_horizthr, aim_vertthr, target);
+        DoLaunchProjectiles(plr, gs, shootx, shooty, aim_horizthr * shootPowerMod, aim_vertthr * shootPowerMod, target, fuse);
     }
 
-    private void DoLaunchProjectiles(Player plr, GSGame gs, double shootx, double shooty, double aim_horizthr, double aim_vertthr, Point2D target)
+    private void DoLaunchProjectiles(Player plr, GSGame gs, double shootx, double shooty, double aim_horizthr, double aim_vertthr, Point2D target, int fuse)
     {
         for(Projectile p : projectilesToShoot)
         {
+            double vx = aim_horizthr;
+            double vy = aim_vertthr;
+            
+            if(shootSpread > 0)
+            {
+                vx += (gs.getGaussianRandomNumber() * shootSpread) - shootSpread/2;
+                vy += (gs.getGaussianRandomNumber() * shootSpread) - shootSpread/2;
+            }
+            
             Projectile np = new Projectile(p);
-            np.initProjectile(plr, shootx, shooty, aim_horizthr, aim_vertthr);
+            np.initProjectile(plr, shootx, shooty, vx, vy);
             if(target != null) np.setTarget(target);
+            if(configureFuse) np.fuse = fuse;
             gs.spawnProjectile(np);
         }
     }
@@ -101,7 +113,7 @@ public class Weapon
      * @param target can be null
      * @return if false continue regular shooting routine
      */
-    public boolean DoSpecial(Player plr, GSGame gs, double shootx, double shooty, double angle, double power, Point2D target)
+    public boolean DoSpecial(Player plr, GSGame gs, double shootx, double shooty, double angle, double power, Point2D target, int fuse)
     {
         switch(special)
         {

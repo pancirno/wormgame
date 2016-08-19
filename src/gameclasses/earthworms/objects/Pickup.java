@@ -52,7 +52,7 @@ public class Pickup extends LevelObject
         
         if(healthPoints == 0)
         {
-            ExplosionFactory.MakeMediumExplosion(gs, (int)x, (int)y);
+            //ExplosionFactory.MakeMediumExplosion(gs, (int)x, (int)y);
             gs.removeObject(this);
         }
         

@@ -345,8 +345,12 @@ public class Player extends Actor
             if(equippedGunData != null)
             if(equippedGunData.ifNeedsMarker())
             {
-                ismarked = true;
-                markerClick = ie.getClicked().add(gs.gameCamera.GetBoundary().getMinX(), gs.gameCamera.GetBoundary().getMinY());
+                Point2D mouse = ie.getClickedThenNull();
+                if(mouse != null)
+                {
+                    ismarked = true;
+                    markerClick = mouse.add(gs.gameCamera.GetBoundary().getMinX(), gs.gameCamera.GetBoundary().getMinY());
+                }
             }
         }
         
@@ -421,7 +425,12 @@ public class Player extends Actor
             if(ie.checkPulse(KeyCode.F6) == true)
             {
                 if(!lockswitch)refire = 0;
-                //setEquippedGun(WeaponInfo.pickWeapon(5));
+                setEquippedGun(gs.getWeaponInfo("fgrenade"));
+            }
+            if(ie.checkPulse(KeyCode.F7) == true)
+            {
+                if(!lockswitch)refire = 0;
+                setEquippedGun(gs.getWeaponInfo("ssgun"));
             }
         }
         
@@ -647,7 +656,7 @@ public class Player extends Actor
             retreatTime = equippedGunData.getFramesBetweenShoots();
         }
         
-        equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aimangle, aimpower, markerClick);
+        equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aimangle, aimpower, markerClick, 180);
         
 //        switch(equippedGun)
 //        {

@@ -11,6 +11,7 @@ import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
 import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
+import gameclasses.earthworms.Fire;
 import gameclasses.earthworms.StaticPhysics;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
@@ -36,6 +37,7 @@ public class Projectile extends Actor
     protected double expPower = 0;
     protected int expBias = 0;
     protected double expHurtRadius = -1;
+    protected int expFireParticles = 0;
     
     protected boolean windAffected = false;
     protected boolean gravityAffected = false;
@@ -74,6 +76,7 @@ public class Projectile extends Actor
         expPower = cp.expPower;
         expBias = cp.expBias;
         expHurtRadius = cp.expHurtRadius;
+        expFireParticles = cp.expFireParticles;
 
         windAffected = cp.windAffected;
         gravityAffected = cp.gravityAffected;
@@ -169,6 +172,18 @@ public class Projectile extends Actor
     public void explode(GSGame gs)
     {
         if(explodes) ExplosionFactory.MakeCustomExplosion(gs, (int)x, (int)y, explodeSize, expDamage, expPower, expBias, expHurtRadius, expConstDamage);
+        
+        if(expFireParticles > 0)
+            for(int i = 0; i < expFireParticles; i++)
+            {
+                gs.spawnProjectile(new Fire(x, y, (i-(expFireParticles/2))*0.5, 0, (int)(gs.getRandomNumber()*50) + 300));
+            }
+        
         gs.removeObject(this);
+    }
+    
+    public boolean isHitscan()
+    {
+        return hitScan;
     }
 }
