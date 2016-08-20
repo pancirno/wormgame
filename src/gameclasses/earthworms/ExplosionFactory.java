@@ -102,16 +102,14 @@ public class ExplosionFactory
         
     static public void MakeBlazeExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(SmallI, gs, x, y, 1, 1, -3, 20, false);
-        e.constDamage = true;
+        Explosion e = new Explosion(SmallI, gs, x, y, 1, 1, -3, 20, true);
         
         gs.spawnExplosion(e);
     }
     
     static public void MakeBlazeNoDigExplosion(GSGame gs, int x, int y)
     {
-        Explosion e = new Explosion(null, gs, x, y, 1, 1, -3, 20, false);
-        e.constDamage = true;
+        Explosion e = new Explosion(null, gs, x, y, 1, 1, -3, 20, true);
         
         gs.spawnExplosion(e);
     }

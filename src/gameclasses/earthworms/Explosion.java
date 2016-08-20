@@ -38,7 +38,7 @@ public class Explosion
         x = xi;
         y = yi;
         
-        hurtRadius = 0;
+        hurtRadius = hurtrad;
         drawx = 0;
         drawy = 0;
         

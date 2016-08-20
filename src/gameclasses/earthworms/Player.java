@@ -432,6 +432,11 @@ public class Player extends Actor
                 if(!lockswitch)refire = 0;
                 setEquippedGun(gs.getWeaponInfo("ssgun"));
             }
+            if(ie.checkPulse(KeyCode.F8) == true)
+            {
+                if(!lockswitch)refire = 0;
+                setEquippedGun(gs.getWeaponInfo("fairstrike"));
+            }
         }
         
         //shoot sequence, increase power on press and shot on release
@@ -497,7 +502,7 @@ public class Player extends Actor
                     }
                 }
             }
-}
+    }
 
     void doFalling(GSGame gs)
     {
@@ -657,92 +662,7 @@ public class Player extends Actor
         }
         
         equippedGunData.DoShooting(this, gs, aim_horizaim, aim_vertaim, aimangle, aimpower, markerClick, 180);
-        
-//        switch(equippedGun)
-//        {
-//            case ROCKET:
-//                gs.spawnProjectile(new Rocket(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr));
-//                break;
-//            case MIRV:
-//                gs.spawnProjectile(new MIRV(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr));
-//                break;
-//            case HOMINGMISSILE:
-//                if(!ismarked)return;
-//                gs.spawnProjectile(new HomingMissile(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, (int)targetmarkerX, (int)targetmarkerY));
-//                break;
-//            case GRENADE:
-//                gs.spawnProjectile(new Grenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, 180));
-//                break;
-//            case FIREGRENADE:
-//                gs.spawnProjectile(new FireGrenade(this, aim_horizaim, aim_vertaim, aim_horizthr, aim_vertthr, 180));
-//                break;
-//            case BOMB:
-//                gs.spawnProjectile(new Bomb(this, aim_horizaim, aim_vertaim, 1.2 * Math.signum(aim_horizthr), -1.5, -1));
-//                break;
-//            case SHOTGUN:
-//                lockswitch = true;
-//                
-//                if(!getCanShootAgain())
-//                {
-//                    playerTeam.deductAmmo(equippedGun);
-//                    refire = 2;
-//                }
-//                gs.playSound("sfx/shot1.wav");
-//                gs.spawnProjectile(new Shotgun(this, aim_horizaim, aim_vertaim, aim_horizthrinst, aim_vertthrinst, gs));
-//                refire--;
-//                retreatTime = 120;
-//                break;
-//            case MINIGUN:
-//                lockswitch = true;
-//                
-//                if(!getCanShootAgain())
-//                {
-//                    playerTeam.deductAmmo(equippedGun);
-//                    refire = 15;
-//                    gs.playSound("sfx/minigun1.wav");
-//                }
-//                
-//                autoshoot = true;
-//                gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
-//                refire--;
-//                retreatTime = 4;
-//                break;
-//            case FLAMETHROWER:
-//                lockswitch = true;
-//                
-//                if(!getCanShootAgain())
-//                {
-//                    playerTeam.deductAmmo(equippedGun);
-//                    refire = 15;
-//                }
-//                
-//                autoshoot = true;
-//                gs.spawnProjectile(new Flamethrower(this, aim_horizaim, aim_vertaim, aim_horizthrinst/2.5, aim_vertthrinst/2.5));
-//                refire--;
-//                retreatTime = 8;
-//                break;
-//            case ROPE:
-//                shootRopeTracer(gs);
-//                break;
-//            case AIRSTRIKE:
-//                if(!ismarked)return;
-//                gs.spawnProjectile(new AirStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
-//                break;
-//            case FIRESTRIKE:
-//                if(!ismarked)return;
-//                gs.spawnProjectile(new AirFireStrike(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0.5, 1));
-//                break;
-//            case HIBARI:
-//                if(!ismarked)return;
-//                gs.spawnProjectile(new Hibari(this, targetmarkerX, gs.currentStage.GameArea.getMinY()+500, 0, 1));
-//                break;
-//            case DOUBLESHOTGUN:
-//                gs.playSound("sfx/doubleshot1.wav");
-//                for(int i = 0; i < 15; i++)
-//                    gs.spawnProjectile(new UZI(this, aim_horizaim , aim_vertaim, aimangle, gs));
-//                break;
-//        }
-        
+                
         if(!getCanShootAgain())
         {
             retreatTime = 180;

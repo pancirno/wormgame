@@ -100,14 +100,14 @@ public class GameScheme
         gs.setAmmo("rope", 99);
         gs.setAmmo("fgrenade", 99);
         gs.setAmmo("airstrike", 99);
-        gs.setCrate("airstrike", 99);
-        gs.setAmmo("firestrike", 99);
-        gs.setCrate("firestrike", 99);
+        gs.setAmmo("fairstrike", 99);
         gs.setAmmo("minigun", 99);
         gs.setAmmo("ssgun", 99);
         gs.setAmmo("flamethrower", 99);
         gs.setAmmo("mirv", 99);
         gs.setAmmo("hibari", 99);
+        gs.setCrate("fairstrike", 99);
+        gs.setCrate("airstrike", 99);
         
         return gs;
     }

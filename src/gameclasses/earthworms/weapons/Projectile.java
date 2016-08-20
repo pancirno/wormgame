@@ -28,9 +28,12 @@ public class Projectile extends Actor
     
     protected boolean hitScan = false;
     protected boolean goThroughObjects = false;
-    
+        
     protected boolean explodes = true;
     protected boolean explodesOnHit = true;
+    protected boolean explodesOnDescend = false;
+    protected boolean explodesOnActivation = false;
+    protected boolean removeOnExplosion = true;
     protected ExplosionSize explodeSize = ExplosionSize.None;
     protected boolean expConstDamage = false;
     protected int expDamage = 0;
@@ -44,7 +47,8 @@ public class Projectile extends Actor
     protected double weight = 1;
     
     protected boolean spawnChildrenOnExplosion = false;
-    protected boolean spawnChildrenOnTravel = false;
+    protected int spawnChildrenOnTravelInterval = 0;
+    protected boolean childrenInheritVelocity = false;
     protected ArrayList<Projectile> children = null; 
     
     protected boolean bouncesOnHit = false;
@@ -55,6 +59,7 @@ public class Projectile extends Actor
     protected Point2D markerPoint = null;
     protected double homingAccuracy = 0;
     
+    
     public Projectile()
     {
         
@@ -63,13 +68,15 @@ public class Projectile extends Actor
     public Projectile(Projectile cp)
     {
         fuse = cp.fuse;
-        burnout = cp.burnout;
 
         hitScan = cp.hitScan;
         goThroughObjects = cp.goThroughObjects;
 
         explodes = cp.explodes;
         explodesOnHit = cp.explodesOnHit;
+        explodesOnDescend = cp.explodesOnDescend;
+        explodesOnActivation = cp.explodesOnActivation;
+        removeOnExplosion = cp.removeOnExplosion;
         explodeSize = cp.explodeSize;
         expConstDamage = cp.expConstDamage;
         expDamage = cp.expDamage;
@@ -83,7 +90,8 @@ public class Projectile extends Actor
         weight = cp.weight;
 
         spawnChildrenOnExplosion = cp.spawnChildrenOnExplosion;
-        spawnChildrenOnTravel = cp.spawnChildrenOnTravel;
+        spawnChildrenOnTravelInterval = cp.spawnChildrenOnTravelInterval;
+        childrenInheritVelocity = cp.childrenInheritVelocity;
 
         bouncesOnHit = cp.bouncesOnHit;
         bounceReductionOnImpact = cp.bounceReductionOnImpact;
@@ -92,7 +100,7 @@ public class Projectile extends Actor
         
         markerPoint = null;
         homingAccuracy = cp.homingAccuracy;
-    
+        
         if(cp.children != null)
         {
             children = new ArrayList<>();
@@ -100,7 +108,6 @@ public class Projectile extends Actor
                 children.add(new Projectile(childp));
             });
         }
-    
     }
             
     public void initProjectile(Actor p, double ix, double iy, double ivx, double ivy)
@@ -125,28 +132,50 @@ public class Projectile extends Actor
     {
         do
         {
+            //count some important stuff
             fuse--;
-            burnout--;
-
-            if(windAffected) vx = vx + gs.getWind();
-            if(gravityAffected) vy = vy + StaticPhysics.GRAVITY;
 
             checkCollide(gs);
 
+            //is it time to explode?
             if(this.isOutsideAreaOfPlay(gs))
             {
                 gs.removeObject(this);
                 return;
             }
+            
+            if(fuse <= 0)
+            {
+                explode(gs);
+                gs.removeObject(this);
+                return;
+            }
+            
+            if(explodesOnDescend && vy > 2)
+            {
+                explode(gs);
+                gs.removeObject(this);
+                return;
+            }
+            
+            //movement mode - projectile
+            if(spawnChildrenOnTravelInterval > 0)
+                if(fuse % spawnChildrenOnTravelInterval == 0)
+                    dropChildren(gs);
+            
+            if(windAffected) vx = vx + gs.getWind();
+            if(gravityAffected) vy = vy + StaticPhysics.GRAVITY;
 
             if(bouncesOnHit)
                 grenadeBounce(gs, bounceReductionOnImpact, bounceReductionOnRolling, bounceReductionOnBounce, goThroughObjects);
-
-            if((snapToLevelVel(gs, vx, vy, bouncesOnHit, false) && explodesOnHit) || fuse <= 0)
+            
+            if((snapToLevelVel(gs, vx, vy, bouncesOnHit, false) && explodesOnHit))
             {
                 explode(gs);
+                if(removeOnExplosion) gs.removeObject(this);
                 return;
             }
+            
         }
         while(hitScan);
     }
@@ -179,7 +208,37 @@ public class Projectile extends Actor
                 gs.spawnProjectile(new Fire(x, y, (i-(expFireParticles/2))*0.5, 0, (int)(gs.getRandomNumber()*50) + 300));
             }
         
-        gs.removeObject(this);
+        if(spawnChildrenOnExplosion)
+        {
+            dropChildren(gs);
+        }
+    }
+    
+    private void dropChildren(GSGame gs)
+    {
+        if(children != null)
+        {
+           for(Projectile c : children)
+           {
+               Projectile nc = new Projectile(c);
+               
+               if(childrenInheritVelocity)
+               {
+                   nc.vx = vx;
+                   nc.vy = vy;
+               }
+               
+               gs.spawnProjectile(nc);
+           }
+        }
+    }
+    
+    public void activate()
+    {
+        if(explodesOnActivation)
+        {
+            fuse = 0;
+        }
     }
     
     public boolean isHitscan()

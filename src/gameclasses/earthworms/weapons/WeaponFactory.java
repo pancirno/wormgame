@@ -67,7 +67,7 @@ public class WeaponFactory
         
         outWeapons.put(gtemp.WeaponTag, gtemp);
         
-        //Grenade
+        //FGrenade
         Weapon fgtemp = new Weapon();
         fgtemp.WeaponName = "Fire Grenade";
         fgtemp.WeaponTag = "fgrenade";
@@ -75,7 +75,7 @@ public class WeaponFactory
         fgtemp.WeaponPriority = 2;
         fgtemp.configureFuse = true;
         
-        //Grenade Projectile
+        //FGrenade Projectile
         Projectile fgrenadeproj = new Projectile();
         
         fgrenadeproj.fuse = 180;
@@ -204,6 +204,37 @@ public class WeaponFactory
         airtemp.projectilesToShoot.add(airproj);
         
         outWeapons.put(airtemp.WeaponTag, airtemp);
+        
+        //Fire Airstrike
+        Weapon fairtemp = new Weapon();
+        fairtemp.WeaponName = "Napalm Strike";
+        fairtemp.WeaponTag = "fairstrike";
+        fairtemp.WeaponGroup = 4;
+        fairtemp.WeaponPriority = 2;
+        fairtemp.instantShot = true;
+        fairtemp.markTheSpot = true;
+        fairtemp.special = 10;
+        
+        //Fire Airstrike Projectile
+        Projectile fairproj = new Projectile();
+        fairproj.weight = 10;
+        
+        fairproj.windAffected = false;
+        fairproj.gravityAffected = true;
+        fairproj.explodesOnHit = true;
+        fairproj.explodeSize = ExplosionFactory.ExplosionSize.Large;
+        fairproj.expDamage = 30;
+        fairproj.expPower = 3;
+        fairproj.expBias = -5;
+        fairproj.explodesOnDescend = true;
+        fairproj.expFireParticles = 8;
+        fairtemp.projectilesToShoot.add(fairproj);
+        fairtemp.projectilesToShoot.add(fairproj);
+        fairtemp.projectilesToShoot.add(fairproj);
+        fairtemp.projectilesToShoot.add(fairproj);
+        fairtemp.projectilesToShoot.add(fairproj);
+        
+        outWeapons.put(fairtemp.WeaponTag, fairtemp);
         
         return outWeapons;
     }

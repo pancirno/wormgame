@@ -70,9 +70,9 @@ public class Fire extends Projectile
             snapToLevelVel(gs, vx + horizdelta, vy, true, true);
         }
         
-        if(fuse % 15 == 0)
+        if(fuse % 20 == 0)
         {
-            if(gs.getRandomNumber() < 0.1)
+            if(gs.getRandomNumber() < 0.2)
             {
                 ExplosionFactory.MakeBlazeExplosion(gs, (int)x, (int)y);
             }
