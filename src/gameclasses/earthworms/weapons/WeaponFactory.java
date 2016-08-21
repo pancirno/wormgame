@@ -26,7 +26,7 @@ public class WeaponFactory
         wtemp.WeaponPriority = 1;
         
         //Rocket Launcher Projectile
-        Projectile rocketproj = new Projectile();
+        ProjectileDriver rocketproj = new ProjectileDriver();
         rocketproj.weight = 10;
         
         rocketproj.windAffected = true;
@@ -49,9 +49,9 @@ public class WeaponFactory
         gtemp.configureFuse = true;
         
         //Grenade Projectile
-        Projectile grenadeproj = new Projectile();
+        ProjectileDriver grenadeproj = new ProjectileDriver();
         
-        grenadeproj.fuse = 180;
+        grenadeproj.initialFuse = 180;
         grenadeproj.gravityAffected = true;
         grenadeproj.explodesOnHit = false;
         grenadeproj.bouncesOnHit = true;
@@ -76,9 +76,9 @@ public class WeaponFactory
         fgtemp.configureFuse = true;
         
         //FGrenade Projectile
-        Projectile fgrenadeproj = new Projectile();
+        ProjectileDriver fgrenadeproj = new ProjectileDriver();
         
-        fgrenadeproj.fuse = 180;
+        fgrenadeproj.initialFuse = 180;
         fgrenadeproj.gravityAffected = true;
         fgrenadeproj.explodesOnHit = false;
         fgrenadeproj.bouncesOnHit = true;
@@ -108,7 +108,7 @@ public class WeaponFactory
         shtemp.framesBetweenShoots = 120;
         
         //Shotgun Projectile
-        Projectile shotgunproj = new Projectile();
+        ProjectileDriver shotgunproj = new ProjectileDriver();
         
         shotgunproj.hitScan = true;
         shotgunproj.explodeSize = ExplosionFactory.ExplosionSize.Medium;
@@ -122,7 +122,7 @@ public class WeaponFactory
         outWeapons.put(shtemp.WeaponTag, shtemp);
                 
         //Generic bullet Projectile
-        Projectile hitproj = new Projectile();
+        ProjectileDriver hitproj = new ProjectileDriver();
         
         hitproj.hitScan = true;
         hitproj.explodeSize = ExplosionFactory.ExplosionSize.Small;
@@ -187,7 +187,7 @@ public class WeaponFactory
         airtemp.special = 10;
         
         //Airstrike Projectile
-        Projectile airproj = new Projectile();
+        ProjectileDriver airproj = new ProjectileDriver();
         airproj.weight = 10;
         
         airproj.windAffected = false;
@@ -216,7 +216,7 @@ public class WeaponFactory
         fairtemp.special = 10;
         
         //Fire Airstrike Projectile
-        Projectile fairproj = new Projectile();
+        ProjectileDriver fairproj = new ProjectileDriver();
         fairproj.weight = 10;
         
         fairproj.windAffected = false;

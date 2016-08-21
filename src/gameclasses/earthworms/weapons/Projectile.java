@@ -10,10 +10,8 @@ import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
-import gameclasses.earthworms.ExplosionFactory.ExplosionSize;
 import gameclasses.earthworms.Fire;
 import gameclasses.earthworms.StaticPhysics;
-import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
@@ -26,88 +24,23 @@ public class Projectile extends Actor
     protected int fuse = 600;
     protected int burnout = 0;
     
-    protected boolean hitScan = false;
-    protected boolean goThroughObjects = false;
-        
-    protected boolean explodes = true;
-    protected boolean explodesOnHit = true;
-    protected boolean explodesOnDescend = false;
-    protected boolean explodesOnActivation = false;
-    protected boolean removeOnExplosion = true;
-    protected ExplosionSize explodeSize = ExplosionSize.None;
-    protected boolean expConstDamage = false;
-    protected int expDamage = 0;
-    protected double expPower = 0;
-    protected int expBias = 0;
-    protected double expHurtRadius = -1;
-    protected int expFireParticles = 0;
+    protected ProjectileDriver pDriver;
     
-    protected boolean windAffected = false;
-    protected boolean gravityAffected = false;
-    protected double weight = 1;
-    
-    protected boolean spawnChildrenOnExplosion = false;
-    protected int spawnChildrenOnTravelInterval = 0;
-    protected boolean childrenInheritVelocity = false;
-    protected ArrayList<Projectile> children = null; 
-    
-    protected boolean bouncesOnHit = false;
-    protected double bounceReductionOnImpact = 0;
-    protected double bounceReductionOnRolling = 0;
-    protected double bounceReductionOnBounce = 0;
-            
     protected Point2D markerPoint = null;
-    protected double homingAccuracy = 0;
-    
     
     public Projectile()
     {
         
     }
     
-    public Projectile(Projectile cp)
+    public Projectile(ProjectileDriver drv)
     {
-        fuse = cp.fuse;
-
-        hitScan = cp.hitScan;
-        goThroughObjects = cp.goThroughObjects;
-
-        explodes = cp.explodes;
-        explodesOnHit = cp.explodesOnHit;
-        explodesOnDescend = cp.explodesOnDescend;
-        explodesOnActivation = cp.explodesOnActivation;
-        removeOnExplosion = cp.removeOnExplosion;
-        explodeSize = cp.explodeSize;
-        expConstDamage = cp.expConstDamage;
-        expDamage = cp.expDamage;
-        expPower = cp.expPower;
-        expBias = cp.expBias;
-        expHurtRadius = cp.expHurtRadius;
-        expFireParticles = cp.expFireParticles;
-
-        windAffected = cp.windAffected;
-        gravityAffected = cp.gravityAffected;
-        weight = cp.weight;
-
-        spawnChildrenOnExplosion = cp.spawnChildrenOnExplosion;
-        spawnChildrenOnTravelInterval = cp.spawnChildrenOnTravelInterval;
-        childrenInheritVelocity = cp.childrenInheritVelocity;
-
-        bouncesOnHit = cp.bouncesOnHit;
-        bounceReductionOnImpact = cp.bounceReductionOnImpact;
-        bounceReductionOnRolling = cp.bounceReductionOnRolling;
-        bounceReductionOnBounce = cp.bounceReductionOnBounce;
+        fuse = drv.initialFuse;
+        burnout = drv.initialBurnout;
+        
+        pDriver = drv;
         
         markerPoint = null;
-        homingAccuracy = cp.homingAccuracy;
-        
-        if(cp.children != null)
-        {
-            children = new ArrayList<>();
-            cp.children.stream().forEach((childp) -> {
-                children.add(new Projectile(childp));
-            });
-        }
     }
             
     public void initProjectile(Actor p, double ix, double iy, double ivx, double ivy)
@@ -151,7 +84,7 @@ public class Projectile extends Actor
                 return;
             }
             
-            if(explodesOnDescend && vy > 2)
+            if(pDriver.explodesOnDescend && vy > 2)
             {
                 explode(gs);
                 gs.removeObject(this);
@@ -159,25 +92,25 @@ public class Projectile extends Actor
             }
             
             //movement mode - projectile
-            if(spawnChildrenOnTravelInterval > 0)
-                if(fuse % spawnChildrenOnTravelInterval == 0)
+            if(pDriver.spawnChildrenOnTravelInterval > 0)
+                if(fuse % pDriver.spawnChildrenOnTravelInterval == 0)
                     dropChildren(gs);
             
-            if(windAffected) vx = vx + gs.getWind();
-            if(gravityAffected) vy = vy + StaticPhysics.GRAVITY;
+            if(pDriver.windAffected) vx = vx + gs.getWind();
+            if(pDriver.gravityAffected) vy = vy + StaticPhysics.GRAVITY;
 
-            if(bouncesOnHit)
-                grenadeBounce(gs, bounceReductionOnImpact, bounceReductionOnRolling, bounceReductionOnBounce, goThroughObjects);
+            if(pDriver.bouncesOnHit)
+                grenadeBounce(gs, pDriver.bounceReductionOnImpact, pDriver.bounceReductionOnRolling, pDriver.bounceReductionOnBounce, pDriver.goThroughObjects);
             
-            if((snapToLevelVel(gs, vx, vy, bouncesOnHit, false) && explodesOnHit))
+            if((snapToLevelVel(gs, vx, vy, pDriver.bouncesOnHit, false) && pDriver.explodesOnHit))
             {
                 explode(gs);
-                if(removeOnExplosion) gs.removeObject(this);
+                if(pDriver.removeOnExplosion) gs.removeObject(this);
                 return;
             }
             
         }
-        while(hitScan);
+        while(pDriver.hitScan);
     }
     
     @Override
@@ -193,22 +126,22 @@ public class Projectile extends Actor
     @Override
     public void push(GSGame gs, double ivx, double ivy)
     {
-        if (weight == 0) return;
-        vx += ivx/weight;
-        vy += ivy/weight;
+        if (pDriver.weight == 0) return;
+        vx += ivx/pDriver.weight;
+        vy += ivy/pDriver.weight;
     }
     
     public void explode(GSGame gs)
     {
-        if(explodes) ExplosionFactory.MakeCustomExplosion(gs, (int)x, (int)y, explodeSize, expDamage, expPower, expBias, expHurtRadius, expConstDamage);
+        if(pDriver.explodes) ExplosionFactory.MakeCustomExplosion(gs, (int)x, (int)y, pDriver.explodeSize, pDriver.expDamage, pDriver.expPower, pDriver.expBias, pDriver.expHurtRadius, pDriver.expConstDamage);
         
-        if(expFireParticles > 0)
-            for(int i = 0; i < expFireParticles; i++)
+        if(pDriver.expFireParticles > 0)
+            for(int i = 0; i < pDriver.expFireParticles; i++)
             {
-                gs.spawnProjectile(new Fire(x, y, (i-(expFireParticles/2))*0.5, 0, (int)(gs.getRandomNumber()*50) + 300));
+                gs.spawnProjectile(new Fire(x, y, (i-(pDriver.expFireParticles/2))*0.5, 0, (int)(gs.getRandomNumber()*50) + 300));
             }
         
-        if(spawnChildrenOnExplosion)
+        if(pDriver.spawnChildrenOnExplosion)
         {
             dropChildren(gs);
         }
@@ -216,13 +149,13 @@ public class Projectile extends Actor
     
     private void dropChildren(GSGame gs)
     {
-        if(children != null)
+        if(pDriver.children != null)
         {
-           for(Projectile c : children)
+           for(Projectile c : pDriver.children)
            {
-               Projectile nc = new Projectile(c);
+               Projectile nc = new Projectile(pDriver);
                
-               if(childrenInheritVelocity)
+               if(pDriver.childrenInheritVelocity)
                {
                    nc.vx = vx;
                    nc.vy = vy;
@@ -235,7 +168,7 @@ public class Projectile extends Actor
     
     public void activate()
     {
-        if(explodesOnActivation)
+        if(pDriver.explodesOnActivation)
         {
             fuse = 0;
         }
@@ -243,6 +176,6 @@ public class Projectile extends Actor
     
     public boolean isHitscan()
     {
-        return hitScan;
+        return pDriver.hitScan;
     }
 }

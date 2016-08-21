@@ -23,7 +23,6 @@ public class TracerRocket extends Projectile implements IScoredTracer
     public TracerRocket(Actor p, double ix, double iy, double ivx, double ivy) 
     {
         initProjectile(p, ix, iy, ivx, ivy);
-        explodes = false;
     }
     
     @Override

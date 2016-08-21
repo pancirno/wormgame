@@ -39,7 +39,7 @@ public class Weapon
     
     protected ArrayList<AIWeaponFlags> AIHints = new ArrayList<>();
     
-    protected ArrayList<Projectile> projectilesToShoot = new ArrayList<>();
+    protected ArrayList<ProjectileDriver> projectilesToShoot = new ArrayList<>();
     protected int shootsAmount = 1;
     protected int framesBetweenShoots = 0;
     protected boolean consecutiveShoots = true;
@@ -83,7 +83,7 @@ public class Weapon
 
     private void DoLaunchProjectiles(Player plr, GSGame gs, double shootx, double shooty, double aim_horizthr, double aim_vertthr, Point2D target, int fuse)
     {
-        for(Projectile p : projectilesToShoot)
+        for(ProjectileDriver p : projectilesToShoot)
         {
             double vx = aim_horizthr;
             double vy = aim_vertthr;
@@ -124,7 +124,7 @@ public class Weapon
             case 10: //airstrike behaviour
                 double pos = target.getX() - AIRSTRIKEPIXELSTEP_HALF*(projectilesToShoot.size() - 1);
                 
-                for(Projectile p : projectilesToShoot)
+                for(ProjectileDriver p : projectilesToShoot)
                 {
                     Projectile np = new Projectile(p);
                     np.initProjectile(plr, pos, 0, 0, 0);

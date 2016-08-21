@@ -7,6 +7,7 @@ package gameclasses.earthworms;
 
 import gameclasses.earthworms.weapons.Projectile;
 import gameclasses.earthworms.particles.PSmoke;
+import gameclasses.earthworms.weapons.ProjectileDriver;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
@@ -18,11 +19,19 @@ import javafx.scene.paint.Color;
  */
 public class Fire extends Projectile 
 {
+    final static ProjectileDriver FIREPDRIVER;
+    
+    static
+    {
+        FIREPDRIVER = new ProjectileDriver();
+    }
+    
     public Fire(double ix, double iy, double ivx, double ivy, int f) 
     {
         initProjectile(null, ix, iy, ivx, ivy);
         fuse = f + 1800;
         burnout = f;
+        pDriver = FIREPDRIVER;
     }
     
     @Override
