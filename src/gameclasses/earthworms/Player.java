@@ -620,7 +620,7 @@ public class Player extends Actor
         }
     }
     
-    private void setEquippedGun(Weapon w)
+    protected void setEquippedGun(Weapon w)
     {
         if(!lockswitch)
         {

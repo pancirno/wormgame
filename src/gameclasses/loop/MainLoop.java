@@ -20,7 +20,7 @@ public class MainLoop extends AnimationTimer
     
     private final InputEngine inputreceiver = new InputEngine();
     private final GraphicsContext drawengine;
-    
+        
     int WindowWidth;
     int WindowHeight;
     

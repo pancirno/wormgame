@@ -44,18 +44,7 @@ public class GSGame extends GameState
     SynchronizedArrayList<LevelObject> objects;
     SynchronizedArrayList<Particle> particles;
     ArrayList<Explosion> explosions;
-    
-    //trashbins
-    //ArrayList<Projectile> trashProj;
-    //ArrayList<Player> trashPlayer;
-    //ArrayList<LevelObject> trashObject;
-    //ArrayList<Particle> trashParticle;
-    
-    //spawners
-    //ArrayList<Projectile> spawnProj;
-    //ArrayList<LevelObject> spawnObject;
-    //ArrayList<Particle> spawnParticle;
-    
+        
     //loot table
     ArrayList<String> lootTable;
     
@@ -103,7 +92,7 @@ public class GSGame extends GameState
     private void prepareMatch() 
     {
         addTeam(new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false));
-        addTeam(new Team("dupa1", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, false));
+        addTeam(new Team("dupa1", "CPU 1","CPU 2","CPU 3","CPU 4",Color.BLUE, 0, true));
 
         ArrayList<Point2D> availablePlaces = currentStage.findAvailablePointsForPlayers();
                 
@@ -112,10 +101,7 @@ public class GSGame extends GameState
             for(int i = 0; i < 4; i++)
             {
                 Point2D p = pickRandomPointElement(availablePlaces);
-                if(_item.ai)
-                    insertPlayer(new PlayerAI((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
-                else
-                    insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
+                insertPlayer(new Player((int)p.getX(), (int)p.getY(), _item, i, _item.playernames.get(i)));
             }
         });
         
@@ -534,12 +520,7 @@ public class GSGame extends GameState
     {
         return activePlayer;
     }
-    
-    public Player[] getPlayerList() //TODO change
-    {
-        return (Player[])players.GetStream().toArray();
-    }
-    
+        
     public double getRandomNumber()
     {
         return randomizer.nextDouble();

@@ -67,6 +67,7 @@ public class Weapon
      * @param angle shooting angle
      * @param power shooting power
      * @param target can be null
+     * @param fuse
      */
     public void DoShooting(Player plr, GSGame gs, double shootx, double shooty, double angle, double power, Point2D target, int fuse)
     {
@@ -138,9 +139,9 @@ public class Weapon
         }
     }
     
-    public EnumSet<AIWeaponFlags> getAIFlags()
+    public boolean hasAIFlag(AIWeaponFlags f)
     {
-        return EnumSet.copyOf(AIHints);
+        return AIHints.contains(f);
     }
     
     public String getTag()

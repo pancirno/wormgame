@@ -5,10 +5,8 @@
  */
 package gameclasses.earthworms.objects;
 
-import gameclasses.earthworms.ExplosionFactory;
 import gameclasses.earthworms.LevelObject;
 import gameclasses.earthworms.Player;
-import gameclasses.earthworms.PlayerAI;
 import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.GSGame;
 
@@ -39,12 +37,6 @@ public class Pickup extends LevelObject
             if(o instanceof Player)
             {
                 onPickup((Player)o);
-                gs.removeObject(this);
-                return;
-            }
-            else if(o instanceof PlayerAI)
-            {
-                onPickup((PlayerAI)o);
                 gs.removeObject(this);
                 return;
             }

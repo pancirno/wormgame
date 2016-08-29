@@ -43,7 +43,7 @@ public class Projectile extends Actor
         markerPoint = null;
     }
             
-    public void initProjectile(Actor p, double ix, double iy, double ivx, double ivy)
+    final public void initProjectile(Actor p, double ix, double iy, double ivx, double ivy)
     {
         parent = p;
         x = ix;

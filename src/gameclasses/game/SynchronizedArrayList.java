@@ -34,6 +34,11 @@ public class SynchronizedArrayList<T>
         return objList.stream();
     }
     
+    public T[] GetArray()
+    {
+        return (T[])objList.toArray();
+    }
+    
     public Iterator<T> GetIteratorToAdd()
     {
         return objIncomingList.iterator();

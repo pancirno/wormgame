@@ -6,7 +6,6 @@
 package gameclasses.game;
 
 import gameclasses.earthworms.Player;
-import gameclasses.earthworms.PlayerAI;
 import gameclasses.earthworms.StaticPhysics;
 import gameclasses.loop.*;
 import javafx.geometry.*;
@@ -29,9 +28,7 @@ public class Actor
     protected Actor parent = null;
 
     protected int healthPoints = 1;
-    
     protected Object[] nearbyobjects = null;
-    
     protected int fallDamageRatio = 0;
     
     public void render(MainLoop loop, Camera c)
@@ -138,7 +135,7 @@ public class Actor
     {
         for(int i = 0; i < obj.length; i++)
         {
-            if(obj[i].getClass() == Player.class || obj[i].getClass() == PlayerAI.class)
+            if(obj[i].getClass() == Player.class)
                 obj[i] = new Object();
         }
     }
