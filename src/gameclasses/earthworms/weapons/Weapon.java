@@ -154,6 +154,16 @@ public class Weapon
         return WeaponName;
     }
     
+    public int getRow()
+    {
+        return WeaponGroup;
+    }
+    
+    public int getPriority()
+    {
+        return WeaponPriority;
+    }
+    
     public boolean ifInstantShot()
     {
         return instantShot;

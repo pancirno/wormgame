@@ -397,45 +397,66 @@ public class Player extends Actor
         //pick weapon
         if(!getIsRetreading() && currentState == PlayerState.ACTIVE)
         {
+            boolean changeWeapon = false;
+            int changeWeaponRow = -1;
+            
             if(ie.checkPulse(KeyCode.F1) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(gs.getWeaponInfo("rocket"));
+                changeWeapon = true;
+                changeWeaponRow = 1;
             }
             if(ie.checkPulse(KeyCode.F2) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(gs.getWeaponInfo("grenade"));
+                changeWeapon = true;
+                changeWeaponRow = 2;
             }
             if(ie.checkPulse(KeyCode.F3) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(gs.getWeaponInfo("shotgun"));
+                changeWeapon = true;
+                changeWeaponRow = 3;
             }
             if(ie.checkPulse(KeyCode.F4) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(gs.getWeaponInfo("minigun"));
+                changeWeapon = true;
+                changeWeaponRow = 4;
             }
             if(ie.checkPulse(KeyCode.F5) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(gs.getWeaponInfo("airstrike"));
+                changeWeapon = true;
+                changeWeaponRow = 5;
             }
             if(ie.checkPulse(KeyCode.F6) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(gs.getWeaponInfo("fgrenade"));
+                changeWeapon = true;
+                changeWeaponRow = 6;
             }
             if(ie.checkPulse(KeyCode.F7) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(gs.getWeaponInfo("ssgun"));
+                changeWeapon = true;
+                changeWeaponRow = 7;
             }
             if(ie.checkPulse(KeyCode.F8) == true)
             {
                 if(!lockswitch)refire = 0;
-                setEquippedGun(gs.getWeaponInfo("fairstrike"));
+                changeWeapon = true;
+                changeWeaponRow = 8;
+            }
+            
+            if(changeWeapon)
+            {
+                if(equippedGunData == null) equippedGunData = gs.findNextWeapon(changeWeaponRow, -1);
+                else
+                {
+                    if(changeWeaponRow != equippedGunData.getRow()) equippedGunData = gs.findNextWeapon(changeWeaponRow, -1);
+                    else equippedGunData = gs.findNextWeapon(changeWeaponRow, equippedGunData.getPriority());
+                }
             }
         }
         

@@ -64,6 +64,7 @@ public class GSGame extends GameState
     //debug
     boolean debug = true;
     
+    //initialize gsgame state
     public GSGame()
     {
         gameCamera = new Camera(0, 0, 800, 600);
@@ -89,6 +90,7 @@ public class GSGame extends GameState
         prepareMatch();
     }
 
+    //initialize match variables
     private void prepareMatch() 
     {
         addTeam(new Team("wew", "Gracz 1","Gracz 2","Gracz 3","Gracz 4",Color.RED, 0, false));
@@ -121,6 +123,7 @@ public class GSGame extends GameState
         selectNextPlayer();
     }
 
+    //insert new team
     private void addTeam(Team t1) 
     {
         teamList.add(t1);
@@ -129,6 +132,7 @@ public class GSGame extends GameState
         t1.setAvailableAmmo(currentScheme);
     }
     
+    //find a point from available spawn points in the map
     private Point2D pickRandomPointElement(ArrayList<Point2D> l)
     {
         Point2D p = l.get(randomizer.nextInt(l.size()));
@@ -142,12 +146,14 @@ public class GSGame extends GameState
         teamPlayerList.get(p.getPlayerTeam()).add(p);
     }
     
+    //reset active player and wait for next player
     public void endTheTurn()
     {
         activePlayer = null;
         pickNextPlayer = true;
     }
     
+    //pick next player
     public void selectNextPlayer()
     {        
         if(nextTeam >= teamList.size())
@@ -551,6 +557,32 @@ public class GSGame extends GameState
         return currentScheme.getWeapon(w);
     }
     
+    public HashMap<Integer, List<Weapon>> getWeaponTable()
+    {
+        return currentScheme.getWeaponTable();
+    }
+    
+    public Weapon findNextWeapon(int row, int column)
+    {
+        HashMap<Integer, List<Weapon>> wtable = currentScheme.getWeaponTable();
+        List<Weapon> wp = wtable.get(row);
+        
+        if(wp.isEmpty()) return null;
+        
+        Weapon get = wp.get(0);
+        
+        for(Weapon wfind : wp)
+        {
+            if (wfind.getPriority() > column)
+            {
+                get = wfind;
+                break;
+            }
+        }
+        
+        return get;
+    }
+    
     public int getCurrentTurn()
     {
         return currentTurn;
@@ -569,7 +601,7 @@ public class GSGame extends GameState
     private void dropPickup() 
     {
         if(this.getRandomNumber() < 0.25)
-            spawnObject((currentTurn % 2 == 0) ? new AmmoPickup(this, this.getRandomInt((int)currentStage.GameArea.getMaxX()), -50) : new HealthPickup(this.getRandomInt((int)currentStage.GameArea.getMaxX()), -50));
+            spawnObject((this.getRandomNumber() < 0.5) ? new AmmoPickup(this, this.getRandomInt((int)currentStage.GameArea.getMaxX()), -50) : new HealthPickup(this.getRandomInt((int)currentStage.GameArea.getMaxX()), -50));
     }
     
     public String getLoot()

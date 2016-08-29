@@ -7,8 +7,10 @@ package gameclasses.earthworms;
 
 import gameclasses.earthworms.weapons.WeaponFactory;
 import gameclasses.earthworms.weapons.Weapon;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -25,6 +27,8 @@ public class GameScheme
     private final HashMap<String, Integer> power = new HashMap<>();
     private final HashMap<String, Integer> crate = new HashMap<>();
     
+    HashMap<Integer, List<Weapon>> rowMapCache = null;
+    
     public Weapon getWeapon(String w)
     {
         return weapondata.getOrDefault(w, null);
@@ -33,6 +37,7 @@ public class GameScheme
     public void insertWeaponData(HashMap<String, Weapon> wd)
     {
         weapondata.putAll(wd);
+        rowMapCache = null;
     }
     
     public void setAmmo(String w, int i)
@@ -83,6 +88,24 @@ public class GameScheme
     public HashMap<String, Integer> getCrateTable()
     {
         return new HashMap<>(crate);
+    }
+    
+    public HashMap<Integer, List<Weapon>> getWeaponTable()
+    {
+        if(rowMapCache == null)
+        {
+            HashMap<Integer, List<Weapon>> hm = new HashMap<>();
+        
+            for(int i = 0; i <= 12; i++)
+            {
+                final int vi = i;
+                hm.put(vi, weapondata.values().stream().filter(x -> x.getRow() == vi).collect(Collectors.toList()));
+            }
+
+            rowMapCache = hm;
+        }
+        
+        return rowMapCache;
     }
     
     public static GameScheme testScheme()
