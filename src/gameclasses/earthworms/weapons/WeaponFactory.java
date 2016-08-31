@@ -89,11 +89,38 @@ public class WeaponFactory
         fgrenadeproj.bounceReductionOnImpact = 0.9;
         fgrenadeproj.bounceReductionOnRolling = 0.9;
         fgrenadeproj.bounceReductionOnBounce = 0.5;
-        fgrenadeproj.expFireParticles = 16;
+        fgrenadeproj.AddTrait(new PTFireExplosion(16));
         
         fgtemp.projectilesToShoot.add(fgrenadeproj);
         
         outWeapons.put(fgtemp.WeaponTag, fgtemp);
+        
+        //Nuclear Grenade
+        Weapon ngtemp = new Weapon();
+        ngtemp.WeaponName = "Nuclear Grenade";
+        ngtemp.WeaponTag = "ngrenade";
+        ngtemp.WeaponGroup = 2;
+        ngtemp.WeaponPriority = 3;
+        
+        //Nuclear Grenade Projectile
+        ProjectileDriver ngrenadeproj = new ProjectileDriver();
+        
+        ngrenadeproj.initialFuse = 600;
+        ngrenadeproj.gravityAffected = true;
+        ngrenadeproj.explodesOnHit = false;
+        ngrenadeproj.explodesOnStop = true;
+        ngrenadeproj.bouncesOnHit = true;
+        ngrenadeproj.explodeSize = ExplosionFactory.ExplosionSize.Gigantic;
+        ngrenadeproj.expDamage = 100;
+        ngrenadeproj.expPower = 20;
+        ngrenadeproj.expBias = -20;
+        ngrenadeproj.bounceReductionOnImpact = 1;
+        ngrenadeproj.bounceReductionOnRolling = 0.8;
+        ngrenadeproj.bounceReductionOnBounce = 0.75;
+        
+        ngtemp.projectilesToShoot.add(ngrenadeproj);
+        
+        outWeapons.put(ngtemp.WeaponTag, ngtemp);
         
         //Shotgun
         Weapon shtemp = new Weapon();
@@ -176,11 +203,40 @@ public class WeaponFactory
         
         outWeapons.put(ssgtemp.WeaponTag, ssgtemp);
         
+        //Bomb
+        Weapon btemp = new Weapon();
+        btemp.WeaponName = "Bomb";
+        btemp.WeaponTag = "bomb";
+        btemp.WeaponGroup = 4;
+        btemp.WeaponPriority = 1;
+        btemp.instantShot = true;
+        btemp.defaultShootPower = 0.5;
+        
+        //Bomb Projectile
+        ProjectileDriver bproj = new ProjectileDriver();
+        
+        bproj.initialFuse = 300;
+        bproj.weight = 10;
+        bproj.gravityAffected = true;
+        bproj.explodesOnHit = false;
+        bproj.bouncesOnHit = true;
+        bproj.explodeSize = ExplosionFactory.ExplosionSize.Huge;
+        bproj.expDamage = 75;
+        bproj.expPower = 12;
+        bproj.expBias = -10;
+        bproj.bounceReductionOnImpact = 0.2;
+        bproj.bounceReductionOnRolling = 0.2;
+        bproj.bounceReductionOnBounce = 0.2;
+        
+        btemp.projectilesToShoot.add(bproj);
+        
+        outWeapons.put(btemp.WeaponTag, btemp);
+        
         //Airstrike
         Weapon airtemp = new Weapon();
         airtemp.WeaponName = "Airstrike";
         airtemp.WeaponTag = "airstrike";
-        airtemp.WeaponGroup = 4;
+        airtemp.WeaponGroup = 7;
         airtemp.WeaponPriority = 1;
         airtemp.instantShot = true;
         airtemp.markTheSpot = true;
@@ -209,7 +265,7 @@ public class WeaponFactory
         Weapon fairtemp = new Weapon();
         fairtemp.WeaponName = "Napalm Strike";
         fairtemp.WeaponTag = "fairstrike";
-        fairtemp.WeaponGroup = 4;
+        fairtemp.WeaponGroup = 7;
         fairtemp.WeaponPriority = 2;
         fairtemp.instantShot = true;
         fairtemp.markTheSpot = true;
@@ -227,7 +283,8 @@ public class WeaponFactory
         fairproj.expPower = 3;
         fairproj.expBias = -5;
         fairproj.explodesOnDescend = true;
-        fairproj.expFireParticles = 8;
+        fairproj.AddTrait(new PTFireExplosion(8));
+        
         fairtemp.projectilesToShoot.add(fairproj);
         fairtemp.projectilesToShoot.add(fairproj);
         fairtemp.projectilesToShoot.add(fairproj);

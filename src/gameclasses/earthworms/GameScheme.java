@@ -7,7 +7,6 @@ package gameclasses.earthworms;
 
 import gameclasses.earthworms.weapons.WeaponFactory;
 import gameclasses.earthworms.weapons.Weapon;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -117,6 +116,7 @@ public class GameScheme
 
         gs.setAmmo("rocket", 99);
         gs.setAmmo("grenade", 99);
+        gs.setAmmo("ngrenade", 99);
         gs.setAmmo("homing", 99);
         gs.setAmmo("bomb", 99);
         gs.setAmmo("shotgun", 99);

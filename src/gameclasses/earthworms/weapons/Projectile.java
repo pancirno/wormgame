@@ -25,20 +25,28 @@ public class Projectile extends Actor
     protected int burnout = 0;
     
     protected ProjectileDriver pDriver;
-    
     protected Point2D markerPoint = null;
     
     public Projectile()
     {
-        
     }
     
     public Projectile(ProjectileDriver drv)
     {
-        fuse = drv.initialFuse;
-        burnout = drv.initialBurnout;
-        
         pDriver = drv;
+        
+        fuse = pDriver.initialFuse;
+        burnout = pDriver.initialBurnout;
+        
+        markerPoint = null;
+    }
+    
+    public Projectile(Projectile p)
+    {
+        pDriver = p.pDriver;
+        
+        fuse = pDriver.initialFuse;
+        burnout = pDriver.initialBurnout;
         
         markerPoint = null;
     }
@@ -84,6 +92,8 @@ public class Projectile extends Actor
                 return;
             }
             
+            pDriver.DoStepTraits(gs, this);
+            
             if(pDriver.explodesOnDescend && vy > 2)
             {
                 explode(gs);
@@ -91,14 +101,25 @@ public class Projectile extends Actor
                 return;
             }
             
-            //movement mode - projectile
+            if(pDriver.explodesOnStop)
+            {
+                if (!isMoving())
+                {
+                    explode(gs);
+                    gs.removeObject(this);
+                    return;
+                }
+            }
+            
             if(pDriver.spawnChildrenOnTravelInterval > 0)
                 if(fuse % pDriver.spawnChildrenOnTravelInterval == 0)
                     dropChildren(gs);
             
+            pDriver.DoMoveTraits(gs, this);
+            
             if(pDriver.windAffected) vx = vx + gs.getWind();
             if(pDriver.gravityAffected) vy = vy + StaticPhysics.GRAVITY;
-
+            
             if(pDriver.bouncesOnHit)
                 grenadeBounce(gs, pDriver.bounceReductionOnImpact, pDriver.bounceReductionOnRolling, pDriver.bounceReductionOnBounce, pDriver.goThroughObjects);
             
@@ -132,14 +153,10 @@ public class Projectile extends Actor
     }
     
     public void explode(GSGame gs)
-    {
+    {        
         if(pDriver.explodes) ExplosionFactory.MakeCustomExplosion(gs, (int)x, (int)y, pDriver.explodeSize, pDriver.expDamage, pDriver.expPower, pDriver.expBias, pDriver.expHurtRadius, pDriver.expConstDamage);
         
-        if(pDriver.expFireParticles > 0)
-            for(int i = 0; i < pDriver.expFireParticles; i++)
-            {
-                gs.spawnProjectile(new Fire(x, y, (i-(pDriver.expFireParticles/2))*0.5, 0, (int)(gs.getRandomNumber()*50) + 300));
-            }
+        pDriver.DoExplTraits(gs, this);
         
         if(pDriver.spawnChildrenOnExplosion)
         {

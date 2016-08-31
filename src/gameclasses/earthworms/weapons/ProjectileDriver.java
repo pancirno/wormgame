@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.ExplosionFactory;
+import gameclasses.loop.GSGame;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +15,8 @@ import java.util.ArrayList;
  */
 public class ProjectileDriver
 {
+    protected ArrayList<ProjectileTrait> trait = null;
+    
     protected int initialFuse = 600;
     protected int initialBurnout = 0;
     
@@ -24,6 +27,7 @@ public class ProjectileDriver
     protected boolean explodesOnHit = true;
     protected boolean explodesOnDescend = false;
     protected boolean explodesOnActivation = false;
+    protected boolean explodesOnStop = false;
     protected boolean removeOnExplosion = true;
     protected ExplosionFactory.ExplosionSize explodeSize = ExplosionFactory.ExplosionSize.None;
     protected boolean expConstDamage = false;
@@ -31,7 +35,6 @@ public class ProjectileDriver
     protected double expPower = 0;
     protected int expBias = 0;
     protected double expHurtRadius = -1;
-    protected int expFireParticles = 0;
     
     protected boolean windAffected = false;
     protected boolean gravityAffected = false;
@@ -65,6 +68,7 @@ public class ProjectileDriver
         explodesOnHit = cp.explodesOnHit;
         explodesOnDescend = cp.explodesOnDescend;
         explodesOnActivation = cp.explodesOnActivation;
+        explodesOnStop = cp.explodesOnStop;
         removeOnExplosion = cp.removeOnExplosion;
         explodeSize = cp.explodeSize;
         expConstDamage = cp.expConstDamage;
@@ -72,7 +76,6 @@ public class ProjectileDriver
         expPower = cp.expPower;
         expBias = cp.expBias;
         expHurtRadius = cp.expHurtRadius;
-        expFireParticles = cp.expFireParticles;
 
         windAffected = cp.windAffected;
         gravityAffected = cp.gravityAffected;
@@ -93,9 +96,39 @@ public class ProjectileDriver
         {
             children = new ArrayList<>();
             cp.children.stream().forEach((childp) -> {
-                children.add(new Projectile(this));
+                children.add(new Projectile(childp));
             });
         }
     }
-
+    
+    public void AddTrait(ProjectileTrait pt)
+    {
+        if(trait == null) trait = new ArrayList<>();
+        trait.add(pt);
+    }
+    
+    public boolean DoStepTraits(GSGame gs, Projectile p)
+    {
+        if(trait == null) return false;
+        
+        for(ProjectileTrait pt : trait) pt.onStep(gs, p);
+        return false;
+    }
+    
+    public boolean DoMoveTraits(GSGame gs, Projectile p)
+    {
+        if(trait == null) return false;
+        
+        for(ProjectileTrait pt : trait) pt.onMove(gs, p);
+        return false;
+    }
+    
+    public boolean DoExplTraits(GSGame gs, Projectile p)
+    {
+        if(trait == null) return false;
+        
+        for(ProjectileTrait pt : trait) pt.onExplosion(gs, p);
+        return false;
+    }
+    
 }
