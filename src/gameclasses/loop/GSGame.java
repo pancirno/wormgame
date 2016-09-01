@@ -566,6 +566,7 @@ public class GSGame extends GameState
     {
         HashMap<Integer, List<Weapon>> wtable = currentScheme.getWeaponTable();
         List<Weapon> wp = wtable.get(row);
+        wp.sort((o1, o2) -> o1.getPriority() - o2.getPriority());
         
         if(wp.isEmpty()) return null;
         

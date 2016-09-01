@@ -15,10 +15,37 @@ import java.util.ArrayList;
 public class PTChildren implements ProjectileTrait
 {
     protected boolean spawnChildrenOnExplosion = false;
-    protected int spawnChildrenOnTravelInterval = 0;
     protected boolean childrenInheritVelocity = false;
-    protected ArrayList<Projectile> children = null; 
+    protected int spawnChildrenOnTravelInterval = 0;
+    protected double childInitialVX = 0;
+    protected double childInitialVY = 0;
+    protected double childSpreadVX = 0;
+    protected double childSpreadVY = 0;
+    protected ArrayList<ProjectileDriver> children = null; 
     
+    public PTChildren(boolean onexp, boolean inhvel, int travelint, double initx, double inity, double sprx, double spry, ArrayList<ProjectileDriver> kids)
+    {
+        spawnChildrenOnExplosion = onexp;
+        childrenInheritVelocity = inhvel;
+        spawnChildrenOnTravelInterval = travelint;
+        
+        childInitialVX = initx;
+        childInitialVY = inity;
+        childSpreadVX = sprx;
+        childSpreadVY = spry;
+        
+        children = kids;
+    }
+    
+    public PTChildren(boolean onexp, boolean inhvel, int travelint, double initx, double inity, double sprx, double spry, ProjectileDriver obj, int num)
+    {
+        this(onexp, inhvel, travelint, initx, inity, sprx, spry, null);
+        
+        ArrayList<ProjectileDriver> kids = new ArrayList<>();
+        for(int i = 0; i < num; i++) kids.add(obj);
+        
+        children = kids;
+    }
     
     @Override
     public boolean onStep(GSGame gs, Projectile p) 
@@ -51,10 +78,14 @@ public class PTChildren implements ProjectileTrait
     {
         if(children != null)
         {
-           for(Projectile c : children)
+           for(ProjectileDriver c : children)
            {
-               Projectile nc = new Projectile(c.pDriver);
-               if(childrenInheritVelocity) nc.setVelocity(p.getVX(), p.getVY(), false);
+               Projectile nc = new Projectile(c);
+               
+               double cvx = childInitialVX + gs.getGaussianRandomNumber() * childSpreadVX + (childrenInheritVelocity ? p.getVX() : 0);
+               double cvy = childInitialVY + gs.getGaussianRandomNumber() * childSpreadVY + (childrenInheritVelocity ? p.getVY() : 0);
+               
+               nc.initProjectile(p, p.getX(), p.getY(), cvx, cvy);
                gs.spawnProjectile(nc);
            }
         }

@@ -101,7 +101,7 @@ public class Projectile extends Actor
             if(pDriver.bouncesOnHit)
                 grenadeBounce(gs, pDriver.bounceReductionOnImpact, pDriver.bounceReductionOnRolling, pDriver.bounceReductionOnBounce, pDriver.goThroughObjects);
             
-            if((snapToLevelVel(gs, vx, vy, pDriver.bouncesOnHit, false) && pDriver.explodesOnHit))
+            if((snapToLevelVel(gs, vx, vy, pDriver.bouncesOnHit, pDriver.goThroughObjects) && pDriver.explodesOnHit))
             {
                 explode(gs);
                 if(pDriver.removeOnExplosion) gs.removeObject(this);

@@ -40,6 +40,43 @@ public class WeaponFactory
         
         outWeapons.put(wtemp.WeaponTag, wtemp);
         
+        //MIRV
+        Weapon mirvtemp = new Weapon();
+        mirvtemp.WeaponName = "MIRV";
+        mirvtemp.WeaponTag = "mirv";
+        mirvtemp.WeaponGroup = 1;
+        mirvtemp.WeaponPriority = 2;
+        
+        //MIRV Spawn
+        ProjectileDriver mirvsubproj = new ProjectileDriver();
+        mirvsubproj.weight = 10;
+        
+        mirvsubproj.windAffected = true;
+        mirvsubproj.gravityAffected = true;
+        mirvsubproj.explodesOnHit = true;
+        mirvsubproj.explodeSize = ExplosionFactory.ExplosionSize.ExtraLarge;
+        mirvsubproj.expDamage = 50;
+        mirvsubproj.expPower = 6;
+        mirvsubproj.expBias = -10;
+        mirvsubproj.goThroughObjects = true;
+        
+        //MIRV Projectile
+        ProjectileDriver mirvproj = new ProjectileDriver();
+        mirvproj.weight = 10;
+        
+        mirvproj.windAffected = true;
+        mirvproj.gravityAffected = true;
+        mirvproj.explodesOnHit = true;
+        mirvproj.explodeSize = ExplosionFactory.ExplosionSize.ExtraLarge;
+        mirvproj.expDamage = 50;
+        mirvproj.expPower = 6;
+        mirvproj.expBias = -10;
+        mirvproj.AddTrait(new PTMIRVBehaviour());
+        mirvproj.AddTrait(new PTChildren(true, true, 0, 0, 0, 2, 0, mirvsubproj, 3));
+        mirvtemp.projectilesToShoot.add(mirvproj);
+        
+        outWeapons.put(mirvtemp.WeaponTag, mirvtemp);
+        
         //Grenade
         Weapon gtemp = new Weapon();
         gtemp.WeaponName = "Hand Grenade";
@@ -175,7 +212,7 @@ public class WeaponFactory
         
         outWeapons.put(minitemp.WeaponTag, minitemp);
         
-        //Minigun
+        //Double Shotgun
         Weapon ssgtemp = new Weapon();
         ssgtemp.WeaponName = "Double Barreled Shotgun";
         ssgtemp.WeaponTag = "ssgun";
