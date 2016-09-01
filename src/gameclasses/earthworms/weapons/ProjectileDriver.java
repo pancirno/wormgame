@@ -25,9 +25,7 @@ public class ProjectileDriver
         
     protected boolean explodes = true;
     protected boolean explodesOnHit = true;
-    protected boolean explodesOnDescend = false;
     protected boolean explodesOnActivation = false;
-    protected boolean explodesOnStop = false;
     protected boolean removeOnExplosion = true;
     protected ExplosionFactory.ExplosionSize explodeSize = ExplosionFactory.ExplosionSize.None;
     protected boolean expConstDamage = false;
@@ -39,11 +37,6 @@ public class ProjectileDriver
     protected boolean windAffected = false;
     protected boolean gravityAffected = false;
     protected double weight = 1;
-    
-    protected boolean spawnChildrenOnExplosion = false;
-    protected int spawnChildrenOnTravelInterval = 0;
-    protected boolean childrenInheritVelocity = false;
-    protected ArrayList<Projectile> children = null; 
     
     protected boolean bouncesOnHit = false;
     protected double bounceReductionOnImpact = 0;
@@ -66,9 +59,7 @@ public class ProjectileDriver
 
         explodes = cp.explodes;
         explodesOnHit = cp.explodesOnHit;
-        explodesOnDescend = cp.explodesOnDescend;
         explodesOnActivation = cp.explodesOnActivation;
-        explodesOnStop = cp.explodesOnStop;
         removeOnExplosion = cp.removeOnExplosion;
         explodeSize = cp.explodeSize;
         expConstDamage = cp.expConstDamage;
@@ -81,10 +72,6 @@ public class ProjectileDriver
         gravityAffected = cp.gravityAffected;
         weight = cp.weight;
 
-        spawnChildrenOnExplosion = cp.spawnChildrenOnExplosion;
-        spawnChildrenOnTravelInterval = cp.spawnChildrenOnTravelInterval;
-        childrenInheritVelocity = cp.childrenInheritVelocity;
-
         bouncesOnHit = cp.bouncesOnHit;
         bounceReductionOnImpact = cp.bounceReductionOnImpact;
         bounceReductionOnRolling = cp.bounceReductionOnRolling;
@@ -92,13 +79,6 @@ public class ProjectileDriver
         
         homingAccuracy = cp.homingAccuracy;
         
-        if(cp.children != null)
-        {
-            children = new ArrayList<>();
-            cp.children.stream().forEach((childp) -> {
-                children.add(new Projectile(childp));
-            });
-        }
     }
     
     public void AddTrait(ProjectileTrait pt)

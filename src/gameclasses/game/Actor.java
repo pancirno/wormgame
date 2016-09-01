@@ -198,6 +198,16 @@ public class Actor
         return y;
     }
     
+    public double getVX()
+    {
+        return vx;
+    }
+    
+    public double getVY()
+    {
+        return vy;
+    }
+    
     public Point2D getPoint2D()
     {
         return new Point2D(x,y);
@@ -211,5 +221,19 @@ public class Actor
     public Rectangle2D getCollisionAreaDelta(double dx, double dy)
     {
         return new Rectangle2D(x + dx - cx/2, y + dy - cy/2, cx, cy);
+    }
+    
+    public void setVelocity(double nvx, double nvy, boolean add)
+    {
+        if(add)
+        {
+            vx += nvx;
+            vy += nvy;
+        }
+        else
+        {
+            vx = nvx;
+            vy = nvy;
+        }
     }
 }

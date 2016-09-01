@@ -10,7 +10,6 @@ import gameclasses.game.Actor;
 import gameclasses.game.Camera;
 import gameclasses.loop.GSGame;
 import gameclasses.loop.MainLoop;
-import gameclasses.earthworms.Fire;
 import gameclasses.earthworms.StaticPhysics;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -93,28 +92,7 @@ public class Projectile extends Actor
             }
             
             pDriver.DoStepTraits(gs, this);
-            
-            if(pDriver.explodesOnDescend && vy > 2)
-            {
-                explode(gs);
-                gs.removeObject(this);
-                return;
-            }
-            
-            if(pDriver.explodesOnStop)
-            {
-                if (!isMoving())
-                {
-                    explode(gs);
-                    gs.removeObject(this);
-                    return;
-                }
-            }
-            
-            if(pDriver.spawnChildrenOnTravelInterval > 0)
-                if(fuse % pDriver.spawnChildrenOnTravelInterval == 0)
-                    dropChildren(gs);
-            
+                                    
             pDriver.DoMoveTraits(gs, this);
             
             if(pDriver.windAffected) vx = vx + gs.getWind();
@@ -155,32 +133,7 @@ public class Projectile extends Actor
     public void explode(GSGame gs)
     {        
         if(pDriver.explodes) ExplosionFactory.MakeCustomExplosion(gs, (int)x, (int)y, pDriver.explodeSize, pDriver.expDamage, pDriver.expPower, pDriver.expBias, pDriver.expHurtRadius, pDriver.expConstDamage);
-        
         pDriver.DoExplTraits(gs, this);
-        
-        if(pDriver.spawnChildrenOnExplosion)
-        {
-            dropChildren(gs);
-        }
-    }
-    
-    private void dropChildren(GSGame gs)
-    {
-        if(pDriver.children != null)
-        {
-           for(Projectile c : pDriver.children)
-           {
-               Projectile nc = new Projectile(pDriver);
-               
-               if(pDriver.childrenInheritVelocity)
-               {
-                   nc.vx = vx;
-                   nc.vy = vy;
-               }
-               
-               gs.spawnProjectile(nc);
-           }
-        }
     }
     
     public void activate()

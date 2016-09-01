@@ -108,7 +108,6 @@ public class WeaponFactory
         ngrenadeproj.initialFuse = 600;
         ngrenadeproj.gravityAffected = true;
         ngrenadeproj.explodesOnHit = false;
-        ngrenadeproj.explodesOnStop = true;
         ngrenadeproj.bouncesOnHit = true;
         ngrenadeproj.explodeSize = ExplosionFactory.ExplosionSize.Gigantic;
         ngrenadeproj.expDamage = 100;
@@ -117,6 +116,7 @@ public class WeaponFactory
         ngrenadeproj.bounceReductionOnImpact = 1;
         ngrenadeproj.bounceReductionOnRolling = 0.8;
         ngrenadeproj.bounceReductionOnBounce = 0.75;
+        ngrenadeproj.AddTrait(new PTTriggerOnStop());
         
         ngtemp.projectilesToShoot.add(ngrenadeproj);
         
@@ -282,8 +282,8 @@ public class WeaponFactory
         fairproj.expDamage = 30;
         fairproj.expPower = 3;
         fairproj.expBias = -5;
-        fairproj.explodesOnDescend = true;
         fairproj.AddTrait(new PTFireExplosion(8));
+        fairproj.AddTrait(new PTMIRVBehaviour());
         
         fairtemp.projectilesToShoot.add(fairproj);
         fairtemp.projectilesToShoot.add(fairproj);
