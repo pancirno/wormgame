@@ -262,7 +262,7 @@ public class WeaponFactory
         bproj.expPower = 12;
         bproj.expBias = -10;
         bproj.bounceReductionOnImpact = 0.2;
-        bproj.bounceReductionOnRolling = 0.2;
+        bproj.bounceReductionOnRolling = 1.3;
         bproj.bounceReductionOnBounce = 0.2;
         
         btemp.projectilesToShoot.add(bproj);

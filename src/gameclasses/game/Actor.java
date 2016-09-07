@@ -145,7 +145,7 @@ public class Actor
         //horizontal bounce
         if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(-1 * vx, 0)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, -1 * vx, 0)) )
         {
-            vx = vx * StaticPhysics.TORQUE * rollred; //0.9
+            vx = vx * StaticPhysics.TORQUE * rollred;
         }
         else if(gs.currentStage.RectangleOverlapsStage(getCollisionAreaDelta(vx, 0)) || (!ignoreobjects && checkForObjectOverlap(nearbyobjects, vx, 0)) )
         {
