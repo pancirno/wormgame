@@ -55,9 +55,9 @@ public class GSGame extends GameState
     Player activePlayer;
     
     //turn data
+    TurnType currentTurnType = TurnType.IDLE;
     int currentTurn = 0;
     int turnTimer = -1;
-    boolean pickNextPlayer = false;
     double windPower = 0.0;
     Team firstSelectedTeam = null;
     
@@ -150,7 +150,17 @@ public class GSGame extends GameState
     public void endTheTurn()
     {
         activePlayer = null;
-        pickNextPlayer = true;
+        turnTimer = 0;
+    }
+    
+    //jump from hotseat into normal turn
+    public void beginProperTurn()
+    {
+        if(currentTurnType != TurnType.PLAYER_MOVE)
+        {
+            currentTurnType = TurnType.PLAYER_MOVE;
+            turnTimer = currentScheme.turntime * 60;
+        }
     }
     
     //pick next player
@@ -187,13 +197,6 @@ public class GSGame extends GameState
         teamIterator.replace(t, nextPlayerId);
         
         nextTeam++;
-        
-        pickNextPlayer = false;
-        
-        changeWind();
-        dropPickup();
-        
-        turnTimer = currentScheme.turntime * 60;
     }
     
     public double getWind()
@@ -218,22 +221,43 @@ public class GSGame extends GameState
     protected void execute(MainLoop loop)
     {
         //if turn ends
-        if(--turnTimer <= 0)
-        {
-            pickNextPlayer = true;
-        }
-        
-        //check if player needs to be switched
-        if(pickNextPlayer)
-            if(explosions.isEmpty() && projectiles.size() == 0 && !arePlayersMoving() && !areObjectsMoving())
+        if(--turnTimer <= 0 && explosions.isEmpty() && projectiles.size() == 0 && !arePlayersMoving() && !areObjectsMoving())
+            switch(currentTurnType)
             {
-            selectNextPlayer();
+                case IDLE:
+                    changeWind();
+                    selectNextPlayer(); //or event
+                    
+                    currentTurnType = TurnType.HOTSEAT;
+                    turnTimer = currentScheme.hotseattime * 60;
+                    break;
+                    
+                case HOTSEAT:
+                    beginProperTurn();
+                    break;
+                    
+                case PLAYER_MOVE:
+                    endTheTurn();
+                    
+                    currentTurnType = TurnType.IDLE;
+                    turnTimer = 180;
+                    break;
+                    
+                case EVENT:
+                    dropPickup();
+                    break;
             }
         
         //collect inputs
         gameCamera.move(loop.GetInputEngine());
         if(activePlayer != null)
+        {
             activePlayer.move(this, loop.GetInputEngine());
+            if(activePlayer.isMoving() && currentTurnType == TurnType.HOTSEAT)
+            {
+                beginProperTurn();
+            }
+        }
         
         executeHandleExplosions();
         executeHandleCollisions();
@@ -587,6 +611,11 @@ public class GSGame extends GameState
     public int getCurrentTurn()
     {
         return currentTurn;
+    }
+    
+    public TurnType getCurrentTurnPhase()
+    {
+        return currentTurnType;
     }
     
     public boolean arePlayersMoving()

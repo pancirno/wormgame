@@ -647,6 +647,12 @@ public class Player extends Actor
         {
             equippedGunData = w;
         }
+        
+        if(equippedGunData.ifNeedsMarker())
+        {
+            ismarked = false;
+            markerClick = null;
+        }
     }
         
     public void tryShooting(GSGame gs)

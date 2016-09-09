@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class GameScheme 
 {
     public int turntime;
+    public int hotseattime;
     
     private final HashMap<String, Weapon> weapondata = new HashMap<>();
     
@@ -113,6 +114,7 @@ public class GameScheme
         gs.insertWeaponData(WeaponFactory.GetDefaultWeaponList());
         
         gs.turntime = 99;
+        gs.hotseattime = 5;
 
         gs.setAmmo("rocket", 99);
         gs.setAmmo("grenade", 99);
@@ -142,6 +144,7 @@ public class GameScheme
         gs.insertWeaponData(WeaponFactory.GetDefaultWeaponList());
         
         gs.turntime = 45;
+        gs.hotseattime = 5;
         
         gs.setAmmo("rocket", 99);
         gs.setAmmo("grenade", 99);

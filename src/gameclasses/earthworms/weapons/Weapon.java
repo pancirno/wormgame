@@ -6,6 +6,7 @@
 package gameclasses.earthworms.weapons;
 
 import gameclasses.earthworms.Player;
+import gameclasses.earthworms.TurnType;
 import gameclasses.loop.GSGame;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -71,6 +72,11 @@ public class Weapon
      */
     public void DoShooting(Player plr, GSGame gs, double shootx, double shooty, double angle, double power, Point2D target, int fuse)
     {
+        if(gs.getCurrentTurnPhase() == TurnType.HOTSEAT)
+        {
+            gs.beginProperTurn();
+        }
+        
         if(special != 0)
             if(DoSpecial(plr, gs, shootx, shooty, angle, power, target, fuse)) return;
         
