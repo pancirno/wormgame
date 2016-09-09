@@ -121,6 +121,7 @@ public class GameScheme
         gs.setAmmo("ngrenade", 99);
         gs.setAmmo("homing", 99);
         gs.setAmmo("bomb", 99);
+        gs.setAmmo("bananagrenade", 99);
         gs.setAmmo("shotgun", 99);
         gs.setAmmo("rope", 99);
         gs.setAmmo("fgrenade", 99);
