@@ -79,7 +79,7 @@ public class GUIHelper
     
     static int renderedTextWidth(String s)
     {
-        if(textWidthCache.size() > 1024) 
+        if(textWidthCache.size() > 4096) 
         {
             textWidthCache.clear();
         }
