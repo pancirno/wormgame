@@ -192,7 +192,7 @@ public class GSGame extends GameState
         activePlayer = teamPlayerList.get(t).get(nextPlayerId);
         activePlayer.SelectPlayer();
         
-        gameCamera.MoveCameraAbs((int)activePlayer.getX() - 400, (int)activePlayer.getY() - 300);
+        gameCamera.MoveCameraAbs((int)activePlayer.getX() - gameCamera.GetWidth() / 2, (int)activePlayer.getY() - gameCamera.GetHeight() / 2);
         
         teamIterator.replace(t, nextPlayerId);
         

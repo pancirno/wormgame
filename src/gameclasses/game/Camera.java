@@ -22,7 +22,6 @@ public class Camera
     private int Height;
     
     private Rectangle2D CameraBoundary;
-    private GraphicsContext GC;
     
     public Camera(int x, int y, int w, int h)
     {
@@ -49,14 +48,22 @@ public class Camera
     {
         CameraX = x;
         CameraY = y;
-        //RefreshBoundary();
     }
     
     public void MoveCameraRel(int x, int y)
     {
         CameraX += x;
         CameraY += y;
-        //RefreshBoundary();
+    }
+    
+    public int GetWidth()
+    {
+        return Width;
+    }
+    
+    public int GetHeight()
+    {
+        return Height;
     }
     
     public Rectangle2D GetBoundary()
