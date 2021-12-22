@@ -5,6 +5,7 @@
  */
 package gameclasses.loop;
 
+import gameclasses.menu.GSMenu;
 import javafx.animation.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
@@ -37,7 +38,7 @@ public class MainLoop extends AnimationTimer
     {
         if(drawengine == null) return;
                 
-        g = new GSGame();
+        g = new GSMenu();
         
         super.start();
     }
@@ -55,6 +56,11 @@ public class MainLoop extends AnimationTimer
         executionrate = (int)(((double)(System.nanoTime() - now) / 16666666)*100);
     }
         
+    public void SetNewGameState(GameState nG)
+    {
+        g = nG;
+    }
+    
     //konfiguracja przesylu wejscia wyjscia
     public void OnPress(KeyCode kc)
     {
